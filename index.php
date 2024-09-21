@@ -252,12 +252,12 @@
   </a>
   <ul id="account-payable-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     <li>
-      <a href="modules.html">
+      <a href="aprInvoiceBilling.php">
         <i class="bi bi-circle"></i><span>Invoice & Billing Management</span>
       </a>
     </li>
     <li>
-      <a href="modules.html">
+      <a href="aprFinancialIntegration.php">
         <i class="bi bi-circle"></i><span>Financial Integration</span>
       </a>
     </li>
