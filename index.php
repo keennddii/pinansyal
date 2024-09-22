@@ -112,7 +112,7 @@
 
       <div class="flex items-center w-full p-1 pl-6" style="display: flex; align-items: center; padding: 3px; width: 40px; background-color: transparent; height: 4rem;">
         <div class="flex items-center justify-center" style="display: flex; align-items: center; justify-content: center;">
-            <img src="https://elc-public-images.s3.ap-southeast-1.amazonaws.com/bcp-olp-logo-mini2.png" alt="Logo" style="width: 30px; height: auto;">
+            <img src="assets/img/jvd.jpg" alt="Logo" style="width: 80px; height: auto;">
         </div>
       </div>
 

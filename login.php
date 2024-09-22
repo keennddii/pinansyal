@@ -75,8 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
-                  <img src="https://elc-public-images.s3.ap-southeast-1.amazonaws.com/bcp-olp-logo-mini2.png" alt="Logo">
-                  <span class="d-none d-lg-block">Your System Admin</span>
+                  <img src="assets/img/jvd.jpg" alt="Logo">
+                  
+                  <span class="d-none d-lg-block">Financial Login</span>
                 </a>
               </div><!-- End Logo -->
 
@@ -121,9 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
               </div>
 
-              <div class="credits">
-                BCP
-              </div>
+              
 
             </div>
           </div>
