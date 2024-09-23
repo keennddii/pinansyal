@@ -5,12 +5,12 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - Title</title>
+  <title>Finance Home</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/jvd.jpg" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
@@ -36,11 +36,18 @@
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
-
+  <label class="switch">
+        <input type="checkbox" id="toggle" onclick="myFunction()">
+        <span class="slider round">
+            <i class="bi bi-moon-stars-fill" id="sun-icon"></i>
+            <i class="bi bi-sun-fill" id="moon-icon"></i>
+        </span>
+      </label>
     <div class="d-flex align-items-center justify-content-between">
       <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
-
+    </div>
+    <!-- End Logo -->
+    
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
@@ -89,7 +96,10 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-
+      
+            <li>
+              <hr class="dropdown-divider">
+            </li>
             <li>
               <a class="dropdown-item d-flex align-items-center" href="#">
                 <i class="bi bi-box-arrow-right"></i>
@@ -110,32 +120,19 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <div class="flex items-center w-full p-1 pl-6" style="display: flex; align-items: center; padding: 3px; width: 40px; background-color: transparent; height: 4rem;">
-        <div class="flex items-center justify-center" style="display: flex; align-items: center; justify-content: center;">
-            <img src="assets/img/jvd.jpg" alt="Logo" style="width: 80px; height: auto;">
+      <div class="flex items-center w-full p-1 pl-6" style="display: flex; align-items: center; padding: 4px; width: 40px; background-color: transparent; height: 4rem;">
+        <div class="flex items-center justify-center" style="display: flex; align-items: center; justify-content: center; auto;">
+            <img src="assets/img/jvd.jpg" alt="Logo" style="width: 120px; height: auto; margin: 40px;">
         </div>
       </div>
-
-      <div style="display: flex; flex-direction: column; align-items: center; padding: 16px;">
-        <div style="display: flex; align-items: center; justify-content: center; width: 96px; height: 96px; border-radius: 50%; background-color: #334155; color: #e2e8f0; font-size: 48px; font-weight: bold; text-transform: uppercase; line-height: 1;">
-            LC
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; margin-top: 24px; text-align: center;">
-            <div style="font-weight: 500; color: #fff;">
-                Name
-            </div>
-            <div style="margin-top: 4px; font-size: 14px; color: #fff;">
-                ID
-            </div>
-        </div>
     </div>
 
     <hr class="sidebar-divider">
 
       <li class="nav-item">
         <a class="nav-link " href="index.php">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+          <i class="bi bi-house-door"></i>
+          <span>Homepage</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
@@ -145,22 +142,22 @@
 
 <li class="nav-item">
   <a class="nav-link collapsed" data-bs-target="#disbursement-nav" data-bs-toggle="collapse" href="#">
-    <i class="bi bi-layout-text-window-reverse"></i><span>Disbursement</span><i class="bi bi-chevron-down ms-auto"></i>
+    <i class="bi bi-layout-text-window-reverse"></i><span>Disbursement</span><i class="bi bi-arrow-bar-down ms-auto"></i>
   </a>
   <ul id="disbursement-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     <li>
       <a href="dExpense.php">
-        <i class="bi bi-circle"></i><span>Expense Management</span>
+        <i class="bi bi-circle-fill"></i><span>Expense Management</span>
       </a>
     </li>
     <li>
       <a href="dPayrollManagement.php">
-        <i class="bi bi-circle"></i><span>Payroll Management</span>
+        <i class="bi bi-circle-fill"></i><span>Payroll Management</span>
       </a>
     </li>
     <li>
       <a href="dFinancialIntegration.php">
-        <i class="bi bi-circle"></i><span>Financial Integration</span>
+        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
       </a>
     </li>
   </ul>
@@ -170,44 +167,44 @@
 
 <li class="nav-item">
   <a class="nav-link collapsed" data-bs-target="#budget-management-nav" data-bs-toggle="collapse" href="#">
-    <i class="ri-money-dollar-box-line"></i><span>Budget Management</span><i class="bi bi-chevron-down ms-auto"></i>
+    <i class="bi bi-currency-dollar"></i><span>Budget Management</span><i class="bi bi-arrow-bar-down ms-auto"></i>
   </a>
   <ul id="budget-management-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
       <a href="bPayrollReporting.php">
-        <i class="bi bi-circle"></i><span>Payroll Reporting</span>
+        <i class="bi bi-circle-fill"></i><span>Payroll Reporting</span>
       </a>
     </li>
     <li>
       <a href="bTaxManagement.php">
-        <i class="bi bi-circle"></i><span>Tax Management</span>
+        <i class="bi bi-circle-fill"></i><span>Tax Management</span>
       </a>
     </li>
     <li>
       <a href="bAuditCompliance.php">
-        <i class="bi bi-circle"></i><span>Audit & Compliance</span>
+        <i class="bi bi-circle-fill"></i><span>Audit & Compliance</span>
     </li>
   </ul>
 </li><!-- End Budget Management Nav -->
 
 <li class="nav-item">
   <a class="nav-link collapsed" data-bs-target="#collection-nav" data-bs-toggle="collapse" href="#">
-    <i class="ri-draft-line"></i><span>Collection</span><i class="bi bi-chevron-down ms-auto"></i>
+    <i class="ri-draft-line"></i><span>Collection</span><i class="bi bi-arrow-bar-down ms-auto"></i>
   </a>
   <ul id="collection-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     <li>
       <a href="cInvoicingBilling.php">
-        <i class="bi bi-circle"></i><span>Invoicing & Billing</span>
+        <i class="bi bi-circle-fill"></i><span>Invoicing & Billing</span>
       </a>
     </li>
     <li>
       <a href="cBookingRevenue.php">
-        <i class="bi bi-circle"></i><span>Booking & Revenue Management</span>
+        <i class="bi bi-circle-fill"></i><span>Booking & Revenue Management</span>
       </a>
     </li>
     <li>
       <a href="cFinancialIntegration.php">
-        <i class="bi bi-circle"></i><span>Financial Integration</span>
+        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
       </a>
     </li>
   </ul>
@@ -215,50 +212,50 @@
 
 <li class="nav-item">
   <a class="nav-link collapsed" data-bs-target="#general-ledger-nav" data-bs-toggle="collapse" href="#">
-    <i class="ri-contacts-book-2-line"></i><span>General Ledger</span><i class="bi bi-chevron-down ms-auto"></i>
+    <i class="ri-contacts-book-2-line"></i><span>General Ledger</span><i class="bi bi-arrow-bar-down ms-auto"></i>
   </a>
   <ul id="general-ledger-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
       <a href="gGeneralLedger.php">
-        <i class="bi bi-circle"></i><span>General Ledger Management</span>
+        <i class="bi bi-circle-fill"></i><span>General Ledger Management</span>
       </a>
     </li>
     <li>
       <a href="gBookingRevenue.php">
-        <i class="bi bi-circle"></i><span>Booking  & Revenue Management</span>
+        <i class="bi bi-circle-fill"></i><span>Booking  & Revenue Management</span>
       </a>
     </li>
     <li>
       <a href="gFinancialReportingAnalysis.php">
-        <i class="bi bi-circle"></i><span>Financial Reporting & Analysis</span>
+        <i class="bi bi-circle-fill"></i><span>Financial Reporting & Analysis</span>
       </a>
     </li>
     <li>
       <a href="gFinancialAnalytics.php">
-        <i class="bi bi-circle"></i><span>Financial Analytics</span>
+        <i class="bi bi-circle-fill"></i><span>Financial Analytics</span>
       </a>
     </li>
     <li></span>
       </a>
       <a href="gCashFlow.php">
-        <i class="bi bi-circle"></i><span>Cash Flow Management</span>
+        <i class="bi bi-circle-fill"></i><span>Cash Flow Management</span>
       </a>
     </li>
   </ul>
 </li><!-- End General Ledger Nav -->
 <li class="nav-item">
   <a class="nav-link collapsed" data-bs-target="#account-payable-nav" data-bs-toggle="collapse" href="#">
-    <i class="ri-secure-payment-line"></i><span>Account Payable/Receivable</span><i class="bi bi-chevron-down ms-auto"></i>
+    <i class="ri-secure-payment-line"></i><span>Account Payable/Receivable</span><i class="bi bi-arrow-bar-down ms-auto"></i>
   </a>
   <ul id="account-payable-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     <li>
       <a href="aprInvoiceBilling.php">
-        <i class="bi bi-circle"></i><span>Invoice & Billing Management</span>
+        <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
       </a>
     </li>
     <li>
       <a href="aprFinancialIntegration.php">
-        <i class="bi bi-circle"></i><span>Financial Integration</span>
+        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
       </a>
     </li>
   </ul>
@@ -1166,6 +1163,7 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+ 
 
 </body>
 
