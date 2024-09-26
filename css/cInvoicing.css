@@ -1,0 +1,141 @@
+/* Basic Styles */
+
+
+
+nav ul {
+    display: inline;
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+/* Invoice Form */
+.invoice-form {
+    background-color: white;
+    padding: 20px;
+    width: 30%;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.invoice-form h2 {
+    margin-bottom: 10px;
+}
+
+.invoice-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.invoice-form input, .invoice-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Billing Items Table */
+.billing-items {
+    background-color: white;
+    padding: 20px;
+    width: 30%;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.billing-items table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.billing-items table, th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.billing-items table input {
+    width: 100%;
+    padding: 5px;
+}
+
+#addItem {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Invoice Summary */
+.invoice-summary {
+    background-color: white;
+    padding: 20px;
+    width: 20%;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.invoice-summary h2 {
+    margin-bottom: 15px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#generateInvoice {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Features Section */
+.features-section {
+    margin: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 80%;
+    margin: auto;
+}
+
+.features-section h2 {
+    margin-bottom: 15px;
+}
+
+.features-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.features-section li {
+    margin-bottom: 10px;
+}
+
+.features-section strong {
+    color: #333;
+}
