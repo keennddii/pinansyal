@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       // Sign-In
       if (!empty($username) && !empty($password)) {
           // Check kung tama info sa databse
-          $query = "SELECT * FROM tbl_finance_login WHERE username='$username' AND password='$password'";
+          $query = "SELECT * FROM tbl_finance_login1 WHERE username='$username' AND password='$password'";
           $result = mysqli_query($con, $query);
 
           if (mysqli_num_rows($result) == 1) {
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+  <title>Login Page</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 

@@ -1,27 +1,6 @@
-<?php
-session_start();
-// Establish a connection to your database
-$mysqli = new mysqli("127.0.0.1: 3306", "username", "password", "travel_and_tours");
-var_dump($_SESSION);
-
-// Retrieve username from database
-$username = $_SESSION['username']; // Replace with the actual user ID
-$query = "SELECT * FROM tbl_finance_login WHERE username = '$username'";
-$result = $mysqli->query($query);
-
-var_dump($result);
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $username = $row["username"];
-    $position = $row["position"];
-} else {
-    $username = "Unknown";
-    $position = "Unknown"; 
-}
-
-var_dump($username);
-
+<?php 
+include('connection.php');
+include('connections.php');
 ?>
 
 <!DOCTYPE html>
@@ -81,13 +60,13 @@ var_dump($username);
       
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username; ?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
             <h6><?php echo $username; ?></h6>
-              <span><?php echo $position; ?></span>
+              <span><?php echo $position; ?> </span>
             </li>
             <li>
               <hr class="dropdown-divider">

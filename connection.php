@@ -2,11 +2,12 @@
 $dbhost = "127.0.0.1: 3306";
 $dbuser = "root";
 $dbpass = "";
-$dbname = "travel_and_tours";
+$dbname = "travel_and_tours_finance";
 
 
-if(!$con = mysqli_connect($dbhost,$dbuser,$dbpass,$dbname))
-{
-    die("failed to connect!");
+$con = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
+// Check if the connection was successful
+if (!$con) {
+    die("Failed to connect to the database: " . mysqli_connect_error());
 }
