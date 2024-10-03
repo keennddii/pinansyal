@@ -297,9 +297,14 @@ include('connections.php');
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Start Date</th>
+                    <th scope="col">Grosspay</th>
+                    <th scope="col">SSS</th>
+                    <th scope="col">PhilHealth</th>
+                    <th scope="col">Pag-Ibig</th>
+                    <th scope="col">SSS loan</th>
+                    <th scope="col">Home loan</th>
+                    <th scope="col">Total Deduction</th>
+                    <th scope="col">Net Pay</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -344,7 +349,7 @@ include('connections.php');
             </div>
           </div>
 
-      <div style="margin-top: 20px;">
+      <div style="text-align: right; margin-top: 20px;">
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
 

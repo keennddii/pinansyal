@@ -1,27 +1,6 @@
-<?php
-session_start();
-// Establish a connection to your database
-$mysqli = new mysqli("127.0.0.1: 3306", "username", "password", "travel_and_tours");
-var_dump($_SESSION);
-
-// Retrieve username from database
-$username = $_SESSION['username']; // Replace with the actual user ID
-$query = "SELECT * FROM tbl_finance_login WHERE username = '$username'";
-$result = $mysqli->query($query);
-
-var_dump($result);
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $username = $row["username"];
-    $position = $row["position"];
-} else {
-    $username = "Unknown";
-    $position = "Unknown"; 
-}
-
-var_dump($username);
-
+<?php 
+include('connection.php');
+include('connections.php');
 ?>
 
 <!DOCTYPE html>
