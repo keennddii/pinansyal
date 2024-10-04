@@ -26,4 +26,4 @@ if ($result->num_rows > 0) {
     $username = "Unknown";
     $position = "Unknown"; 
 }
-?>
+

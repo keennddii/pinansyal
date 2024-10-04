@@ -1,16 +1,13 @@
-function approveExpense(button) {
-    const row = button.parentNode.parentNode;
-    row.cells[4].innerText = 'Approved';
-    button.disabled = true;
-}
-
-function rejectExpense(button) {
-    const row = button.parentNode.parentNode;
-    row.cells[4].innerText = 'Rejected';
-    button.disabled = true;
-}
-
-function addExpense() {
-    alert("Redirecting to the add new expense form.");
-    // Here you can implement redirection to a form page or modal
-}
+// script.js
+document.querySelector('.flip-card__form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+    const isLogin = document.getElementById('toggle').checked;
+    
+    if (isLogin) {
+        alert('Logging in...');
+        // Perform login action (e.g., AJAX request)
+    } else {
+        alert('Signing up...');
+        // Perform signup action (e.g., AJAX request)
+    }
+});
