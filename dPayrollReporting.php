@@ -10,7 +10,7 @@ include('cnn/connections.php');
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Finance Home</title>
+  <title>Payroll Report | Finance</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -34,7 +34,7 @@ include('cnn/connections.php');
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-  <link href="customcss/cInvoicing.css" rel="stylesheet">
+  <link rel="stylesheet" href="customcss/savebutton.css">
 
 </head>
 
@@ -61,13 +61,13 @@ include('cnn/connections.php');
       
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username; ?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
             <h6><?php echo $username; ?></h6>
-              <span><?php echo $position; ?></span>
+              <span><?php echo $position; ?> </span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -278,94 +278,66 @@ include('cnn/connections.php');
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Invoicing Billing </h1>
+      <h1>Payroll Reporting</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-<!-- Main Content -->
-<div class="container">
-        <!-- Left Side: Invoice Form -->
-        <div class="invoice-form">
-            <h2>Invoice Creation</h2>
-            <form>
-                <label for="clientName">Client Name:</label>
-                <input type="text" id="clientName" name="clientName" required>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+   
+    <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Default Table</h5>
 
-                <label for="tourPackage">Tour Package:</label>
-                <select id="tourPackage" name="tourPackage">
-                    <option value="boracay">Boracay</option>
-                    <option value="palawan">Palawan</option>
-                    <option value="cebu">Cebu</option>
-                </select>
-
-                <label for="invoiceDate">Invoice Date:</label>
-                <input type="date" id="invoiceDate" name="invoiceDate">
-
-                <label for="dueDate">Due Date:</label>
-                <input type="date" id="dueDate" name="dueDate">
-            </form>
-        </div>
-
-        <!-- Middle Section: Billing Items Table -->
-        <div class="billing-items">
-            <h2>Billing Items</h2>
-            <table id="itemsTable">
+              <!-- Default Table -->
+              <table class="table">
                 <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                    </tr>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">EmployeeName</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">PayPeriodStart</th>
+                    <th scope="col">PayPeriodEnd</th>
+                    <th scope="col">GrossPay</th>
+                    <th scope="col">Deductions</th>
+                    <th scope="col">Net Pay</th>
+                    <th scope="col">PaymentDate</th>
+                  </tr>
                 </thead>
-                <tbody id="itemsBody">
-                    <tr>
-                        <td><input type="text" value="Tour Package"></td>
-                        <td><input type="number" value="1" id="quantity"></td>
-                        <td><input type="number" value="1000" id="price"></td>
-                        <td class="total">1000</td>
-                    </tr>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Brandon Jacob</td>
+                    <td>Designer</td>
+                    <td>28</td>
+                    <td>2016-05-25</td>
+                    <td>28</td>
+                    <td>28</td>
+                    <td>28</td>
+                    <td>28</td>
+                    <td>28</td>
+                  </tr>
                 </tbody>
-            </table>
-            <button id="addItem">Add Item</button>
-        </div>
+              </table>
+              <!-- End Default Table Example -->
+            </div>
+          </div>
 
-        <!-- Right Side: Invoice Summary -->
-        <div class="invoice-summary">
-            <h2>Summary</h2>
-            <div class="summary-item">
-                <span>Subtotal:</span>
-                <span id="subtotal">1000</span>
-            </div>
-            <div class="summary-item">
-                <span>Tax (10%):</span>
-                <span id="tax">100</span>
-            </div>
-            <div class="summary-item">
-                <span>Total:</span>
-                <span id="total">1100</span>
-            </div>
+  
 
-            <button id="generateInvoice">Generate Invoice</button>
-        </div>
-    </div>
 
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>XXXXXX</span></strong>. All Rights Reserved
+      &copy; :P <strong><span></span></strong>
     </div>
     <div class="credits">
-      BCP
+     
     </div>
   </footer><!-- End Footer -->
 

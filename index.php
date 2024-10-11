@@ -15,7 +15,7 @@ include('cnn/connections.php');
   <meta content="" name="keywords">
   
   <!-- Favicons -->
-  <link href="assets/img/jvd.jpg" rel="icon">
+  <link href="assets/img/jeybidi.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
@@ -127,7 +127,7 @@ include('cnn/connections.php');
       <a href="#">Show all notifications</a>
     </li>
   </ul>
-  </li><!-- CODE NUNG NOTIFICATION -->
+  </li><!-- LAST CODE NUNG NOTIFICATION -->
 
 
 <!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
@@ -217,23 +217,17 @@ include('cnn/connections.php');
   </a>
   <ul id="disbursement-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     <li>
-      <a href="dExpense.php">
-        <i class="bi bi-circle-fill"></i><span>Expense Management</span>
-      </a>
-    </li>
-    <li>
       <a href="dPayrollManagement.php">
         <i class="bi bi-circle-fill"></i><span>Payroll Management</span>
       </a>
     </li>
     <li>
-      <a href="dFinancialIntegration.php">
-        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
+      <a href="dPayrollReporting.php">
+        <i class="bi bi-circle-fill"></i><span>Payroll Reporting</span>
       </a>
-    </li>
+    </li>  
   </ul>
 </li><!-- End Disbursement Nav -->
-
 
 
 <li class="nav-item">
@@ -242,8 +236,8 @@ include('cnn/connections.php');
   </a>
   <ul id="budget-management-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
-      <a href="bPayrollReporting.php">
-        <i class="bi bi-circle-fill"></i><span>Payroll Reporting</span>
+      <a href="bExpense.php">
+        <i class="bi bi-circle-fill"></i><span>Expense Management</span>
       </a>
     </li>
     <li>
@@ -258,7 +252,7 @@ include('cnn/connections.php');
     </li>
     <li>
       
-      <a href="gCashFlow.php">
+      <a href="bCashFlow.php">
         <i class="bi bi-circle-fill"></i><span>Cash Flow Management</span>
       </a>
     </li>
@@ -272,18 +266,8 @@ include('cnn/connections.php');
   </a>
   <ul id="collection-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     <li>
-      <a href="cInvoicingBilling.php">
-        <i class="bi bi-circle-fill"></i><span>Invoicing & Billing</span>
-      </a>
-    </li>
-    <li>
       <a href="cBookingRevenue.php">
         <i class="bi bi-circle-fill"></i><span>Booking & Revenue Management</span>
-      </a>
-    </li>
-    <li>
-      <a href="cFinancialIntegration.php">
-        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
       </a>
     </li>
   </ul>
@@ -326,11 +310,6 @@ include('cnn/connections.php');
         <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
       </a>
     </li>
-    <li>
-      <a href="aprFinancialIntegration.php">
-        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
-      </a>
-    </li>
   </ul>
 </li><!-- End Account Payable/Receivable Nav -->
 
@@ -342,19 +321,89 @@ include('cnn/connections.php');
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>Homepage</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
+          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
       <div class="row">
+          <!-- Left side columns -->
+          <div class="col-lg-8">
+                    <div class="row">
 
-      
+                      <!-- Sales Card -->
+                      <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card sales-card">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">Sales <span>| Today</span></h5>
+
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>145</h6>
+                                <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div><!-- End Sales Card -->
+
+                      <!-- Revenue Card -->
+                      <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card revenue-card">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">Revenue <span>| This Month</span></h5>
+
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>$3,264</h6>
+                                <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div><!-- End Revenue Card --> 
 
       </div>
     </section>
@@ -364,11 +413,9 @@ include('cnn/connections.php');
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>XXXXXX</span></strong>. All Rights Reserved
+      &copy; :P
     </div>
-    <div class="credits">
-      BCP
-    </div>
+    
   </footer><!-- End Footer -->
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   

@@ -10,7 +10,7 @@ include('cnn/connections.php');
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Finance Home</title>
+  <title>Payroll Management | Finance</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -302,7 +302,7 @@ include('cnn/connections.php');
                     <th scope="col">PhilHealth</th>
                     <th scope="col">Pag-Ibig</th>
                     <th scope="col">SSS loan</th>
-                    <th scope="col">Home loan</th>
+                    <th scope="col">Pag-Ibig loan</th>
                     <th scope="col">Total Deduction</th>
                     <th scope="col">Net Pay</th>
                   </tr>
@@ -314,34 +314,11 @@ include('cnn/connections.php');
                     <td>Designer</td>
                     <td>28</td>
                     <td>2016-05-25</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td>2014-12-05</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td>2011-08-12</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td>2012-06-11</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>47</td>
-                    <td>2011-04-19</td>
+                    <td>28</td>
+                    <td>28</td>
+                    <td>28</td>
+                    <td>28</td>
+                    <td>28</td>
                   </tr>
                 </tbody>
               </table>
@@ -354,18 +331,16 @@ include('cnn/connections.php');
     <div class="svg-wrapper">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
+        viewBox="0 0 512 512"
         width="30"
-        height="30"
+        height="20"
         class="icon"
       >
-        <path
-          d="M22,15.04C22,17.23 20.24,19 18.07,19H5.93C3.76,19 2,17.23 2,15.04C2,13.07 3.43,11.44 5.31,11.14C5.28,11 5.27,10.86 5.27,10.71C5.27,9.33 6.38,8.2 7.76,8.2C8.37,8.2 8.94,8.43 9.37,8.8C10.14,7.05 11.13,5.44 13.91,5.44C17.28,5.44 18.87,8.06 18.87,10.83C18.87,10.94 18.87,11.06 18.86,11.17C20.65,11.54 22,13.13 22,15.04Z"
-        ></path>
+    <path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480l0-83.6c0-4 1.5-7.8 4.2-10.8L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></>
       </svg>
     </div>
   </div>
-  <span>Save</span>
+  <span>Send</span>
 </button>
 
 
