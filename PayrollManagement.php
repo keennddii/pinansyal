@@ -153,23 +153,12 @@ include('cnn/connections.php');
   </a>
   <ul id="disbursement-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     <li>
-      <a href="dExpense.php">
-        <i class="bi bi-circle-fill"></i><span>Expense Management</span>
-      </a>
-    </li>
-    <li>
-      <a href="dPayrollManagement.php">
+      <a href="PayrollManagement.php">
         <i class="bi bi-circle-fill"></i><span>Payroll Management</span>
       </a>
-    </li>
-    <li>
-      <a href="dFinancialIntegration.php">
-        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
-      </a>
-    </li>
+    </li>  
   </ul>
 </li><!-- End Disbursement Nav -->
-
 
 
 <li class="nav-item">
@@ -178,26 +167,21 @@ include('cnn/connections.php');
   </a>
   <ul id="budget-management-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
-      <a href="bPayrollReporting.php">
-        <i class="bi bi-circle-fill"></i><span>Payroll Reporting</span>
+      <a href="Expense.php">
+        <i class="bi bi-circle-fill"></i><span>Expense Management</span>
       </a>
     </li>
     <li>
-      <a href="bTaxManagement.php">
+      <a href="TaxManagement.php">
         <i class="bi bi-circle-fill"></i><span>Tax Management</span>
       </a>
     </li>
     <li>
-      <a href="bAuditCompliance.php">
-        <i class="bi bi-circle-fill"></i><span>Audit & Compliance</span>
-        </a>
-    </li>
-    <li>
-      
-      <a href="gCashFlow.php">
-        <i class="bi bi-circle-fill"></i><span>Cash Flow Management</span>
+      <a href="FinancialIntegration.php">
+        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
       </a>
     </li>
+    
   </ul>
 </li>
 <!-- End Budget Management Nav -->
@@ -207,19 +191,9 @@ include('cnn/connections.php');
     <i class="ri-draft-line"></i><span>Collection</span><i class="bi bi-arrow-bar-down ms-auto"></i>
   </a>
   <ul id="collection-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-    <li>
-      <a href="cInvoicingBilling.php">
-        <i class="bi bi-circle-fill"></i><span>Invoicing & Billing</span>
-      </a>
-    </li>
-    <li>
-      <a href="cBookingRevenue.php">
-        <i class="bi bi-circle-fill"></i><span>Booking & Revenue Management</span>
-      </a>
-    </li>
-    <li>
-      <a href="cFinancialIntegration.php">
-        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
+  <li>
+      <a href="InvoiceBilling.php">
+        <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
       </a>
     </li>
   </ul>
@@ -231,22 +205,27 @@ include('cnn/connections.php');
   </a>
   <ul id="general-ledger-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
-      <a href="gGeneralLedger.php">
+      <a href="GeneralLedger.php">
         <i class="bi bi-circle-fill"></i><span>General Ledger Management</span>
       </a>
     </li>
     <li>
-      <a href="gBookingRevenue.php">
-        <i class="bi bi-circle-fill"></i><span>Booking  & Revenue Management</span>
+      <a href="AuditCompliance.php">
+        <i class="bi bi-circle-fill"></i><span>Audit & Compliance</span>
+        </a>
+    </li>
+    <li>
+      <a href="CashFlow.php">
+        <i class="bi bi-circle-fill"></i><span>Cash Flow Management</span>
       </a>
     </li>
     <li>
-      <a href="gFinancialReportingAnalysis.php">
+      <a href="FinancialReportingAnalysis.php">
         <i class="bi bi-circle-fill"></i><span>Financial Reporting & Analysis</span>
       </a>
     </li>
     <li>
-      <a href="gFinancialAnalytics.php">
+      <a href="FinancialAnalytics.php">
         <i class="bi bi-circle-fill"></i><span>Financial Analytics</span>
       </a>
     </li>
@@ -257,14 +236,10 @@ include('cnn/connections.php');
     <i class="ri-secure-payment-line"></i><span>Account Payable/Receivable</span><i class="bi bi-arrow-bar-down ms-auto"></i>
   </a>
   <ul id="account-payable-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+    
     <li>
-      <a href="aprInvoiceBilling.php">
-        <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
-      </a>
-    </li>
-    <li>
-      <a href="aprFinancialIntegration.php">
-        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
+      <a href="BookingRevenue.php">
+        <i class="bi bi-circle-fill"></i><span>Booking  & Revenue Management</span>
       </a>
     </li>
   </ul>
@@ -275,77 +250,206 @@ include('cnn/connections.php');
 
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
 
+  
+  <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Payroll Management</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        </ol>
-      </nav>
+        <h1>Payroll Management</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+            </ol>
+            
+        </nav>
     </div><!-- End Page Title -->
 
-   
-    <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Default Table</h5>
+    <h2>Employees</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Position</th>
+            <th>Salary</th>
+            <th>Tax Bracket ID</th>
+            <th>Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Sample Row -->
+        <tr>
+            <td>1</td>
+            <td>Juan</td>
+            <td>Dela Cruz</td>
+            <td>juan@example.com</td>
+            <td>09123456789</td>
+            <td>Developer</td>
+            <td>50000.00</td>
+            <td>2</td>
+            <td>Yes</td>
+            <td>
+                <button class="btn btn-warning btn-sm">Edit</button>
+                <button class="btn btn-danger btn-sm">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-              <!-- Default Table -->
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Grosspay</th>
-                    <th scope="col">SSS</th>
-                    <th scope="col">PhilHealth</th>
-                    <th scope="col">Pag-Ibig</th>
-                    <th scope="col">SSS loan</th>
-                    <th scope="col">Pag-Ibig loan</th>
-                    <th scope="col">Total Deduction</th>
-                    <th scope="col">Net Pay</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td>2016-05-25</td>
-                    <td>28</td>
-                    <td>28</td>
-                    <td>28</td>
-                    <td>28</td>
-                    <td>28</td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End Default Table Example -->
-            </div>
-          </div>
+<h2>Payrolls</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Employee ID</th>
+            <th>Pay Period Start</th>
+            <th>Pay Period End</th>
+            <th>Gross Pay</th>
+            <th>Net Pay</th>
+            <th>Total Deductions</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Sample Row -->
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>2024-10-01</td>
+            <td>2024-10-15</td>
+            <td>5000.00</td>
+            <td>4500.00</td>
+            <td>500.00</td>
+            <td>Paid</td>
+            <td>
+                <button class="btn btn-warning btn-sm">Edit</button>
+                <button class="btn btn-danger btn-sm">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-  <button>
-  <div class="svg-wrapper-1">
-    <div class="svg-wrapper">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 512 512"
-        width="30"
-        height="20"
-        class="icon"
-      >
-    <path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480l0-83.6c0-4 1.5-7.8 4.2-10.8L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></>
-      </svg>
-    </div>
-  </div>
-  <span>Send</span>
-</button>
+<h2>Deductions</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Employee ID</th>
+            <th>Payroll ID</th>
+            <th>Deduction Type</th>
+            <th>Amount</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Sample Row -->
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>Tax</td>
+            <td>500.00</td>
+            <td>
+                <button class="btn btn-warning btn-sm">Edit</button>
+                <button class="btn btn-danger btn-sm">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Tax Rates</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tax Bracket</th>
+            <th>Rate</th>
+            <th>Income Min</th>
+            <th>Income Max</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Sample Row -->
+        <tr>
+            <td>1</td>
+            <td>Low</td>
+            <td>15.00</td>
+            <td>0.00</td>
+            <td>30000.00</td>
+            <td>
+                <button class="btn btn-warning btn-sm">Edit</button>
+                <button class="btn btn-danger btn-sm">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Payroll History</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Employee ID</th>
+            <th>Payroll ID</th>
+            <th>Payroll Date</th>
+            <th>Net Pay</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Sample Row -->
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>2024-10-15</td>
+            <td>4500.00</td>
+            <td>Completed</td>
+            <td>
+                <button class="btn btn-danger btn-sm">Void</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Bank Transactions</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Payroll ID</th>
+            <th>Transaction ID</th>
+            <th>Amount</th>
+            <th>Bank Account</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Sample Row -->
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>TX123456</td>
+            <td>4500.00</td>
+            <td>Account No: 123456789</td>
+            <td>Completed</td>
+            <td>
+                <button class="btn btn-danger btn-sm">Cancel</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+         
+</main><!-- End #main -->
 
 
-
-  </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -371,8 +475,10 @@ include('cnn/connections.php');
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script src="customjs/delete.js"></script>
+  <script src="customjs/send.js"></script>
  
 
-</body>
+</body
 
 </html>

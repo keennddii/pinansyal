@@ -217,13 +217,8 @@ include('cnn/connections.php');
   </a>
   <ul id="disbursement-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     <li>
-      <a href="dPayrollManagement.php">
+      <a href="PayrollManagement.php">
         <i class="bi bi-circle-fill"></i><span>Payroll Management</span>
-      </a>
-    </li>
-    <li>
-      <a href="dPayrollReporting.php">
-        <i class="bi bi-circle-fill"></i><span>Payroll Reporting</span>
       </a>
     </li>  
   </ul>
@@ -236,26 +231,21 @@ include('cnn/connections.php');
   </a>
   <ul id="budget-management-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
-      <a href="bExpense.php">
+      <a href="Expense.php">
         <i class="bi bi-circle-fill"></i><span>Expense Management</span>
       </a>
     </li>
     <li>
-      <a href="bTaxManagement.php">
+      <a href="TaxManagement.php">
         <i class="bi bi-circle-fill"></i><span>Tax Management</span>
       </a>
     </li>
     <li>
-      <a href="bAuditCompliance.php">
-        <i class="bi bi-circle-fill"></i><span>Audit & Compliance</span>
-        </a>
-    </li>
-    <li>
-      
-      <a href="bCashFlow.php">
-        <i class="bi bi-circle-fill"></i><span>Cash Flow Management</span>
+      <a href="FinancialIntegration.php">
+        <i class="bi bi-circle-fill"></i><span>Financial Integration</span>
       </a>
     </li>
+    
   </ul>
 </li>
 <!-- End Budget Management Nav -->
@@ -265,9 +255,9 @@ include('cnn/connections.php');
     <i class="ri-draft-line"></i><span>Collection</span><i class="bi bi-arrow-bar-down ms-auto"></i>
   </a>
   <ul id="collection-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-    <li>
-      <a href="cBookingRevenue.php">
-        <i class="bi bi-circle-fill"></i><span>Booking & Revenue Management</span>
+  <li>
+      <a href="InvoiceBilling.php">
+        <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
       </a>
     </li>
   </ul>
@@ -279,22 +269,27 @@ include('cnn/connections.php');
   </a>
   <ul id="general-ledger-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
-      <a href="gGeneralLedger.php">
+      <a href="GeneralLedger.php">
         <i class="bi bi-circle-fill"></i><span>General Ledger Management</span>
       </a>
     </li>
     <li>
-      <a href="gBookingRevenue.php">
-        <i class="bi bi-circle-fill"></i><span>Booking  & Revenue Management</span>
+      <a href="AuditCompliance.php">
+        <i class="bi bi-circle-fill"></i><span>Audit & Compliance</span>
+        </a>
+    </li>
+    <li>
+      <a href="CashFlow.php">
+        <i class="bi bi-circle-fill"></i><span>Cash Flow Management</span>
       </a>
     </li>
     <li>
-      <a href="gFinancialReportingAnalysis.php">
+      <a href="FinancialReportingAnalysis.php">
         <i class="bi bi-circle-fill"></i><span>Financial Reporting & Analysis</span>
       </a>
     </li>
     <li>
-      <a href="gFinancialAnalytics.php">
+      <a href="FinancialAnalytics.php">
         <i class="bi bi-circle-fill"></i><span>Financial Analytics</span>
       </a>
     </li>
@@ -305,9 +300,10 @@ include('cnn/connections.php');
     <i class="ri-secure-payment-line"></i><span>Account Payable/Receivable</span><i class="bi bi-arrow-bar-down ms-auto"></i>
   </a>
   <ul id="account-payable-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+    
     <li>
-      <a href="aprInvoiceBilling.php">
-        <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
+      <a href="BookingRevenue.php">
+        <i class="bi bi-circle-fill"></i><span>Booking  & Revenue Management</span>
       </a>
     </li>
   </ul>

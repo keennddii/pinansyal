@@ -4,234 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!--Font Awesome CDN-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Leaflet CSS and JS CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
     <title>Admission CRUD</title>
-    <link rel="stylesheet" href="prac.css">
 </head>
 <body>
-
-    <div class="container">
-
-        <header>
-
-            <div class="filterEntries">
-                <div class="entries">
-                    Show <select name="" id="table_size">
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select> entries
-                </div>
-
-                <div class="filter">
-                    <label for="search">Search:</label>
-                    <input type="search" name="" id="search" placeholder="Enter name/ST#/course">
-                </div>
-            </div>
-
-            <div class="addMemberBtn">
-            <button>Add New Student</button>
-            </div>
-
-        </header>
-
-
-        <table>
-
-            <thead>
-                <tr class="heading">
-                    <th>ID No.</th>
-                    <th>Picture</th>
-                    <th>Full Name</th>
-                    <th>Student No.</th>
-                    <th>Address</th>
-                    <th>Course</th>
-                    <th>Year Level</th>
-                    <th>Birth Date</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-
-            <tbody class="userInfo">
-                <!-- <tr><td class="empty" colspan="11" align="center">No data available in table</td></tr> -->
-                <!-- <tr>
-                    <td>1</td>
-                    <td><img src="user.png" alt="" width="40" height="40"></td>
-                    <td>John Doe</td>
-                    <td>21012937</td>
-                    <td>New York</td>
-                    <td>BSIT</td>
-                    <td>4th Year</td>
-                    <td>03-08-2010</td>
-                    <td>jhondoe.net111@gmail.com</td>
-                    <td>924157812</td>
-                    <td>
-                        <button><i class="fa-regular fa-eye"></i></button>
-                        <button><i class="fa-regular fa-pen-to-square"></i></button>
-                        <button><i class="fa-regular fa-trash-can"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="user.png" alt="" width="40" height="40"></td>
-                    <td>John Doe</td>
-                    <td>21012937</td>
-                    <td>New York</td>
-                    <td>BSIT</td>
-                    <td>4th Year</td>
-                    <td>03-08-2010</td>
-                    <td>jhondoe.net111@gmail.com</td>
-                    <td>924157812</td>
-                    <td>
-                        <button><i class="fa-regular fa-eye"></i></button>
-                        <button><i class="fa-regular fa-pen-to-square"></i></button>
-                        <button><i class="fa-regular fa-trash-can"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="user.png" alt="" width="40" height="40"></td>
-                    <td>John Doe</td>
-                    <td>21012937</td>
-                    <td>New York</td>
-                    <td>BSIT</td>
-                    <td>4th Year</td>
-                    <td>03-08-2010</td>
-                    <td>jhondoe.net111@gmail.com</td>
-                    <td>924157812</td>
-                    <td>
-                        <button><i class="fa-regular fa-eye"></i></button>
-                        <button><i class="fa-regular fa-pen-to-square"></i></button>
-                        <button><i class="fa-regular fa-trash-can"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="user.png" alt="" width="40" height="40"></td>
-                    <td>John Doe</td>
-                    <td>21012937</td>
-                    <td>New York</td>
-                    <td>BSIT</td>
-                    <td>4th Year</td>
-                    <td>03-08-2010</td>
-                    <td>jhondoe.net111@gmail.com</td>
-                    <td>924157812</td>
-                    <td>
-                        <button><i class="fa-regular fa-eye"></i></button>
-                        <button><i class="fa-regular fa-pen-to-square"></i></button>
-                        <button><i class="fa-regular fa-trash-can"></i></button>
-                    </td>
-                </tr> -->
-            </tbody>
-
-        </table>
-
-
-        <footer>
-            <span class="showEntries">Showing 1 to 10 of 50 entries</span>
-            <div class="pagination">
-                <!-- <button>Prev</button>
-                <button class="active">1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>4</button>
-                <button>5</button>
-                <button>Next</button> -->
-            </div>
-        </footer>
+    <div style="margin-bottom: 10px;">
+        <input type="text" id="search" placeholder="Search location..." style="width: 100px; padding: 5px;">
+        <button onclick="searchLocation()">Search</button>
     </div>
 
+    <div id="map" style="height: 500px;"></div>
 
-    <!--Popup Form-->
+    <script>
+        // Initialize the map and set its view to Manila coordinates
+        var map = L.map('map').setView([14.7353, 120.9962], 13);
 
-    <div class="dark_bg">
+        // Set up the tile layer from OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
-        <div class="popup">
-             <header>
-                <h2 class="modalTitle">Fill the Form</h2>
-                <button class="closeBtn">&times;</button>
-             </header>
+        // Add a draggable marker to the map
+        var marker = L.marker([14.7353, 120.9962], { draggable: true }).addTo(map);
 
-             <div class="body">
-                <form action="#" id="myForm">
-                    <div class="imgholder">
-                        <label for="uploadimg" class="upload">
-                            <input type="file" name="" id="uploadimg" class="picture">
-                            <i class="fa-solid fa-plus"></i>
-                        </label>
-                        <img src="user.png" alt="" width="150" height="150" class="img">
-                    </div> 
+        // Function to get location name using reverse geocoding
+        function getLocationName(lat, lng) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.display_name) {
+                        marker.bindPopup(`<b>Name Location:</b><br>${data.display_name}`).openPopup();
+                    } else {
+                        marker.bindPopup(`<b>Name Location:</b><br>Unknown Location`).openPopup();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching location name:', error);
+                });
+        }
 
-                    <div class="inputFieldContainer">
+        // Initial location name display
+        getLocationName(marker.getLatLng().lat, marker.getLatLng().lng);
 
-                        <div class="nameField">
-                            <div class="form_control">
-                                <label for="fName">First Name:</label>
-                                <input type="text" name="" id="fName" required>
-                            </div>
+        // Event listener for when the marker is dragged
+        marker.on('dragend', function(e) {
+            var position = marker.getLatLng();
+            getLocationName(position.lat, position.lng);
+        });
 
-                            <div class="form_control">
-                                <label for="lName">Last Name:</label>
-                                <input type="text" name="" id="lName" required>
-                            </div>
-                        </div>
-
-                        <div class="studentNumAddressField">
-                            <div class="form_control">
-                                <label for="studentNum">Student No.:</label>
-                                <input type="number" name="" id="studentNum" required>
-                            </div>
-
-                            <div class="form_control">
-                                <label for="address">Address:</label>
-                                <input type="text" name="" id="address" required>
-                            </div>
-                        </div>
-
-                        <div class="courseYearLevel">
-                            <div class="form_control">
-                                <label for="course">Course:</label>
-                                <input type="text" name="" id="course" required>
-                            </div>
-
-                            <div class="form_control">
-                                <label for="yearlevel">Year Level:</label>
-                                <input type="text" name="" id="yearlevel" required>
-                            </div>
-                        </div>
-
-                        <div class="form_control">
-                            <label for="bDate">Birth Date:</label>
-                            <input type="date" name="" id="bDate" required>
-                        </div>
-
-                        <div class="form_control">
-                            <label for="email">Email:</label>
-                            <input type="email" name="" id="email" required>
-                        </div>
-
-                        <div class="form_control">
-                            <label for="phone">Phone:</label>
-                            <input type="number" name="" id="phone" required>
-                        </div>
-                    </div>
-                </form>
-             </div>
-
-             <footer class="popupFooter">
-                <button form="myForm" class="submitBtn">Submit</button>
-             </footer>
-        </div>
-
-    </div>
-
-
-    <script src="prac.js"></script>
+        // Function to search for a location using the Nominatim API
+        function searchLocation() {
+            var query = document.getElementById('search').value;
+            if (query) {
+                fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length > 0) {
+                            var lat = data[0].lat;
+                            var lon = data[0].lon;
+                            // Move the marker to the searched location
+                            marker.setLatLng([lat, lon]);
+                            // Set the map view to the new location
+                            map.setView([lat, lon], 13);
+                            // Get the location name for the searched location
+                            getLocationName(lat, lon);
+                        } else {
+                            alert('Location not found.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching search results:', error);
+                    });
+            } else {
+                alert('Please enter a location to search.');
+            }
+        }
+    </script>
 </body>
 </html>

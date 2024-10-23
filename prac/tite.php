@@ -1,253 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css">
-    <link rel="stylesheet" href="tite.css">
-    <title>BCP-Admission</title>
+    <meta name="viewport" content="width=device-height, height=device-height, initial-scale=1.0">
+    <title>Growing Flower Animation</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0f7fa; /* Light blue background */
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .pot {
+            position: absolute;
+            bottom: 250px; /* Position the pot above the bottom */
+            left: 50%; /* Center the pot */
+            transform: translateX(-50%); /* Center alignment */
+            width: 150px; /* Width of the pot */
+            height: 100px; /* Height of the pot */
+            background-color: #7B3F00; /* Pot color */
+            border-radius: 20px; /* Rounded pot edges */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+            border: 3px solid #C19A6B; /* Border for the pot */
+        }
+
+        .pot:before {
+            content: '';
+            position: absolute;
+            top: -10px; /* Position above the pot */
+            left: 0;
+            width: 100%;
+            height: 10px; /* Height of the rim */
+            background-color: #C19A6B; /* Rim color */
+            border-radius: 15px; /* Rounded edges for the rim */
+        }
+
+        .message {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 100px;
+            color: #ff4081; /* Pink color for the message */
+            display: none; /* Hidden by default */
+            text-align: center; /* Center the message */
+            font-family: Arial, sans-serif;
+            opacity: 0; /* Start invisible for transition */
+            transition: opacity 1s ease; /* Transition for opacity */
+        }
+
+        /* Fireworks styles */
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            animation: explode 1s forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Cat faces */
+        .cat {
+            position: absolute;
+            width: 50px; /* Width of cat faces */
+            height: 50px; /* Height of cat faces */
+            transition: opacity 1s ; /* Transition effect for cat images */
+        }
+    </style>
 </head>
+
 <body>
-    <nav>
-        <div class="nav-logo">
-            <a href="BCP-Admission.php">
-                <img src="img/logoooo.png">
-            </a>
-        </div>
-        <ul class="nav-links">
-            <li id="#"class="link"><a href="BCP-Admission.php">Home</a></li>
-            <li id="link1" class="link"><a href="#">Applications</a></li>
-            <li id="link3" class="link"><a href="#">About Us</a></li>
-        </ul>
-    </nav>
-
-    <section class="container">
-        <h2 class="header">Application Process</h2>
-        <div class="features">
-        <div class="card">
-                <h4>BSIT</h4>
-                <p>
-                Bachelor of Science and Information Tecnology is a program trains students in software development, systems management, and IT solutions.                </p> <br>
-                <a href="submittion.php">Proceed <i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BLIS</h4>
-                <p>
-                Bachelor in Library Information Science focuses on developing skills in managing information resources, libraries, and modern information technologies.  
-                </p> <br>
-                <a href="healthcarecard2.php">Proceed <i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSCPE</h4>
-                <p>
-                The Bachelor of Science in Computer Engineering (BSCPE) is a degree program that combines principles of computer science and electrical engineering to design, develop, and improve computer hardware and software systems.
-                </p>
-                <a href="healthcarecard3.php">proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSP</h4>
-                <p>A Bachelor of Science in Psychology focuses on the scientific study of behavior, mental processes, and the underlying biological, cognitive, and social factors.
-                </p> <br>
-                <a href="healthcarecard4.php">proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BEED</h4>
-                <p>
-                A Bachelor of Elementary Education (BEED) prepares students to teach at the elementary level, focusing on child development, educational psychology, and teaching methodologies.
-                </p><br>
-                <a href="healthcarecard5.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BTLED</h4>
-                <p>
-                Official process of providing a document confirming an individual's death.
-            </p><br>
-            <br>
-                <a href="healthcarecard6.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSED Filipino</h4>
-                <p>
-                The Bachelor of Secondary Education Major in Filipino (BSED Filipino) prepares students to teach Filipino language and literature at the secondary level.
-                </p><br>
-                <a href="healthcarecard7.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSED English</h4>
-                <p>The BSED English program prepares students to become effective English teachers for secondary education, focusing on language and literature.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSED Values</h4>
-                <p>The BSED Values program trains students to teach values education in secondary schools, promoting moral and ethical development</p>
-                <a href="healthcarecard8.php">Proceede<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSED Social Studies</h4>
-                <p>
-                The BSED Social Studies program prepares students to teach social studies subjects in secondary schools, focusing on history, geography, economics, and civics to foster critical thinking and informed citizenship.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSED Science</h4>
-                <p>
-                The Bachelor of Secondary Education in Science (BSED Science) trains future teachers to educate secondary students in various science subjects, emphasizing effective teaching methods.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSED Math</h4>
-                <p>The Bachelor of Secondary Education in Mathematics (BSED Math) prepares future educators to teach mathematics to secondary students, focusing on pedagogical skills and effective instructional techniques.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BPED</h4>
-                <p>The Bachelor of Physical Education (BPED) program trains students in physical education and sports science, equipping them with the knowledge and skills to promote physical fitness, health, and wellness in educational settings.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSCRIM</h4>
-                <p>The Bachelor of Science in Criminology (BSCRIM) focuses on the study of crime, criminal behavior, and the justice system, preparing students for careers in law enforcement, criminal justice, and security management.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSAIS</h4>
-                <p>The Bachelor of Science in Accounting Information Systems (BSAIS) integrates accounting principles with information technology, preparing students to manage financial data and utilize accounting software effectively.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSENTREP</h4>
-                <p>The Bachelor of Science in Entrepreneurship (BSENTREP) focuses on developing skills in business planning, management, and innovation, preparing students to start and run their own ventures successfully.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSBA MM</h4>
-                <p>The Bachelor of Science in Business Administration Major in Marketing Management (BSBA MM) equips students with essential skills in marketing strategies, consumer behavior, and brand management, preparing them for careers in various marketing roles.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSBA HRM</h4>
-                <p>The Bachelor of Science in Business Administration Major in Human Resource Management (BSBA HRM) equips students with skills in recruitment, employee relations, and organizational behavior for careers in human resources.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSOA</h4>
-                <p>The Bachelor of Science in Office Administration (BSOA) prepares students for careers in office management and administration by developing skills in office procedures, communication, and technology management.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-            
-            <div class="card">
-                <h4>BSTM</h4>
-                <p>The Bachelor of Science in Tourism Management (BSTM) equips students with the knowledge and skills needed to excel in the tourism and hospitality industry, focusing on tourism development, marketing, and sustainable practices.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSHM</h4>
-                <p>The Bachelor of Science in Hospitality Management (BSHM) prepares students for careers in the hospitality industry by providing essential skills in management, service, and operations in areas such as hotels, restaurants, and event planning.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>CPE</h4>
-                <p>
-                The Certificate of Professional Education (CPE) provides individuals with specialized training and skills necessary for teaching and education-related careers, enhancing their professional qualifications and effectiveness in educational settings.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-
-            <div class="card">
-                <h4>BSBA FM</h4>
-                <p>The Bachelor of Science in Business Administration majoring in Financial Management (BSBA-FM) prepares students for careers in finance by teaching key concepts in financial analysis, investment, and planning.</p>
-                <a href="healthcarecard8.php">Proceed<i class="ri-arrow-right-line"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <footer class="container">
-        <span class="blur"></span>
-        <span class="blur"></span>
-        <div class="column">
-            <div class="logo">
-                <img src="img/health_img-removebg-preview (1).png">
-            </div>
-            <p>
-            QUEZON CITY HEALTH DEPARTMENT
-            </p>
-            <div class="socials">
-                <a href="#"><i class="ri-facebook-line"></i></a>
-                <a href="#"><i class="ri-instagram-line"></i></a>
-                <a href="#"><i class="ri-twitter-line"></i></a>
-            </div>
-        </div>
-        <div class="column">
-            <h4>About Us</h4>
-            <a href="#">Blogs</a>
-            <a href="#">Channels</a>
-            <a href="#">Sponsors</a>
-        </div>
-        <div class="column">
-            <h4>Contact</h4>
-            <a href="#">Contact Us</a>
-            <a href="#">Privicy Policy</a>
-            <a href="#">Terms & Conditions</a>
-        </div>
-        <div class="column">
-            <h4>Contact</h4>
-            <a href="#">Contact Us</a>
-            <a href="#">Privicy Policy</a>
-            <a href="#">Terms & Conditions</a>
-        </div>
-    </footer>
-
-    <div class="copyright">
-       <!-- lagyan -->
-    </div>
-
+    <div class="pot"></div> <!-- Pot element -->
+    <canvas id="flowerCanvas" width="400" height="600"></canvas>
+    <div class="message" id="message">I Love You Chelsea hihihihihihihi</div>
 
     <script>
-        function scrollToElement(elementSelector, instance = 0) {
-    // Select all elements that match the given selector
-    const elements = document.querySelectorAll(elementSelector);
-    // Check if there are elements matching the selector and if the requested instance exists
-    if (elements.length > instance) {
-        // Scroll to the specified instance of the element
-        elements[instance].scrollIntoView({ behavior: 'smooth' });
-    }
-}
+        const canvas = document.getElementById('flowerCanvas');
+        const ctx = canvas.getContext('2d');
 
-const link1 = document.getElementById("link1");
-const link2 = document.getElementById("link2");
-const link3 = document.getElementById("link3");
+        // Flower parameters
+        let flowerCount = 1; // Number of flowers
+        let petals = new Array(flowerCount).fill(0); // Petal lengths
+        let stems = new Array(flowerCount).fill(0); // Stem lengths
+        let flowerBlooming = new Array(flowerCount).fill(false); // Flags for blooming
+        let yellowVisible = new Array(flowerCount).fill(false); // Flags for yellow visibility
+        let flowerFullyBloomed = false; // Flag for flower fully bloomed
 
-link1.addEventListener('click', () => {
-    scrollToElement('.header');
-});
+        function drawFlower(index) {
+            // Draw the stem
+            ctx.beginPath();
+            ctx.moveTo(200, 460); // Starting point of the stem
+            ctx.lineTo(200, 460 - stems[index]); // End point of the stem
+            ctx.lineWidth = 10; // Stem thickness
+            ctx.strokeStyle = 'brown'; // Stem color
+            ctx.stroke();
 
-link2.addEventListener('click', () => {
-    // Scroll to the second element with "header" class
-    scrollToElement('.header', 1);
-});
+            // Draw the petals
+            if (flowerBlooming[index]) {
+                ctx.fillStyle = 'pink';
+                const petalCount = 8;
+                for (let i = 0; i < petalCount; i++) {
+                    ctx.beginPath();
+                    const angle = (i / petalCount) * (Math.PI * 2);
+                    ctx.ellipse(200, 400 - stems[index] - 20, petals[index] / 4, petals[index] / 2, angle, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
 
-link3.addEventListener('click', () => {
-    scrollToElement('.column');
-});
+            // Draw the center of the flower (yellow) after petals have bloomed
+            if (yellowVisible[index]) {
+                ctx.beginPath();
+                ctx.arc(200, 400 - stems[index] - 20, 20, 0, Math.PI * 2); // Center radius
+                ctx.fillStyle = 'yellow';
+                ctx.fill();
+            }
+        }
+
+        function growFlower() {
+            for (let i = 0; i < flowerCount; i++) {
+                // First grow the stem
+                if (stems[i] < 150) { // Limit the stem growth
+                    stems[i] += 2.5; // Increase the length of the stem
+                } else if (!flowerBlooming[i]) { // Start blooming the petals after stem growth
+                    flowerBlooming[i] = true; // Set blooming flag
+                }
+
+                // Bloom the flower petals
+                if (flowerBlooming[i]) {
+                    petals[i] += 1; // Increase the length of the petals
+                    if (petals[i] > 150) { // Stop growing petals after a certain length
+                        petals[i] = 150; // Limit petal length
+                        yellowVisible[i] = true; // Show the yellow center after petals bloom
+                        flowerFullyBloomed = true; // Set flag for flower fully bloomed
+                    }
+                }
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            for (let i = 0; i < flowerCount; i++) {
+                drawFlower(i); // Draw each flower
+            }
+
+            // Display message and fireworks after blooming
+            if (flowerFullyBloomed) {
+                const messageElement = document.getElementById('message');
+                messageElement.style.display = 'block';
+                messageElement.style.opacity = 1; // Fade in message
+                showFireworks();
+                showCats(); // Show cat faces
+            }
+
+            requestAnimationFrame(growFlower); // Repeat the function
+        }
+
+        function showFireworks() {
+            for (let i = 0; i < 30; i++) {
+                createFirework();
+            }
+        }
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            document.body.appendChild(firework);
+
+            // Randomize the position of the firework
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+
+            firework.style.left = `${x}px`;
+            firework.style.top = `${y}px`;
+
+            // Randomize the color for a rainbow effect
+            const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            firework.style.backgroundColor = randomColor;
+
+            // Remove firework after animation ends
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
+        }
+
+        function showCats() {
+            const catFaces = [
+                'https://i.pinimg.com/736x/3b/37/cd/3b37cd80d4f092ed392b1453b64cf0d0.jpg', // Cat face 1
+                'https://i.redd.it/funniest-cat-pictures-you-have-v0-cvk0vuc0hj5a1.jpg?width=3000&format=pjpg&auto=webp&s=73c395c63462f04c52e1550559dfb9809dd2a599', // Cat face 2
+                'https://preview.redd.it/funniest-cat-pictures-you-have-v0-zkytwe5kqm5a1.jpeg?width=3024&format=pjpg&auto=webp&s=8d295f9d00b028763adde7d84b7666474fc35c21', // Cat face 3
+            ];
+
+            for (let i = 0; i < 1; i++) { // Show 5 cat faces
+                const cat = document.createElement('img');
+                cat.src = catFaces[Math.floor(Math.random() * catFaces.length)];
+                cat.className = 'cat';
+                document.body.appendChild(cat);
+
+                // Randomize position
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * (window.innerHeight - 100); // Prevent overflow
+                cat.style.left = `${x}px`;
+                cat.style.top = `${y}px`;
+
+                // Add a random transformation for effect
+                cat.style.transform = `scale(${Math.random() + 0.3})`;
+
+                // Remove cat face after a short delay
+                setTimeout(() => {
+                    cat.remove();
+                }, 3000);
+            }
+        }
+
+        growFlower(); // Start the animation
     </script>
 </body>
 

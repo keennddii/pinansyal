@@ -1,0 +1,220 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: #f1f3f6;
+    color: #444;
+    line-height: 1.6;
+    font-size: 16px;
+    padding: 20px;
+}
+
+/* Container Styling */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #00796b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Search Section */
+.search-audit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.search-audit form {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-audit input {
+    width: 80%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    color: #555;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.search-audit input:focus {
+    border-color: #00796b;
+    outline: none;
+}
+
+.search-audit button {
+    width: 18%;
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #00796b;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-audit button:hover {
+    background-color: #004d40;
+}
+
+/* Table Styling */
+.audit-table {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.audit-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.audit-table th,
+.audit-table td {
+    padding: 15px;
+    text-align: left;
+    font-size: 1rem;
+    color: #333;
+}
+
+.audit-table th {
+    background-color: #00796b;
+    color: white;
+    font-weight: 600;
+}
+
+.audit-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.audit-table tbody tr:hover {
+    background-color: #f1f8f6;
+}
+
+.audit-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.audit-table tbody td {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* Hover effects on Action buttons */
+.audit-table tbody .view-btn,
+.audit-table tbody .delete-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.audit-table tbody .view-btn {
+    background-color: #2196f3;
+    color: white;
+}
+
+.audit-table tbody .view-btn:hover {
+    background-color: #1976d2;
+}
+
+.audit-table tbody .delete-btn {
+    background-color: #f44336;
+    color: white;
+    margin-left: 10px;
+}
+
+.audit-table tbody .delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .search-audit {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-audit input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .search-audit button {
+        width: 100%;
+    }
+
+    .audit-table th,
+    .audit-table td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .search-audit input,
+    .search-audit button {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+
+    .audit-table th,
+    .audit-table td {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+
+    .audit-table tbody .view-btn,
+    .audit-table tbody .delete-btn {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+}
