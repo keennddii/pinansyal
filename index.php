@@ -1,6 +1,6 @@
 <?php 
-include('cnn/connection.php');
 include('cnn/connections.php');
+include('cnn/user.php');
 ?>
 
 <!DOCTYPE html>
@@ -42,13 +42,7 @@ include('cnn/connections.php');
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
-  <label class="switch">
-        <input type="checkbox" id="toggle" onclick="myFunction()">
-        <span class="slider round">
-            <i class="bi bi-moon-stars-fill" id="sun-icon"></i>
-            <i class="bi bi-sun-fill" id="moon-icon"></i>
-        </span>
-      </label>
+  
     <div class="d-flex align-items-center justify-content-between">
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>

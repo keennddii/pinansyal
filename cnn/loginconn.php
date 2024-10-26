@@ -1,28 +1,34 @@
-<?php 
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-  
-  
-    if (isset($_POST['sign-in'])) {
-        // Sign-In
-        if (!empty($username) && !empty($password)) {
-            // Check kung tama info sa databse
-            $query = "SELECT * FROM tbl_finance_login1 WHERE username='$username' AND password='$password'";
-            $result = mysqli_query($con, $query);
-  
-            if (mysqli_num_rows($result) == 1) {
-                // Successful sign-in
+<?php
+session_start();
+include("cnn/connections.php");
+
+// Initialize error message
+$_SESSION['error_message'] = "";
+
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['sign-in'])) {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    if (!empty($username) && !empty($password)) {
+        $stmt = $con->prepare("SELECT * FROM tbl_pinansyal_acc WHERE username = ? LIMIT 1");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            
+            // para sa password kung tama
+            if ($password === $row['password']) {
                 $_SESSION['username'] = $username;
                 header("Location: index.php");
-                die;
+                exit;
             } else {
-                echo '<div class="error-message">Invalid username or password. Please try again.</div>';
+                $_SESSION['error_message'] = 'Invalid password. Please try again.';
             }
-        } 
-        else {
-            echo '<div class="error-message">Please enter a valid username and password.</div>';
+        } else {
+            $_SESSION['error_message'] = 'Invalid username. Please try again.';
         }
-    } 
-  }
-  
+    }
+}
+?>

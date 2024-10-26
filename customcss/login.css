@@ -1,0 +1,50 @@
+body {
+    background-image: url('customimage/W.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.logo img {
+    max-height: 50px;
+    margin-right: 6px;
+  }
+  
+  .card {
+    width: 100%;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 1); /* Shadow for depth */
+}
+
+.card-title {
+  padding: 20px 0 px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+}
+
+.card-body {
+  padding: 0 20px 20px 20px;
+}
+
+.card-title, .card p, .form-label, .btn {
+  color: #000000; /* Ensure titles, paragraphs, labels, and buttons are visible */
+}
+
+.form-control {
+  color: #000; /* Set input text color to black */
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque background for inputs */
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+.error-message {
+  background-color: rgba(105, 17, 17, 0.8); /* Red background */
+  color: white; /* White text */
+  padding: 2px;
+  border-radius: 10px;
+  margin-top: 10px; /* Space above the error message */
+  text-align: center; /* Center the text */
+}

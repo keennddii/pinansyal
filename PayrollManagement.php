@@ -1,6 +1,6 @@
 <?php 
-include('cnn/connection.php');
 include('cnn/connections.php');
+include('cnn/user.php');
 ?>
 
 <!DOCTYPE html>
