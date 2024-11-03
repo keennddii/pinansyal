@@ -1,6 +1,5 @@
 <?php 
-include('cnn/connections.php');
-include('cnn/user.php');
+include('customassets/cnn/user.php');
 ?>
 
 <!DOCTYPE html>
@@ -35,92 +34,151 @@ include('cnn/user.php');
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <link rel="stylesheet" href="customcss/savebutton.css">
+  <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
 
 </head>
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
-  <label class="switch">
-        <input type="checkbox" id="toggle" onclick="myFunction()">
-        <span class="slider round">
-            <i class="bi bi-moon-stars-fill" id="sun-icon"></i>
-            <i class="bi bi-sun-fill" id="moon-icon"></i>
-        </span>
-      </label>
-    <div class="d-flex align-items-center justify-content-between">
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div>
-    <!-- End Logo -->
+ <!-- ======= Header ======= -->
+ <header id="header" class="header fixed-top d-flex align-items-center">
+  
+  <div class="d-flex align-items-center justify-content-between">
+    <i class="bi bi-list toggle-sidebar-btn"></i>
+  </div>
+  <!-- End Logo -->
+  
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+
+  <!--  DITO MAGSSTART ANG NOTIFICATION -->
+<li class="nav-item dropdown">
+<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+  <i class="bi bi-bell"></i>
+  <span class="badge bg-primary badge-number">4</span> 
+</a>
+
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+  <li class="dropdown-header">
+    You have 4 new notifications
+    <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View All</span></a>
+  </li>
+  <li><hr class="dropdown-divider"></li>
+
+  <!-- Example notification 1 -->
+  <li class="notification-item">
+    <a class="dropdown-item d-flex align-items-center" href="notification-link-1.html">
+      <i class="bi bi-exclamation-circle text-warning"></i>
+      <div>
+        <h4>New Alert</h4>
+        <p>This is a new alert notification</p>
+        <p>5 minutes ago</p>
+      </div>
+    </a>
+  </li>
+  <li><hr class="dropdown-divider"></li>
+
+  <!-- Example notification 2 -->
+  <li class="notification-item">
+    <a class="dropdown-item d-flex align-items-center" href="notification-link-2.html">
+      <i class="bi bi-envelope text-info"></i>
+      <div>
+        <h4>New Message</h4>
+        <p>You have a new message from John Doe</p>
+        <p>10 minutes ago</p>
+      </div>
+    </a>
+  </li>
+  <li><hr class="dropdown-divider"></li>
+
+  <!-- Example notification 3 -->
+  <li class="notification-item">
+    <a class="dropdown-item d-flex align-items-center" href="notification-link-3.html">
+      <i class="bi bi-check-circle text-success"></i>
+      <div>
+        <h4>Task Completed</h4>
+        <p>Your task "Project ABC" is completed</p>
+        <p>30 minutes ago</p>
+      </div>
+    </a>
+  </li>
+  <li><hr class="dropdown-divider"></li>
+
+  <!-- Example notification 4 -->
+  <li class="notification-item">
+    <a class="dropdown-item d-flex align-items-center" href="notification-link-4.html">
+      <i class="bi bi-info-circle text-primary"></i>
+      <div>
+        <h4>System Update</h4>
+        <p>A new system update is available</p>
+        <p>1 hour ago</p>
+      </div>
+    </a>
+  </li>
+  <li><hr class="dropdown-divider"></li>
+
+  <li class="dropdown-footer">
+    <a href="#">Show all notifications</a>
+  </li>
+</ul>
+</li><!-- LAST CODE NUNG NOTIFICATION -->
+
+
+<!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
+      <li class="nav-item dropdown pe-3">
     
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
+      <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+          <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+          <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
+        </a><!-- End Profile Iamge Icon -->
 
-        <li class="nav-item dropdown pe-3">
-      
-        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
-          </a><!-- End Profile Iamge Icon -->
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+          <li class="dropdown-header">
+          <h6><?php echo $username; ?></h6>
+            <span><?php echo $position; ?> </span>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-            <h6><?php echo $username; ?></h6>
-              <span><?php echo $position; ?> </span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <i class="bi bi-person"></i>
+              <span>My Profile</span>
+            </a>
+          </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+          <li>
+  <a class="dropdown-item d-flex align-items-center" href="#" onclick="openLogoutModal()">
+    <i class="bi bi-box-arrow-right"></i>
+    <span>Log Out</span>
+  </a>
+</li>
+</ul>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-      
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:if(confirm('Are you sure you want to log out?')){window.location.href='./signout.php'}">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
+<!-- Custom Logout Modal -->
+<div id="logoutModal" class="custom-modal" style="display: none;">
+<div class="custom-modal-content">
+  <h2>Confirm Logout</h2>
+  <p>Are you sure you want to log out?</p>
+  <div class="modal-buttons">
+    <button onclick="closeLogoutModal()" class="btn-no">No</button>
+    <a href="./signout.php" class="btn-yes">Yes</a>
+  </div>
+</div>
+</div>
 
-            </li>
         
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
+</li><!-- LAST LINE NUNG PROFILE  -->
 
-      </ul>
-    </nav><!-- End Icons Navigation -->
+    </ul>
+  </nav>
 
-  </header><!-- End Header -->
+</header>
 
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
@@ -192,7 +250,7 @@ include('cnn/user.php');
   </a>
   <ul id="collection-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
-      <a href="InvoiceBilling.php">
+      <a href="InvoicingBilling.php">
         <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
       </a>
     </li>
@@ -263,48 +321,14 @@ include('cnn/user.php');
         </nav>
     </div><!-- End Page Title -->
 
-    <h2>Employees</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Position</th>
-            <th>Salary</th>
-            <th>Tax Bracket ID</th>
-            <th>Active</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Sample Row -->
-        <tr>
-            <td>1</td>
-            <td>Juan</td>
-            <td>Dela Cruz</td>
-            <td>juan@example.com</td>
-            <td>09123456789</td>
-            <td>Developer</td>
-            <td>50000.00</td>
-            <td>2</td>
-            <td>Yes</td>
-            <td>
-                <button class="btn btn-warning btn-sm">Edit</button>
-                <button class="btn btn-danger btn-sm">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+  
 
 <h2>Payrolls</h2>
 <table class="table table-bordered">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Employee ID</th>
+            <th>Employee Name</th>
             <th>Pay Period Start</th>
             <th>Pay Period End</th>
             <th>Gross Pay</th>
@@ -318,7 +342,7 @@ include('cnn/user.php');
         <!-- Sample Row -->
         <tr>
             <td>1</td>
-            <td>1</td>
+            <td>Ken</td>
             <td>2024-10-01</td>
             <td>2024-10-15</td>
             <td>5000.00</td>
@@ -326,8 +350,9 @@ include('cnn/user.php');
             <td>500.00</td>
             <td>Paid</td>
             <td>
-                <button class="btn btn-warning btn-sm">Edit</button>
-                <button class="btn btn-danger btn-sm">Delete</button>
+                <button class="btn btn-warning btn-sm"><i class="bi bi-pen"></i> Edit</button>
+                <button class="btn btn-success btn-sm"><i class="bi bi-send"></i> Send</button>
+                <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Delete</button>
             </td>
         </tr>
     </tbody>
@@ -338,7 +363,7 @@ include('cnn/user.php');
     <thead>
         <tr>
             <th>ID</th>
-            <th>Employee ID</th>
+            <th>Employee Name</th>
             <th>Payroll ID</th>
             <th>Deduction Type</th>
             <th>Amount</th>
@@ -349,7 +374,7 @@ include('cnn/user.php');
         <!-- Sample Row -->
         <tr>
             <td>1</td>
-            <td>1</td>
+            <td>Ken</td>
             <td>1</td>
             <td>Tax</td>
             <td>500.00</td>
@@ -416,37 +441,7 @@ include('cnn/user.php');
             </td>
         </tr>
     </tbody>
-</table>
-
-<h2>Bank Transactions</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Payroll ID</th>
-            <th>Transaction ID</th>
-            <th>Amount</th>
-            <th>Bank Account</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Sample Row -->
-        <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>TX123456</td>
-            <td>4500.00</td>
-            <td>Account No: 123456789</td>
-            <td>Completed</td>
-            <td>
-                <button class="btn btn-danger btn-sm">Cancel</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-         
+</table>        
 </main><!-- End #main -->
 
 
@@ -475,10 +470,7 @@ include('cnn/user.php');
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
-  <script src="customjs/delete.js"></script>
-  <script src="customjs/send.js"></script>
- 
-
-</body
+  <script src="customassets/customjs/signoutnotif.js"></script>
+</body>
 
 </html>

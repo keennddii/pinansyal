@@ -1,8 +1,6 @@
 <?php 
-include('cnn/connection.php');
-include('cnn/connections.php');
+include('customassets/cnn/invoicing.php');
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,10 +11,9 @@ include('cnn/connections.php');
   <title>Finance Home</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
+  
   <!-- Favicons -->
-  <link href="assets/img/jvd.jpg" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/jeybidi.png" rel="icon">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +21,7 @@ include('cnn/connections.php');
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -34,40 +32,108 @@ include('cnn/connections.php');
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-  <link href="customcss/cInvoicing.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
+  
 </head>
 
 <body>
 
-  <!-- ======= Header ======= -->
+  
   <header id="header" class="header fixed-top d-flex align-items-center">
-  <label class="switch">
-        <input type="checkbox" id="toggle" onclick="myFunction()">
-        <span class="slider round">
-            <i class="bi bi-moon-stars-fill" id="sun-icon"></i>
-            <i class="bi bi-sun-fill" id="moon-icon"></i>
-        </span>
-      </label>
+  
     <div class="d-flex align-items-center justify-content-between">
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
-    <!-- End Logo -->
+    <!-- Para sa logo -->
     
     <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
+    <ul class="d-flex align-items-center">
 
+    <!--  DITO MAGSSTART ANG NOTIFICATION -->
+  <li class="nav-item dropdown">
+  <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+    <i class="bi bi-bell"></i>
+    <span class="badge bg-primary badge-number">4</span> 
+  </a>
+
+  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+    <li class="dropdown-header">
+      You have 4 new notifications
+      <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View All</span></a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+
+    <!-- Example notification 1 -->
+    <li class="notification-item">
+      <a class="dropdown-item d-flex align-items-center" href="notification-link-1.html">
+        <i class="bi bi-exclamation-circle text-warning"></i>
+        <div>
+          <h4>New Alert</h4>
+          <p>This is a new alert notification</p>
+          <p>5 minutes ago</p>
+        </div>
+      </a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+
+    <!-- Example notification 2 -->
+    <li class="notification-item">
+      <a class="dropdown-item d-flex align-items-center" href="notification-link-2.html">
+        <i class="bi bi-envelope text-info"></i>
+        <div>
+          <h4>New Message</h4>
+          <p>You have a new message from John Doe</p>
+          <p>10 minutes ago</p>
+        </div>
+      </a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+
+    <!-- Example notification 3 -->
+    <li class="notification-item">
+      <a class="dropdown-item d-flex align-items-center" href="notification-link-3.html">
+        <i class="bi bi-check-circle text-success"></i>
+        <div>
+          <h4>Task Completed</h4>
+          <p>Your task "Project ABC" is completed</p>
+          <p>30 minutes ago</p>
+        </div>
+      </a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+
+    <!-- Example notification 4 -->
+    <li class="notification-item">
+      <a class="dropdown-item d-flex align-items-center" href="notification-link-4.html">
+        <i class="bi bi-info-circle text-primary"></i>
+        <div>
+          <h4>System Update</h4>
+          <p>A new system update is available</p>
+          <p>1 hour ago</p>
+        </div>
+      </a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+
+    <li class="dropdown-footer">
+      <a href="#">Show all notifications</a>
+    </li>
+  </ul>
+  </li><!-- LAST CODE NUNG NOTIFICATION -->
+
+
+<!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
         <li class="nav-item dropdown pe-3">
       
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username; ?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
             <h6><?php echo $username; ?></h6>
-              <span><?php echo $position; ?></span>
+              <span><?php echo $position; ?> </span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -84,38 +150,27 @@ include('cnn/connections.php');
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+    <a class="dropdown-item d-flex align-items-center" href="#" onclick="openLogoutModal()">
+      <i class="bi bi-box-arrow-right"></i>
+      <span>Log Out</span>
+    </a>
+  </li>
+</ul>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-      
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:if(confirm('Are you sure you want to log out?')){window.location.href='./signout.php'}">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
-
-            </li>
-        
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
+<!-- Custom Logout Modal -->
+<div id="logoutModal" class="custom-modal" style="display: none;">
+  <div class="custom-modal-content">
+    <h2>Confirm Logout</h2>
+    <p>Are you sure you want to log out?</p>
+    <div class="modal-buttons">
+      <button onclick="closeLogoutModal()" class="btn-no">No</button>
+      <a href="./signout.php" class="btn-yes">Yes</a>
+    </div>
+  </div>
+</div>
+ 
+          
+  </li><!-- LAST LINE NUNG PROFILE  -->
 
       </ul>
     </nav><!-- End Icons Navigation -->
@@ -192,7 +247,7 @@ include('cnn/connections.php');
   </a>
   <ul id="collection-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
-      <a href="InvoiceBilling.php">
+      <a href="InvoicingBilling.php">
         <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
       </a>
     </li>
@@ -244,109 +299,134 @@ include('cnn/connections.php');
     </li>
   </ul>
 </li><!-- End Account Payable/Receivable Nav -->
-
       <hr class="sidebar-divider">  
     </ul>
-
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
-
     <div class="pagetitle">
-      <h1>Invoicing Billing </h1>
+      <h1>Homepage</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
+          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
         </ol>
       </nav>
-    </div><!-- End Page Title -->
-<!-- Main Content -->
-<div class="container">
-        <!-- Left Side: Invoice Form -->
-        <div class="invoice-form">
-            <h2>Invoice Creation</h2>
-            <form>
-                <label for="clientName">Client Name:</label>
-                <input type="text" id="clientName" name="clientName" required>
+    </div>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+    <section class="section dashboard">
+      <div class="row">
+                <!-- Left side columns -->
+        <div class="col-lg-8">
+        <div class="row">
 
-                <label for="tourPackage">Tour Package:</label>
-                <select id="tourPackage" name="tourPackage">
-                    <option value="boracay">Boracay</option>
-                    <option value="palawan">Palawan</option>
-                    <option value="cebu">Cebu</option>
-                </select>
+        <div class="col-12">
+        <div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h5 class="card-title mb-0">Invoice & Billing Management</h5>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newInvoiceModal">
+            + New Invoice
+        </button>
+    </div>
+    <div class="card-body">
+    <!-- Invoices Table -->
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Invoice #</th>
+                    <th>Client Name</th>
+                    <th>Date Issued</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($invoices as $invoice): ?>
+                  <tr>
+                      <td><?php echo htmlspecialchars($invoice['invoice_number']); ?></td>
+                      <td><?php echo htmlspecialchars($invoice['client_name']); ?></td>
+                      <td><?php echo htmlspecialchars($invoice['date_issued']); ?></td>
+                      <td><?php echo htmlspecialchars($invoice['due_date']); ?></td>
+                      <td>
+                          <span class="badge <?php echo ($invoice['status'] == 'Paid') ? 'bg-success' : 'bg-warning'; ?>">
+                              <?php echo htmlspecialchars($invoice['status']); ?>
+                          </span>
+                      </td>
+                      <td>₱<?php echo number_format($invoice['total'], 2); ?></td>
+                      <td>
+                          <a href="view_invoice.php?id=<?php echo $invoice['id']; ?>" class="btn btn-sm btn-info me-1">View</a>
+                          <a href="edit_invoice.php?id=<?php echo $invoice['id']; ?>" class="btn btn-sm btn-secondary me-1">Edit</a>
+                          <form method="POST" action="" style="display:inline;">
+                              <input type="hidden" name="invoice_id" value="<?php echo $invoice['id']; ?>">
+                              <button type="submit" name="delete" class="btn btn-sm btn-danger">Delete</button>
+                          </form>
+                      </td>
+                  </tr>
+              <?php endforeach; ?>
+          </tbody>
+        </table>
+    </div>
+</div>
 
-                <label for="invoiceDate">Invoice Date:</label>
-                <input type="date" id="invoiceDate" name="invoiceDate">
+</div>
+</div>
 
-                <label for="dueDate">Due Date:</label>
-                <input type="date" id="dueDate" name="dueDate">
-            </form>
-        </div>
-
-        <!-- Middle Section: Billing Items Table -->
-        <div class="billing-items">
-            <h2>Billing Items</h2>
-            <table id="itemsTable">
-                <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody id="itemsBody">
-                    <tr>
-                        <td><input type="text" value="Tour Package"></td>
-                        <td><input type="number" value="1" id="quantity"></td>
-                        <td><input type="number" value="1000" id="price"></td>
-                        <td class="total">1000</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button id="addItem">Add Item</button>
-        </div>
-
-        <!-- Right Side: Invoice Summary -->
-        <div class="invoice-summary">
-            <h2>Summary</h2>
-            <div class="summary-item">
-                <span>Subtotal:</span>
-                <span id="subtotal">1000</span>
+      <!-- New Invoice Modal -->
+<div class="modal fade" id="newInvoiceModal" tabindex="-1" aria-labelledby="newInvoiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newInvoiceModalLabel">Create New Invoice</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="summary-item">
-                <span>Tax (10%):</span>
-                <span id="tax">100</span>
+            <div class="modal-body">
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <label for="clientName" class="form-label">Client Name</label>
+                        <input type="text" class="form-control" id="clientName" name="client_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="invoiceDate" class="form-label">Invoice Date</label>
+                        <input type="date" class="form-control" id="invoiceDate" name="date_issued" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dueDate" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="dueDate" name="due_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" id="amount" name="total" required>
+                    </div>
+                    <input type="hidden" name="invoice_number" value="INV-003"> 
+                    <input type="hidden" name="status" value="Pending"> 
+                    <button type="submit" class="btn btn-primary" name="add_invoice">Save Invoice</button>
+                </form>
             </div>
-            <div class="summary-item">
-                <span>Total:</span>
-                <span id="total">1100</span>
-            </div>
-
-            <button id="generateInvoice">Generate Invoice</button>
         </div>
     </div>
+</div>
+
+
+                       
+</div>
+    </section>
 
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>XXXXXX</span></strong>. All Rights Reserved
+      &copy; :P
     </div>
-    <div class="credits">
-      BCP
-    </div>
+    
   </footer><!-- End Footer -->
-
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
+  
   <!-- Vendor JS Files -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/chart.js/chart.umd.js"></script>
@@ -355,11 +435,11 @@ include('cnn/connections.php');
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
+  
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
- 
-
+  <script src=assets/js/main.js></script>
+  <script src="customassets/customjs/signoutnotif.js"></script>
+  <script src="customassets/customjs/invoicing.js"></script>
 </body>
-
 </html>

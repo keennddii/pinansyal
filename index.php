@@ -1,6 +1,5 @@
 <?php 
-include('cnn/connections.php');
-include('cnn/user.php');
+include('customassets/cnn/user.php');
 ?>
 
 <!DOCTYPE html>
@@ -34,22 +33,22 @@ include('cnn/user.php');
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-  <link rel="stylesheet" href="customcss/signoutnotif.css">
+  <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
   
 </head>
 
 <body>
 
-  <!-- ======= Header ======= -->
+  
   <header id="header" class="header fixed-top d-flex align-items-center">
   
     <div class="d-flex align-items-center justify-content-between">
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
-    <!-- End Logo -->
+    <!-- Para sa logo -->
     
     <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
+    <ul class="d-flex align-items-center">
 
     <!--  DITO MAGSSTART ANG NOTIFICATION -->
   <li class="nav-item dropdown">
@@ -250,7 +249,7 @@ include('cnn/user.php');
   </a>
   <ul id="collection-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
-      <a href="InvoiceBilling.php">
+      <a href="InvoicingBilling.php">
         <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
       </a>
     </li>
@@ -422,7 +421,7 @@ include('cnn/user.php');
 
   <!-- Template Main JS File -->
    <script src=assets/js/main.js></script>
-  <script src="customjs/signoutnotif.js"></script>
+  <script src="customassets/customjs/signoutnotif.js"></script>
 
 </body>
 

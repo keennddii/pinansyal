@@ -254,12 +254,22 @@ h6 {
   background-color: rgba(255, 255, 255, 0.6);
 }
 
-/* Alerts */
-.alert-heading {
-  font-weight: 500;
-  font-family: "Inter", sans-serif;
-  font-size: 20px;
+.alert-container {
+  position: fixed;
+  top: 60px; /* Space from the top */
+  right: 20px; /* Space from the right */
+  z-index: 1050; /* Ensure it appears above other elements */
+  display: flex;
+  justify-content: flex-end; /* Align alerts to the right */
 }
+
+.alert {
+  transition: opacity 0.5s ease-in-out; /* Add transition effect */
+  opacity: 1;
+  background-color:rgba(111, 247, 116, 0.8); /* Success background color */
+  color: #155724; /* Success text color */
+}
+
 
 /* Close Button */
 .btn-close {

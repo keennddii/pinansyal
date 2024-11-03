@@ -41,8 +41,7 @@ body {
   border-radius: 10px;
 }
 .error-message {
-  background-color: rgba(105, 17, 17, 0.8); /* Red background */
-  color: white; /* White text */
+  background-color: rgba(255, 255, 255, 0.8); /* Red background */
   padding: 2px;
   border-radius: 10px;
   margin-top: 10px; /* Space above the error message */
