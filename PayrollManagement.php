@@ -358,61 +358,6 @@ include('customassets/cnn/user.php');
     </tbody>
 </table>
 
-<h2>Deductions</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Employee Name</th>
-            <th>Payroll ID</th>
-            <th>Deduction Type</th>
-            <th>Amount</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Sample Row -->
-        <tr>
-            <td>1</td>
-            <td>Ken</td>
-            <td>1</td>
-            <td>Tax</td>
-            <td>500.00</td>
-            <td>
-                <button class="btn btn-warning btn-sm">Edit</button>
-                <button class="btn btn-danger btn-sm">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-<h2>Tax Rates</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Tax Bracket</th>
-            <th>Rate</th>
-            <th>Income Min</th>
-            <th>Income Max</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Sample Row -->
-        <tr>
-            <td>1</td>
-            <td>Low</td>
-            <td>15.00</td>
-            <td>0.00</td>
-            <td>30000.00</td>
-            <td>
-                <button class="btn btn-warning btn-sm">Edit</button>
-                <button class="btn btn-danger btn-sm">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
 
 <h2>Payroll History</h2>
 <table class="table table-bordered">
@@ -428,7 +373,7 @@ include('customassets/cnn/user.php');
         </tr>
     </thead>
     <tbody>
-        <!-- Sample Row -->
+        
         <tr>
             <td>1</td>
             <td>1</td>
@@ -437,7 +382,7 @@ include('customassets/cnn/user.php');
             <td>4500.00</td>
             <td>Completed</td>
             <td>
-                <button class="btn btn-danger btn-sm">Void</button>
+                <button class="btn btn-danger btn-sm">Archive</button>
             </td>
         </tr>
     </tbody>
