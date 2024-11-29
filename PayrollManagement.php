@@ -51,77 +51,7 @@ include('customassets/cnn/user.php');
   <nav class="header-nav ms-auto">
     <ul class="d-flex align-items-center">
 
-  <!--  DITO MAGSSTART ANG NOTIFICATION -->
-<li class="nav-item dropdown">
-<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-  <i class="bi bi-bell"></i>
-  <span class="badge bg-primary badge-number">4</span> 
-</a>
 
-<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-  <li class="dropdown-header">
-    You have 4 new notifications
-    <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View All</span></a>
-  </li>
-  <li><hr class="dropdown-divider"></li>
-
-  <!-- Example notification 1 -->
-  <li class="notification-item">
-    <a class="dropdown-item d-flex align-items-center" href="notification-link-1.html">
-      <i class="bi bi-exclamation-circle text-warning"></i>
-      <div>
-        <h4>New Alert</h4>
-        <p>This is a new alert notification</p>
-        <p>5 minutes ago</p>
-      </div>
-    </a>
-  </li>
-  <li><hr class="dropdown-divider"></li>
-
-  <!-- Example notification 2 -->
-  <li class="notification-item">
-    <a class="dropdown-item d-flex align-items-center" href="notification-link-2.html">
-      <i class="bi bi-envelope text-info"></i>
-      <div>
-        <h4>New Message</h4>
-        <p>You have a new message from John Doe</p>
-        <p>10 minutes ago</p>
-      </div>
-    </a>
-  </li>
-  <li><hr class="dropdown-divider"></li>
-
-  <!-- Example notification 3 -->
-  <li class="notification-item">
-    <a class="dropdown-item d-flex align-items-center" href="notification-link-3.html">
-      <i class="bi bi-check-circle text-success"></i>
-      <div>
-        <h4>Task Completed</h4>
-        <p>Your task "Project ABC" is completed</p>
-        <p>30 minutes ago</p>
-      </div>
-    </a>
-  </li>
-  <li><hr class="dropdown-divider"></li>
-
-  <!-- Example notification 4 -->
-  <li class="notification-item">
-    <a class="dropdown-item d-flex align-items-center" href="notification-link-4.html">
-      <i class="bi bi-info-circle text-primary"></i>
-      <div>
-        <h4>System Update</h4>
-        <p>A new system update is available</p>
-        <p>1 hour ago</p>
-      </div>
-    </a>
-  </li>
-  <li><hr class="dropdown-divider"></li>
-
-  <li class="dropdown-footer">
-    <a href="#">Show all notifications</a>
-  </li>
-</ul>
-</li><!-- LAST CODE NUNG NOTIFICATION -->
 
 
 <!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
@@ -195,7 +125,7 @@ include('customassets/cnn/user.php');
     <hr class="sidebar-divider">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.php">
+        <a class="nav-link " href="dashboard.php">
           <i class="bi bi-house-door"></i>
           <span>Homepage</span>
         </a>

@@ -1,5 +1,7 @@
 <?php 
 include('customassets/cnn/invoicing.php');
+include('customassets/cnn/auditcompliance.php');
+$result = mysqli_query($con, "SELECT * FROM audit_compliance");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -316,13 +318,13 @@ include('customassets/cnn/invoicing.php');
     <section class="section dashboard">
       <div class="row">
                 <!-- Left side columns -->
-        <div class="col-lg-8">
-        <div class="row">
+        
+
 
         <div class="col-12">
         <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
-        <h5 class="card-title mb-0">Invoice & Billing Management</h5>
+        <h5 class="card-title mb-0">Invoicing and Billing</h5>
         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newInvoiceModal">
             + New Invoice
         </button>
@@ -337,7 +339,6 @@ include('customassets/cnn/invoicing.php');
                     <th>Client Name</th>
                     <th>Date Issued</th>
                     <th>Due Date</th>
-                    <th>Status</th>
                     <th>Total</th>
                     <th>Actions</th>
                 </tr>
@@ -349,11 +350,6 @@ include('customassets/cnn/invoicing.php');
                       <td><?php echo htmlspecialchars($invoice['client_name']); ?></td>
                       <td><?php echo htmlspecialchars($invoice['date_issued']); ?></td>
                       <td><?php echo htmlspecialchars($invoice['due_date']); ?></td>
-                      <td>
-                          <span class="badge <?php echo ($invoice['status'] == 'Paid') ? 'bg-success' : 'bg-warning'; ?>">
-                              <?php echo htmlspecialchars($invoice['status']); ?>
-                          </span>
-                      </td>
                       <td>₱<?php echo number_format($invoice['total'], 2); ?></td>
                       <td>
                           <a href="view_invoice.php?id=<?php echo $invoice['id']; ?>" class="btn btn-sm btn-info me-1">View</a>
@@ -411,8 +407,96 @@ include('customassets/cnn/invoicing.php');
 
                        
 </div>
-    </section>
 
+    </section>
+    <section class="section dashboard">
+        <?php
+    // Check if a success or error message needs to be displayed
+    if (isset($_GET['success']) && $_GET['success'] == 1) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 0; right: 0; z-index: 1050; margin: 60px; display: flex; justify-content: flex-end;">
+                <i class="bi bi-check-circle me-1"></i>Record updated successfully.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+    } elseif (isset($_GET['error']) && $_GET['error'] == 1) {
+        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> Failed to update the record. Please try again.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+    }
+    ?>
+          <!-- Left side columns -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Audit and Compliance</h5>
+      <!-- Table Display -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Compliance Type</th>
+            <th>Status</th>
+            <th>Comments</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <tr>
+              <td><?php echo $row['id']; ?></td>
+              <td><?php echo $row['audit_date']; ?></td>
+              <td><?php echo $row['compliance_type']; ?></td>
+              <td><?php echo $row['compliance_status']; ?></td>
+              <td><?php echo $row['comments']; ?></td>
+              <td>
+                <!-- Edit Button -->
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateComplianceModal<?php echo $row['id']; ?>">
+                  Update
+                </button>
+              </td>
+            </tr>
+
+            <!-- Update Modal -->
+            <div class="modal fade" id="updateComplianceModal<?php echo $row['id']; ?>" tabindex="-1">
+              <div class="modal-dialog">
+                <form method="POST" action="auditcompliance.php">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Update Compliance</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+
+                      <div class="mb-3">
+                        <label class="form-label">Compliance Status</label>
+                        <select name="compliance_status" class="form-select">
+                          <option value="Pending" <?php if ($row['compliance_status'] == 'Pending') echo 'selected'; ?>>Pending</option>
+                          <option value="Completed" <?php if ($row['compliance_status'] == 'Completed') echo 'selected'; ?>>Completed</option>
+                        </select>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Comments</label>
+                        <textarea name="comments" class="form-control"><?php echo $row['comments']; ?></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-success">Save Changes</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+ 
+
+    </section>
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

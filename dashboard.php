@@ -1,8 +1,6 @@
 <?php 
-include('customassets/cnn/user.php');
+include('customassets/cnn/display.php');
 include('customassets/cnn/auditcompliance.php');
-
-$result = mysqli_query($con, "SELECT * FROM audit_compliance");
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +10,7 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>AuditCompliance | Finance</title>
+  <title>Finance Home</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
   
@@ -37,7 +35,6 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
-  <link rel="stylesheet" href="customassets/customcss/auditcompliance.css">
   
 </head>
 
@@ -241,7 +238,7 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Audit and Compliance</h1>
+      <h1>Homepage</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
@@ -250,92 +247,114 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-        <?php
-    // Check if a success or error message needs to be displayed
-    if (isset($_GET['success']) && $_GET['success'] == 1) {
-        echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 0; right: 0; z-index: 1050; margin: 60px; display: flex; justify-content: flex-end;">
-                <i class="bi bi-check-circle me-1"></i>Record updated successfully.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    } elseif (isset($_GET['error']) && $_GET['error'] == 1) {
-        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error!</strong> Failed to update the record. Please try again.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    }
-    ?>
           <!-- Left side columns -->
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Audit and Compliance</h5>
-      <!-- Table Display -->
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>Compliance Type</th>
-            <th>Status</th>
-            <th>Comments</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php while ($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
-              <td><?php echo $row['id']; ?></td>
-              <td><?php echo $row['audit_date']; ?></td>
-              <td><?php echo $row['compliance_type']; ?></td>
-              <td><?php echo $row['compliance_status']; ?></td>
-              <td><?php echo $row['comments']; ?></td>
-              <td>
-                <!-- Edit Button -->
-                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateComplianceModal<?php echo $row['id']; ?>">
-                  Update
-                </button>
-              </td>
-            </tr>
+          <div class="col-lg-8">
+          <div class="row">
+          <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+            <div class="card info-card sales-card">
 
-            <!-- Update Modal -->
-            <div class="modal fade" id="updateComplianceModal<?php echo $row['id']; ?>" tabindex="-1">
-              <div class="modal-dialog">
-                <form method="POST" action="auditcompliance.php">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Update Compliance</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                      <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                   </li>
 
-                      <div class="mb-3">
-                        <label class="form-label">Compliance Status</label>
-                        <select name="compliance_status" class="form-select">
-                          <option value="Pending" <?php if ($row['compliance_status'] == 'Pending') echo 'selected'; ?>>Pending</option>
-                          <option value="Completed" <?php if ($row['compliance_status'] == 'Completed') echo 'selected'; ?>>Completed</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Comments</label>
-                        <textarea name="comments" class="form-control"><?php echo $row['comments']; ?></textarea>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="submit" class="btn btn-success">Save Changes</button>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-                </form>
+                  <li><a class="dropdown-item" href="#">Today</a></li>
+                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                  <li><a class="dropdown-item" href="#">This Year</a></li>
+                </ul>
               </div>
-            </div>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
- 
 
+              <div class="card-body">
+                <h5 class="card-title">Sales <span>| Today</span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-cart"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>0</h6>
+                    <span class="text-success small pt-1 fw-bold">0%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- End Sales Card -->
+
+      <div class="col-xxl-4 col-xl-12">
+      <div class="card info-card customers-card">
+        <div class="card-body">
+          <h5 class="card-title">Employees <span>| Total</span></h5>
+
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <i class="bi bi-people"></i>
+            </div>
+            <div class="ps-3">
+              <h6><?php echo $total_employees; ?></h6>
+              <span class="text-success small pt-1 fw-bold">Employee's active count</span> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Employees Card -->
+     <!-- Compliance Card -->
+     <div class="col-xxl-4 col-md-6">
+        <div class="card info-card sales-card">
+
+            <!-- Filter Dropdown -->
+            <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="compliance-dropdown">
+                    <li class="dropdown-header text-start">
+                        <h6>Filter</h6>
+                    </li>
+
+                    <!-- Dropdown Items -->
+                    <li><a class="dropdown-item" href="#" onclick="updateContent('complete_compliance')">Complete Compliance: <?php echo $data['complete_compliance']; ?></a></li>
+                    <li><a class="dropdown-item" href="#" onclick="updateContent('pending_compliance')">Pending Compliance: <?php echo $data['pending_compliance']; ?></a></li>
+                    <li><a class="dropdown-item" href="#" onclick="updateContent('compliance_rate')">Compliance Rate: <?php echo $data['compliance_rate']; ?>%</a></li>
+                </ul>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body">
+                <h5 class="card-title">Compliance <span>| This Year</span></h5>
+
+                <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <div class="ps-3">
+                        <h6 id="display-compliance-data"><?php echo $data['total_audits']; ?> Complainant</h6> <!-- Default display -->
+                        <span class="text-success small pt-1 fw-bold"><?php echo $data['compliance_rate']; ?>%</span> 
+                        <span class="text-muted small pt-2 ps-1">compliance rate</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- End Compliance Card -->
+</div>
+
+        </div>
+        <div class="col-lg-6">
+          <div class="card" style="width: 1000px">
+            <div class="card-body">
+              <h5 class="card-title">Revenue</h5>
+
+              <!-- Bar Chart -->
+              <canvas id="barChart" style="max-height: 600px; width: 100%;"></canvas>
+              <script src="customassets/customjs/bar.js"></script>
+              <!-- End Bar CHart -->
+
+            </div>
+          </div>
+        </div>
     </section>
   </main><!-- End #main -->
 
@@ -362,6 +381,7 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
   <!-- Template Main JS File -->
    <script src=assets/js/main.js></script>
   <script src="customassets/customjs/signoutnotif.js"></script>
+  <script src="customassets/customjs/audit.js"></script>
 
 </body>
 

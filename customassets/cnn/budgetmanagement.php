@@ -2,7 +2,6 @@
 include("user.php");
 // Database connection settings
 $dbhost = "127.0.0.1";
-$dbport = 3306;
 $dbuser = "root";
 $dbpass = "";
 $dbname = "pinansyal_budget_management";

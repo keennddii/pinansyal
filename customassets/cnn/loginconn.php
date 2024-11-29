@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 
                 if (password_verify($password, $row['password'])) {
                     $_SESSION['username'] = $username;
-                    header("Location: index.php");
+                    header("Location: dashboard.php");
                     exit;
                 } else {
                     $_SESSION['error_message'] = 'Invalid password. Please try again.';

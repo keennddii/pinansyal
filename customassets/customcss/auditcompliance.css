@@ -1,0 +1,24 @@
+.audit-compliance .card {
+    border: 1px solid #e3e6f0;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+  }
+  
+  .audit-compliance .icon-circle {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+  }
+  
+  .audit-compliance .recent-activity-card ul {
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  .audit-compliance .recent-activity-card li {
+    padding: 0.75rem 1rem;
+  }
+  
