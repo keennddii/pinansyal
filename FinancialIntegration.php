@@ -50,80 +50,6 @@ include('customassets/cnn/budgetmanagement.php');
     
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-
-    <!--  DITO MAGSSTART ANG NOTIFICATION -->
-  <li class="nav-item dropdown">
-  <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-    <i class="bi bi-bell"></i>
-    <span class="badge bg-primary badge-number">4</span> 
-  </a>
-
-  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-    <li class="dropdown-header">
-      You have 4 new notifications
-      <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View All</span></a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <!-- Example notification 1 -->
-    <li class="notification-item">
-      <a class="dropdown-item d-flex align-items-center" href="notification-link-1.html">
-        <i class="bi bi-exclamation-circle text-warning"></i>
-        <div>
-          <h4>New Alert</h4>
-          <p>This is a new alert notification</p>
-          <p>5 minutes ago</p>
-        </div>
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <!-- Example notification 2 -->
-    <li class="notification-item">
-      <a class="dropdown-item d-flex align-items-center" href="notification-link-2.html">
-        <i class="bi bi-envelope text-info"></i>
-        <div>
-          <h4>New Message</h4>
-          <p>You have a new message from John Doe</p>
-          <p>10 minutes ago</p>
-        </div>
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <!-- Example notification 3 -->
-    <li class="notification-item">
-      <a class="dropdown-item d-flex align-items-center" href="notification-link-3.html">
-        <i class="bi bi-check-circle text-success"></i>
-        <div>
-          <h4>Task Completed</h4>
-          <p>Your task "Project ABC" is completed</p>
-          <p>30 minutes ago</p>
-        </div>
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <!-- Example notification 4 -->
-    <li class="notification-item">
-      <a class="dropdown-item d-flex align-items-center" href="notification-link-4.html">
-        <i class="bi bi-info-circle text-primary"></i>
-        <div>
-          <h4>System Update</h4>
-          <p>A new system update is available</p>
-          <p>1 hour ago</p>
-        </div>
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <li class="dropdown-footer">
-      <a href="#">Show all notifications</a>
-    </li>
-  </ul>
-  </li><!-- LAST CODE NUNG NOTIFICATION -->
-
-
 <!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
         <li class="nav-item dropdown pe-3">
       
@@ -195,7 +121,7 @@ include('customassets/cnn/budgetmanagement.php');
     <hr class="sidebar-divider">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.php">
+        <a class="nav-link " href="dashboard.php">
           <i class="bi bi-house-door"></i>
           <span>Homepage</span>
         </a>
@@ -250,7 +176,7 @@ include('customassets/cnn/budgetmanagement.php');
   </a>
   <ul id="collection-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
   <li>
-      <a href="InvoiceBilling.php">
+      <a href="InvoicingBilling.php">
         <i class="bi bi-circle-fill"></i><span>Invoice & Billing Management</span>
       </a>
     </li>
@@ -326,12 +252,10 @@ include('customassets/cnn/budgetmanagement.php');
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Payroll ID</th>
                     <th>Transaction ID</th>
                     <th>Amount</th>
                     <th>Bank or GCash Account</th>
                     <th>Status</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -341,12 +265,10 @@ include('customassets/cnn/budgetmanagement.php');
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
                         echo "<td>" . $row['id'] . "</td>";
-                        echo "<td>" . $row['payroll_id'] . "</td>";
                         echo "<td>" . $row['transaction_id'] . "</td>";
                         echo "<td>" . number_format($row['amount'], 2) . "</td>";
-                        echo "<td>Account No: " . $row['account'] . "</td>";
+                        echo "<td>Account No: " . $row['bank_account'] . "</td>";
                         echo "<td>" . $row['status'] . "</td>";
-                        echo "<td><button class='btn btn-danger btn-sm'>Cancel</button></td>";
                         echo "</tr>";
                     }
                 } else {
@@ -359,7 +281,7 @@ include('customassets/cnn/budgetmanagement.php');
     </div>
 
         <div class="container mt-5">
-        <h2>Add New Transaction</h2>
+        <h2>Cash Transaction</h2>
         <form action="process_transaction.php" method="POST">
             <div class="form-group">
                 <label for="employee_id">Employee ID:</label>
@@ -391,7 +313,7 @@ include('customassets/cnn/budgetmanagement.php');
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; :P
+      &copy;
     </div>
     
   </footer><!-- End Footer -->

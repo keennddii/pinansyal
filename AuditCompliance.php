@@ -2,7 +2,7 @@
 include('customassets/cnn/user.php');
 include('customassets/cnn/auditcompliance.php');
 
-$result = mysqli_query($con, "SELECT * FROM audit_compliance");
+
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +33,7 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
   <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
+  
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
@@ -249,94 +249,58 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
-        <?php
-    // Check if a success or error message needs to be displayed
-    if (isset($_GET['success']) && $_GET['success'] == 1) {
-        echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 0; right: 0; z-index: 1050; margin: 60px; display: flex; justify-content: flex-end;">
-                <i class="bi bi-check-circle me-1"></i>Record updated successfully.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    } elseif (isset($_GET['error']) && $_GET['error'] == 1) {
-        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error!</strong> Failed to update the record. Please try again.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    }
-    ?>
-          <!-- Left side columns -->
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Audit and Compliance</h5>
-      <!-- Table Display -->
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>Compliance Type</th>
-            <th>Status</th>
-            <th>Comments</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php while ($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
-              <td><?php echo $row['id']; ?></td>
-              <td><?php echo $row['audit_date']; ?></td>
-              <td><?php echo $row['compliance_type']; ?></td>
-              <td><?php echo $row['compliance_status']; ?></td>
-              <td><?php echo $row['comments']; ?></td>
-              <td>
-                <!-- Edit Button -->
-                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateComplianceModal<?php echo $row['id']; ?>">
-                  Update
-                </button>
-              </td>
-            </tr>
+  
 
-            <!-- Update Modal -->
-            <div class="modal fade" id="updateComplianceModal<?php echo $row['id']; ?>" tabindex="-1">
-              <div class="modal-dialog">
-                <form method="POST" action="auditcompliance.php">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Update Compliance</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                      <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-
-                      <div class="mb-3">
-                        <label class="form-label">Compliance Status</label>
-                        <select name="compliance_status" class="form-select">
-                          <option value="Pending" <?php if ($row['compliance_status'] == 'Pending') echo 'selected'; ?>>Pending</option>
-                          <option value="Completed" <?php if ($row['compliance_status'] == 'Completed') echo 'selected'; ?>>Completed</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Comments</label>
-                        <textarea name="comments" class="form-control"><?php echo $row['comments']; ?></textarea>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="submit" class="btn btn-success">Save Changes</button>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
+    <!-- Add Transaction Form -->
+    <div class="card shadow">
+        <div class="card-header">
+            <h5>Add New Transaction</h5>
+        </div>
+        <br>
+        <div class="card-body">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="transactionType">Transaction Type</label>
+                    <select name="transaction_type" id="transactionType" class="form-control" required>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" name="amount" id="amount" class="form-control" placeholder="Enter amount" required>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" class="form-control" rows="3" placeholder="Enter transaction description" required></textarea>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary btn-block">Add Transaction</button>
+            </form>
+        </div>
     </div>
-  </div>
- 
 
-    </section>
+    <!-- Audit Trail Logs -->
+    <div class="card shadow mt-4">
+        <div class="card-header">
+            <h5>Audit Trail Logs</h5>
+        </div>
+        <div class="card-body">
+            <ul id="auditTrailList" class="list-group">
+                <?php while ($row = $auditLogs->fetch_assoc()): ?>
+                    <li class='list-group-item'>
+                        Action: <?php echo $row['action']; ?> |
+                        Table: <?php echo $row['table_name']; ?> |
+                        Timestamp: <?php echo $row['timestamp']; ?>
+                    </li>
+                <?php endwhile; ?>
+            </ul>
+        </div>
+    </div>
+</div>
+
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
@@ -357,7 +321,30 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
-  
+  <script>
+        // JavaScript for Dynamic Data Update
+        $(document).ready(function () {
+            const data = {
+                total_audits: "<?php echo $data['total_audits']; ?>",
+                pending_compliance: "<?php echo $data['pending_compliance']; ?>",
+                compliance_rate: "<?php echo $data['compliance_rate']; ?>%"
+            };
+
+            // Update display content based on dropdown selection
+            $('#dataSelector').change(function () {
+                const option = $(this).val();
+                let content = '';
+                if (option === 'total_audits') {
+                    content = `${data.total_audits} Total Audits Completed`;
+                } else if (option === 'pending_compliance') {
+                    content = `${data.pending_compliance} Pending Compliance Issues`;
+                } else if (option === 'compliance_rate') {
+                    content = `${data.compliance_rate} Compliance Rate`;
+                }
+                $('#display-compliance-data').html(`<h4>${content}</h4>`);
+            });
+        });
+    </script>
 
   <!-- Template Main JS File -->
    <script src=assets/js/main.js></script>

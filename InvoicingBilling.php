@@ -1,7 +1,7 @@
 <?php 
 include('customassets/cnn/invoicing.php');
-include('customassets/cnn/auditcompliance.php');
-$result = mysqli_query($con, "SELECT * FROM audit_compliance");
+include('customassets/cnn/complain.php');
+$result = mysqli_query($con, "SELECT * FROM complains");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,8 +39,6 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
 </head>
 
 <body>
-
-  
   <header id="header" class="header fixed-top d-flex align-items-center">
   
     <div class="d-flex align-items-center justify-content-between">
@@ -50,79 +48,6 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
     
     <nav class="header-nav ms-auto">
     <ul class="d-flex align-items-center">
-
-    <!--  DITO MAGSSTART ANG NOTIFICATION -->
-  <li class="nav-item dropdown">
-  <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-    <i class="bi bi-bell"></i>
-    <span class="badge bg-primary badge-number">4</span> 
-  </a>
-
-  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-    <li class="dropdown-header">
-      You have 4 new notifications
-      <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View All</span></a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <!-- Example notification 1 -->
-    <li class="notification-item">
-      <a class="dropdown-item d-flex align-items-center" href="notification-link-1.html">
-        <i class="bi bi-exclamation-circle text-warning"></i>
-        <div>
-          <h4>New Alert</h4>
-          <p>This is a new alert notification</p>
-          <p>5 minutes ago</p>
-        </div>
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <!-- Example notification 2 -->
-    <li class="notification-item">
-      <a class="dropdown-item d-flex align-items-center" href="notification-link-2.html">
-        <i class="bi bi-envelope text-info"></i>
-        <div>
-          <h4>New Message</h4>
-          <p>You have a new message from John Doe</p>
-          <p>10 minutes ago</p>
-        </div>
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <!-- Example notification 3 -->
-    <li class="notification-item">
-      <a class="dropdown-item d-flex align-items-center" href="notification-link-3.html">
-        <i class="bi bi-check-circle text-success"></i>
-        <div>
-          <h4>Task Completed</h4>
-          <p>Your task "Project ABC" is completed</p>
-          <p>30 minutes ago</p>
-        </div>
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <!-- Example notification 4 -->
-    <li class="notification-item">
-      <a class="dropdown-item d-flex align-items-center" href="notification-link-4.html">
-        <i class="bi bi-info-circle text-primary"></i>
-        <div>
-          <h4>System Update</h4>
-          <p>A new system update is available</p>
-          <p>1 hour ago</p>
-        </div>
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-
-    <li class="dropdown-footer">
-      <a href="#">Show all notifications</a>
-    </li>
-  </ul>
-  </li><!-- LAST CODE NUNG NOTIFICATION -->
-
 
 <!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
         <li class="nav-item dropdown pe-3">
@@ -352,7 +277,9 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
                       <td><?php echo htmlspecialchars($invoice['due_date']); ?></td>
                       <td>₱<?php echo number_format($invoice['total'], 2); ?></td>
                       <td>
-                          <a href="view_invoice.php?id=<?php echo $invoice['id']; ?>" class="btn btn-sm btn-info me-1">View</a>
+                      <a href="buttons/print_invoice.php?id=<?php echo $invoice['id']; ?>" class="btn btn-sm btn-primary me-1" target="_blank">
+                  Print
+              </a>
                           <a href="edit_invoice.php?id=<?php echo $invoice['id']; ?>" class="btn btn-sm btn-secondary me-1">Edit</a>
                           <form method="POST" action="" style="display:inline;">
                               <input type="hidden" name="invoice_id" value="<?php echo $invoice['id']; ?>">
@@ -427,14 +354,15 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
           <!-- Left side columns -->
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">Audit and Compliance</h5>
+      <h5 class="card-title">Complain</h5>
       <!-- Table Display -->
       <table class="table">
         <thead>
           <tr>
             <th>#</th>
+            <th>Client Name</th>
             <th>Date</th>
-            <th>Compliance Type</th>
+            <th>Complian Type</th>
             <th>Status</th>
             <th>Comments</th>
             <th>Action</th>
@@ -444,6 +372,7 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
           <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <tr>
               <td><?php echo $row['id']; ?></td>
+              <td><?php echo $row['clientname']; ?></td>
               <td><?php echo $row['audit_date']; ?></td>
               <td><?php echo $row['compliance_type']; ?></td>
               <td><?php echo $row['compliance_status']; ?></td>
@@ -459,7 +388,7 @@ $result = mysqli_query($con, "SELECT * FROM audit_compliance");
             <!-- Update Modal -->
             <div class="modal fade" id="updateComplianceModal<?php echo $row['id']; ?>" tabindex="-1">
               <div class="modal-dialog">
-                <form method="POST" action="auditcompliance.php">
+                <form method="POST" action="InvoicingBilling.php">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title">Update Compliance</h5>

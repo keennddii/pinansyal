@@ -14,5 +14,5 @@ if ($con->connect_error) {
     die("Connection failed: " . $con->connect_error);
 }
  // Query to fetch bank transactions
- $query = "SELECT id, payroll_id, transaction_id, amount, bank_account, status FROM bank_transactions";
+ $query = "SELECT id, payroll_id, transaction_id, amount, bank_account, bank_account, status FROM bank_transactions";
  $result = mysqli_query($con, $query);

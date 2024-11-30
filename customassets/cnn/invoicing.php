@@ -35,7 +35,7 @@ $invoices = getInvoices($con);
 // Handle form submission for adding an invoice
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_invoice'])) {
     // Prepare the SQL INSERT statement
-    $stmt = $con->prepare("INSERT INTO invoices (invoice_number, client_name, date_issued, due_date, total, status) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $con->prepare("INSERT INTO invoices (invoice_number, client_name, date_issued, due_date, total) VALUES (?, ?, ?, ?, ?)");
 
     // Bind parameters
     $invoice_number = $_POST['invoice_number'] ?? '';
@@ -43,9 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_invoice'])) {
     $date_issued = $_POST['date_issued'] ?? '';
     $due_date = $_POST['due_date'] ?? '';
     $total = $_POST['total'] ?? 0;
-    $status = $_POST['status'] ?? '';
 
-    $stmt->bind_param("ssssss", $invoice_number, $client_name, $date_issued, $due_date, $total, $status);
+    $stmt->bind_param("sssss", $invoice_number, $client_name, $date_issued, $due_date, $total);
 
     if ($stmt->execute()) {
         $_SESSION['message'] = "Invoice added successfully.";

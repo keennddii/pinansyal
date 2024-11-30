@@ -1,6 +1,6 @@
 <?php 
 include('customassets/cnn/display.php');
-include('customassets/cnn/auditcompliance.php');
+include('customassets/cnn/complain.php');
 ?>
 
 <!DOCTYPE html>
@@ -315,22 +315,22 @@ include('customassets/cnn/auditcompliance.php');
                     </li>
 
                     <!-- Dropdown Items -->
-                    <li><a class="dropdown-item" href="#" onclick="updateContent('complete_compliance')">Complete Compliance: <?php echo $data['complete_compliance']; ?></a></li>
-                    <li><a class="dropdown-item" href="#" onclick="updateContent('pending_compliance')">Pending Compliance: <?php echo $data['pending_compliance']; ?></a></li>
-                    <li><a class="dropdown-item" href="#" onclick="updateContent('compliance_rate')">Compliance Rate: <?php echo $data['compliance_rate']; ?>%</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="updateContent('complete_compliance')">Complete: <?php echo $data['complete_compliance']; ?></a></li>
+                    <li><a class="dropdown-item" href="#" onclick="updateContent('pending_compliance')">Pending: <?php echo $data['pending_compliance']; ?></a></li>
+                    <li><a class="dropdown-item" href="#" onclick="updateContent('compliance_rate')">Compliant Rate: <?php echo $data['compliance_rate']; ?>%</a></li>
                 </ul>
             </div>
 
             <!-- Card Body -->
             <div class="card-body">
-                <h5 class="card-title">Compliance <span>| This Year</span></h5>
+                <h5 class="card-title">Complians <span>| This Year</span></h5>
 
                 <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bi bi-check-circle"></i>
+                        <i class="bi bi-flag"></i>
                     </div>
                     <div class="ps-3">
-                        <h6 id="display-compliance-data"><?php echo $data['total_audits']; ?> Complainant</h6> <!-- Default display -->
+                        <h4 id="display-compliance-data"><?php echo $data['total_audits']; ?> Complainant</h4> <!-- Default display -->
                         <span class="text-success small pt-1 fw-bold"><?php echo $data['compliance_rate']; ?>%</span> 
                         <span class="text-muted small pt-2 ps-1">compliance rate</span>
                     </div>
@@ -361,7 +361,13 @@ include('customassets/cnn/auditcompliance.php');
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; :P
+      &copy; 
+      FAIR WARNING
+      It is highly forbidden to take screenshots, copy and paste, or use other similar techniques to get and distribute content on other platforms.
+     <br>
+     <br>
+      NOTICE It is with deep regret that we inform you that all the financial documents and information shared on this site pertain solely for the use of the <br>  company by the financial officers and administrative staff
+      working for the finance department of JVD Event and Travel Management,<br>Co. Unfortunately we have noticed that all the details available on this site were uploaded without proper permission and authorization to other sites. 
     </div>
     
   </footer><!-- End Footer -->

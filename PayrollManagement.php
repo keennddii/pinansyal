@@ -1,4 +1,5 @@
-<?php 
+<?php
+include('buttons/fetch_payroll.php');
 include('customassets/cnn/user.php');
 ?>
 
@@ -241,111 +242,86 @@ include('customassets/cnn/user.php');
 
   
   <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>Payroll Management</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-            </ol>
-            
-        </nav>
-    </div><!-- End Page Title -->
+  <div class="pagetitle">
+    <h1>Payroll Management</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <?php if (isset($_GET['update']) && $_GET['update'] == 'success'): ?>
+    <div class="alert alert-success" role="alert">
+        Payroll record updated successfully!
+    </div>
+  <?php endif; ?>
+
+  <h2>Payrolls</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Employee Name</th>
+        <th>Pay Period Start</th>
+        <th>Pay Period End</th>
+        <th>Gross Pay</th>
+        <th>Net Pay</th>
+        <th>Total Deductions</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php while($row = $result_payrolls->fetch_assoc()): ?>
+        <tr>
+          <td><?php echo $row['id']; ?></td>
+          <td><?php echo $row['employee_name']; ?></td>
+          <td><?php echo $row['pay_period_start']; ?></td>
+          <td><?php echo $row['pay_period_end']; ?></td>
+          <td><?php echo number_format($row['gross_pay'], 2); ?></td>
+          <td><?php echo number_format($row['net_pay'], 2); ?></td>
+          <td><?php echo number_format($row['total_deductions'], 2); ?></td>
+          <td><?php echo $row['status']; ?></td>
+          <td>
+          <a href="buttons/payslip.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-primary me-1" target="_blank">
+    Print
+          </a>
+
+            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#updatePayrollModal<?php echo $row['id']; ?>"><i class="bi"></i> Update</button>
+            <button class="btn btn-danger btn-sm"><i class="bi"></i> Archive</button>
+          </td>
+        </tr>
+      <?php endwhile; ?>
+    </tbody>
+    </table>
 
   
 
-<h2>Payrolls</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Employee Name</th>
-            <th>Pay Period Start</th>
-            <th>Pay Period End</th>
-            <th>Gross Pay</th>
-            <th>Net Pay</th>
-            <th>Total Deductions</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Sample Row -->
-        <tr>
-            <td>1</td>
-            <td>Ken</td>
-            <td>2024-10-01</td>
-            <td>2024-10-15</td>
-            <td>5000.00</td>
-            <td>4500.00</td>
-            <td>500.00</td>
-            <td>Paid</td>
-            <td>
-                <button class="btn btn-warning btn-sm"><i class="bi bi-pen"></i> Edit</button>
-                <button class="btn btn-success btn-sm"><i class="bi bi-send"></i> Send</button>
-                <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+</main>
 
-
-<h2>Payroll History</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Employee ID</th>
-            <th>Payroll ID</th>
-            <th>Payroll Date</th>
-            <th>Net Pay</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        
-        <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>2024-10-15</td>
-            <td>4500.00</td>
-            <td>Completed</td>
-            <td>
-                <button class="btn btn-danger btn-sm">Archive</button>
-            </td>
-        </tr>
-    </tbody>
-</table>        
-</main><!-- End #main -->
-
-
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; :P <strong><span></span></strong>
-    </div>
+<!-- Footer -->
+<footer id="footer" class="footer">
+  <div class="container">
     <div class="credits">
-     
+      <span>© 2024</span> 
     </div>
-  </footer><!-- End Footer -->
+  </div>
+</footer>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<!-- Bootstrap JS -->
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/chart.js/chart.umd.js"></script>
-  <script src="assets/vendor/echarts/echarts.min.js"></script>
-  <script src="assets/vendor/quill/quill.js"></script>
-  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+<script>
+  // Ensure the modal works
+  const modals = document.querySelectorAll('.modal');
+  modals.forEach(modal => new bootstrap.Modal(modal));
 
-  <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
-  <script src="customassets/customjs/signoutnotif.js"></script>
+  // Print Payroll
+  function printPayroll(id) {
+    window.open('buttons/payslip.php?id=' + id, '_blank');
+  }
+</script>
 </body>
 
 </html>
