@@ -1,8 +1,6 @@
 <?php 
 include('customassets/cnn/user.php');
 include('customassets/cnn/auditcompliance.php');
-
-
 ?>
 
 <!DOCTYPE html>
@@ -281,7 +279,7 @@ include('customassets/cnn/auditcompliance.php');
             </form>
         </div>
     </div>
-
+    
     <!-- Audit Trail Logs -->
     <div class="card shadow mt-4">
         <div class="card-header">

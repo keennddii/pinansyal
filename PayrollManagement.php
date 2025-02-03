@@ -288,7 +288,6 @@ include('customassets/cnn/user.php');
     Print
           </a>
 
-            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#updatePayrollModal<?php echo $row['id']; ?>"><i class="bi"></i> Update</button>
             <button class="btn btn-danger btn-sm"><i class="bi"></i> Archive</button>
           </td>
         </tr>

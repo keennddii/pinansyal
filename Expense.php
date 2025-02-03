@@ -1,6 +1,27 @@
 <?php 
 include('customassets/cnn/display.php');
-include('customassets/cnn/complain.php');
+include('customassets/cnn/auditcompliance.php');
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  // Get form data
+  $transaction_type = $_POST['transaction_type'];
+  $amount = $_POST['amount'];
+  $description = $_POST['description'];
+
+  // Insert into the database (adjust according to your table structure)
+  $query = "INSERT INTO transactions (transaction_type, amount, description) VALUES ('$transaction_type', '$amount', '$description')";
+  if ($conn->query($query) === TRUE) {
+      // Success message or redirect (optional)
+      echo "New transaction added successfully.";
+  } else {
+      echo "Error: " . $query . "<br>" . $conn->error;
+  }
+}
+
+// Fetch all transactions from the database
+$transactions = $con->query("SELECT * FROM transactions ORDER BY id DESC");
+
+?>
 ?>
 
 <!DOCTYPE html>
@@ -248,9 +269,35 @@ include('customassets/cnn/complain.php');
 
     <section class="section dashboard">
           <!-- Left side columns -->
-          <div class="col-lg-8">
+      
           <div class="row">
-          
+          <div class="card shadow mt-4">
+    <div class="card-header">
+        <h5>Transactions List</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Transaction Type</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $transactions->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo ucfirst($row['transaction_type']); ?></td>
+                        <td><?php echo number_format($row['amount'], 2); ?></td>
+                        <td><?php echo $row['description']; ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
     
           </div>
         </div>

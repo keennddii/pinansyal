@@ -1,5 +1,6 @@
 <?php 
 include('customassets/cnn/budgetmanagement.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -280,30 +281,33 @@ include('customassets/cnn/budgetmanagement.php');
         </table>
     </div>
 
-        <div class="container mt-5">
+    <div class="container mt-5">
         <h2>Cash Transaction</h2>
-        <form action="process_transaction.php" method="POST">
-            <div class="form-group">
-                <label for="employee_id">Employee ID:</label>
-                <input type="text" class="form-control" id="employee_id" name="employee_id" required>
-            </div>
-            <div class="form-group">
-                <label for="amount">Amount:</label>
-                <input type="number" class="form-control" id="amount" name="amount" required>
-            </div>
-            <div class="form-group">
-                <label for="method">Transaction Method:</label>
-                <select class="form-control" id="method" name="method" required>
-                    <option value="Bank">Bank</option>
-                    <option value="GCash">GCash</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="account">Account Number:</label>
-                <input type="text" class="form-control" id="account" name="account" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Transaction</button>
-        </form>
+        <form action="customassets/cnn/process_transaction.php" method="POST">
+
+    <div class="form-group">
+        <label for="employee_id">Employee ID:</label>
+        <input type="text" class="form-control" id="employee_id" name="employee_id" required>
+    </div>
+    <div class="form-group">
+        <label for="amount">Amount:</label>
+        <input type="number" class="form-control" id="amount" name="amount" required>
+    </div>
+    <div class="form-group">
+        <label for="method">Transaction Method:</label>
+        <select class="form-control" id="method" name="method" required>
+            <option value="Bank">Bank</option>
+            <option value="GCash">GCash</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="account">Account Number:</label>
+        <input type="text" class="form-control" id="account" name="account" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Transaction</button>
+</form>
+
+    
     </div>
     </div>
     </section>
