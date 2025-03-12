@@ -68,6 +68,14 @@ include('customassets/cnn/loginconn.php');
                     <div class="error-message text-danger mt-2"><?php echo $_SESSION['error_message']; ?></div>
                     <?php unset($_SESSION['error_message']); ?>
                   <?php endif; ?>
+                                    
+                  <?php if (!empty($_SESSION['error_message'])): ?>
+                    <div class="error-message text-danger mt-2" id="errorBox">
+                      <?php echo $_SESSION['error_message']; ?>
+                    </div>
+                    <script>startCountdown();</script> <!-- Start countdown -->
+                    <?php unset($_SESSION['error_message']); ?>
+                  <?php endif; ?>
 
                   <br>
                   <div class="col-12">
@@ -85,7 +93,7 @@ include('customassets/cnn/loginconn.php');
   </div>
 </main>
 
-<!-- JavaScript for Password Visibility Toggle -->
+
 <script>
   function togglePasswordVisibility() {
     const passwordField = document.getElementById('yourPassword');
@@ -100,6 +108,31 @@ include('customassets/cnn/loginconn.php');
       toggleIcon.classList.add('bi-eye');
     }
   }
+</script>
+
+<script>
+function startCountdown() {
+  var countdownElement = document.getElementById('countdown');
+  if (countdownElement) {
+    var timeLeft = parseInt(countdownElement.innerText);
+
+    var countdownInterval = setInterval(function () {
+      timeLeft--;
+      countdownElement.innerText = timeLeft;
+
+      if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("errorBox").innerHTML = "<span class='text-success'>You can login again!</span>";
+      }
+    }, 1000);
+  }
+}
+
+window.onload = function () {
+  if (document.getElementById('countdown')) {
+    startCountdown(); // Auto-start countdown if lockout exists
+  }
+};
 </script>
 
 <!-- Vendor JS Files -->

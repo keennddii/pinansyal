@@ -1,6 +1,6 @@
 <?php 
-include('customassets/cnn/display.php');
-include('customassets/cnn/complain.php');
+include('customassets/cnn/user.php');
+include('customassets/cnn/cnncollection.php');
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@ include('customassets/cnn/complain.php');
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Finance Home</title>
+  <title>Account Receivable</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
   
@@ -103,7 +103,7 @@ include('customassets/cnn/complain.php');
 </nav>
 </header>
 
-  
+
 <aside id="sidebar" class="sidebar"><!-- Start ng Side Bar -->
 
 <ul class="sidebar-nav" id="sidebar-nav">
@@ -163,141 +163,45 @@ include('customassets/cnn/complain.php');
 </a>
 
 <hr class="sidebar-divider">  
-</ul>
-</aside><!-- End Sidebar-->
+    </ul>
 
-<main id="main" class="main">
+  </aside><!-- End Sidebar-->
 
-<div class="pagetitle">
-  <h1>HomePage</h1>
-</div><!-- End Page Title -->
+  <main id="main" class="main">
 
-<section class="section dashboard">
-<div class="col-lg-10">
-<div class="row">
-      <!-- Total Revenue -->
-      <div class="col-lg-3 col-md-6">
-        <div class="card info-card revenue-card">
-          <div class="card-body">
-            <h5 class="card-title">Total Revenue</h5>
-            <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-cash-stack"></i>
-              </div>
-              <div class="ps-3">
-                <h6>$100,000</h6>
-                <span class="text-success small pt-1 fw-bold">+10%</span>
-              </div>
+    <div class="pagetitle">
+      <h1>Account Receivable</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Cash Record</h4>
             </div>
-          </div>
-        </div>
-      </div><!-- End Total Revenue -->
-
-      <!-- Total Expenses -->
-      <div class="col-lg-3 col-md-6">
-        <div class="card info-card expense-card">
-          <div class="card-body">
-            <h5 class="card-title">Total Expenses</h5>
-            <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-credit-card"></i>
-              </div>
-              <div class="ps-3">
-                <h6>$50,000</h6>
-                <span class="text-danger small pt-1 fw-bold">-5%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div><!-- End Total Expenses -->
-
-      <!-- Pending Payments -->
-      <div class="col-lg-3 col-md-6">
-        <div class="card info-card pending-card">
-          <div class="card-body">
-            <h5 class="card-title">Pending Payments</h5>
-            <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-hourglass-split"></i>
-              </div>
-              <div class="ps-3">
-                <h6>$20,000</h6>
-                <span class="text-warning small pt-1 fw-bold">Pending</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div><!-- End Pending Payments -->
-
-      <!-- Net Profit -->
-      <div class="col-lg-3 col-md-6">
-        <div class="card info-card profit-card">
-          <div class="card-body">
-            <h5 class="card-title">Net Profit</h5>
-            <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-graph-up-arrow"></i>
-              </div>
-              <div class="ps-3">
-                <h6>$30,000</h6>
-                <span class="text-success small pt-1 fw-bold">+15%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div><!-- End Net Profit -->
-    </div>
-
-<!-- Graph na dito -->
-    <div class="col-lg-6">
-          <div class="card" style="width: 1500px">
             <div class="card-body">
-              <h5 class="card-title">Revenue</h5>
-
-              <!-- Bar Chart -->
-              <canvas id="barChart" style="max-height: 600px; width: 100%;"></canvas>
-              <script src="customassets/customjs/bar.js"></script>
-              <!-- End Bar CHart -->
-
+                <input type="text" id="search" class="form-control mb-2" placeholder="Search bills...">
+                
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Account Name</th>
+                            <th>Invoice Number</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                            <th>Balance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-          </div>
         </div>
-
-    <!-- Recent Transactions Table -->
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Recent Transactions</h5>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Type</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>2025-03-03</td>
-              <td>Invoice Payment</td>
-              <td>$500</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>2025-03-02</td>
-              <td>Supplier Payment</td>
-              <td>$1,200</td>
-              <td>Pending</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
-  </section>
+</section>
 
 </main>
-
-
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -311,10 +215,9 @@ include('customassets/cnn/complain.php');
       working for the finance department of JVD Event and Travel Management,<br>Co. Unfortunately we have noticed that all the details available on this site were uploaded without proper permission and authorization to other sites. 
     </div>
     
-  </footer><!-- End Footer -->
+  </footer>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   
-  <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/chart.js/chart.umd.js"></script>
@@ -322,11 +225,13 @@ include('customassets/cnn/complain.php');
   <script src="assets/vendor/quill/quill.js"></script>
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
   
-
-  <!-- Template Main JS File -->
   <script src=assets/js/main.js></script>
   <script src="customassets/customjs/signoutnotif.js"></script>
+  <script src=customassets/customjs/collection.js></script>
+  <script src=customassets/customjs/screenshot.js></script>
+  
   
 
 </body>

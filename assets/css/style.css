@@ -228,9 +228,11 @@ h6 {
 .card-footer {
   border-color: #ebeef4;
   background-color: #fff;
-  color: #798eb3;
-  padding: 15px;
+  color: #35548a;
+  padding: 20px;
+  width: 150%;
 }
+
 
 .card-title {
   padding: 20px 0 15px 0;
@@ -250,6 +252,11 @@ h6 {
   padding: 0 20px 20px 20px;
 }
 
+.card-card {
+  padding: 0 20px 20px 20px;
+  background-color: #f7f7f7;
+  width: 150%;
+}
 .card-img-overlay {
   background-color: rgba(255, 255, 255, 0.6);
 }
@@ -636,7 +643,7 @@ h6 {
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
-  background-color: rgb(20, 74, 173);
+  background-color: #005B99;
 }
 
 .sidebar hr.sidebar-divider {
@@ -711,7 +718,19 @@ h6 {
   font-weight: 600;
   margin: 10px 0 5px 15px;
 }
-
+.nav-bar {
+  display: block;
+  padding: 12px;
+  margin: 5px;
+  background: linear-gradient(to right, #ffffff, #3b82f6); /* White to Blue Gradient */
+  border-radius: 8px;
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #000; /* Optional: Adds black border */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 .sidebar-nav .nav-link {
   display: flex;
   align-items: center;
@@ -739,13 +758,12 @@ h6 {
   color: #fff;
 }
 
-.sidebar-nav .nav-link:hover {
-  color: #fff;
-  background: #2b38a6;
+.sidebar-nav .nav-bar:hover {
+  color: blue;
 }
 
-.sidebar-nav .nav-link:hover i {
-  color: #fff;
+.sidebar-nav .nav-bar:hover i {
+  color: blue;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
@@ -1342,3 +1360,5 @@ input:checked + .slider #moon-icon {
   background-color: #222;
   color: #e6e6e6;
 }
+
+

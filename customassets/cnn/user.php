@@ -1,20 +1,20 @@
 <?php
 session_start();
 include('connections.php');
-// Check if the connection was successful
+
 if (!$con) {
     die("Failed to connect to the database: " . mysqli_connect_error());
 }
-// Check if user is logged in
+
 if (isset($_SESSION['username'])) {
-    $username = $_SESSION['username']; // User is logged in
+    $username = $_SESSION['username']; 
 } else {
-    // Handle case where session variable is not set
+    
     echo "Error: No user logged in.";
     exit;
 }
 
-// Retrieve username from database
+
 $query = $con->prepare("SELECT * FROM tbl_pinansyal_acc WHERE username = ?");
 $query->bind_param('s', $username); 
 $query->execute();
