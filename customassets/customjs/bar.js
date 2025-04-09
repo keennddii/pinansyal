@@ -1,38 +1,72 @@
-document.addEventListener("DOMContentLoaded", () => {
-    new Chart(document.querySelector('#barChart'), {
-      type: 'bar',
-      data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        datasets: [{
-          label: 'Revenue',
-          data: [15, 19, 10, 11, 16, 15, 10, 10, 10, 10, 10, 10],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 205, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(201, 203, 207, 0.2)'
-          ],
-          borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-            'rgb(201, 203, 207)'
-          ],
-          borderWidth: 4
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
+let pieChart = new Chart(document.getElementById('pieChart'), {
+  type: 'pie',
+  data: {
+      labels: ['Food', 'Transportation', 'Utilities'],
+      datasets: [{
+          data: [12000, 5000, 3000],
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+      }]
+  }
+});
+
+let barChart = new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+      labels: ['Food', 'Transportation', 'Utilities'],
+      datasets: [
+          {
+              label: 'Budgeted',
+              data: [10000, 6000, 4000],
+              backgroundColor: '#36A2EB'
+          },
+          {
+              label: 'Actual',
+              data: [12000, 5000, 3000],
+              backgroundColor: '#FF6384'
           }
-        }
+      ]
+  },
+  options: {
+      scales: {
+          y: {
+              beginAtZero: true
+          }
       }
-    });
-  });
+  }
+});
+
+let lineChart = new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: {
+      labels: ['January', 'February', 'March', 'April'],
+      datasets: [{
+          label: 'Monthly Budget Performance',
+          data: [30000, 28000, 32000, 31000],
+          borderColor: '#36A2EB',
+          fill: false
+      }]
+  },
+  options: {
+      scales: {
+          y: {
+              beginAtZero: true
+          }
+      }
+  }
+});
+
+function changeChart() {
+  var selectedChart = document.getElementById('chartType').value;
+
+  document.getElementById('pieChart').style.display = 'none';
+  document.getElementById('barChart').style.display = 'none';
+  document.getElementById('lineChart').style.display = 'none';
+
+  if (selectedChart === 'pie') {
+      document.getElementById('pieChart').style.display = 'block';
+  } else if (selectedChart === 'bar') {
+      document.getElementById('barChart').style.display = 'block';
+  } else if (selectedChart === 'line') {
+      document.getElementById('lineChart').style.display = 'block';
+  }
+}

@@ -2,7 +2,7 @@
         var button = $(event.relatedTarget); 
         var employeeId = button.data('id'); 
         var modal = $(this);
-        var deleteUrl = 'customassets/cnn/fetchdata.php?id=' + employeeId; 
+        var deleteUrl = 'customassets/cnn/adminfetchdata.php?id=' + employeeId; 
 
         modal.find('#confirmDelete').attr('href', deleteUrl);
     });

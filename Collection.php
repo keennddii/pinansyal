@@ -1,6 +1,6 @@
 <?php 
 include('customassets/cnn/user.php');
-include('customassets/cnn/cnncollection.php');
+include('customassets/collection/cnncollection.php');
 ?>
 
 <!DOCTYPE html>
@@ -34,11 +34,11 @@ include('customassets/cnn/cnncollection.php');
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
-  
+  <link rel="stylesheet" href="customassets/customcss/darkmode.css">
+  <link rel="stylesheet" href="customassets/customcss/random.css">
 </head>
 
 <body>
-
   
   <header id="header" class="header fixed-top d-flex align-items-center">
   
@@ -46,7 +46,12 @@ include('customassets/cnn/cnncollection.php');
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
     <!-- Para sa logo -->
-    
+
+    <div class="ms-auto d-flex align-items-center">
+    <!-- Dark Mode Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle">
+      <i class="bi bi-moon-fill" id="theme-icon"></i>
+    </button>
     <nav class="header-nav ms-auto">
     <ul class="d-flex align-items-center">
 
@@ -169,80 +174,162 @@ include('customassets/cnn/cnncollection.php');
 
   <main id="main" class="main">
 
-    <div class="pagetitle">
-      <h1>Collection</h1>
-    </div><!-- End Page Title -->
+<div class="pagetitle">
+  <h1>Collection</h1>
+</div><!-- End Page Title -->
 
 <section class="section dashboard">
-    <div class="col-lg-8">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h4>Company Bills Record</h4>
-            </div>
-            <div class="card-card">
-                <input type="text" id="search" class="form-control mb-2" placeholder="Search bills...">
-                
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Bill Type</th>
-                            <th>Amount</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
-                            <th>Remarks</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="billTable">
-                        <?php include('customassets/cnn/fetch_bills.php'); ?>
-                    </tbody>
-                </table>
-
-                <button class="btn btn-success" onclick="toggleForm()">Add Bill</button>
-
-                <div id="billFormContainer" style="display: none;">
-                    <h5 class="mt-4">Add New Bill</h5>
-                    <form id="billForm" method="POST" action="add_bill.php">
-                        <div class="mb-3">
-                            <label class="form-label">Bill Type</label>
-                            <select class="form-control" name="bill_type">
-                                <option>Electricity</option>
-                                <option>Internet</option>
-                                <option>Rent</option>
-                                <option>Water</option>
-                                <option>Others</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Amount</label>
-                            <input type="number" class="form-control" name="amount" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Due Date</label>
-                            <input type="date" class="form-control" name="due_date" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-control" name="status">
-                                <option>Paid</option>
-                                <option>Unpaid</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Remarks</label>
-                            <textarea class="form-control" name="remarks"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save Bill</button>
-                        <button type="button" class="btn btn-secondary" onclick="toggleForm()">Cancel</button>
-                    </form>
-                </div>
-            </div>
+  <div class="col-12">
+    
+    <!-- Toast Notification -->
+    <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+      <div id="successToast" class="toast align-items-center text-white bg-success border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body fw-bold" id="toastMessage"></div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
+      </div>
     </div>
+
+    <!-- Main Card -->
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Company Bills Record</h4>
+      </div>
+
+      <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+<!-- Button to trigger the modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#collectionModal"> Collect Payment</button>
+        </div>
+
+        <div class="table-responsive">
+        <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Client Name</th>
+                <th>Invoice No.</th>
+                <th>Amount</th>
+                <th>Payment Method</th>
+                <th>Date of Payment</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="billTable">
+            <?php include('customassets/collection/fetch_bills.php'); ?>
+        </tbody>
+        </table>
+        </div>
+
+<!-- Collection Modal Form -->
+<div class="modal fade" id="collectionModal" tabindex="-1" aria-labelledby="collectionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content shadow rounded-4">
+      
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold" id="collectionModalLabel">Collect Payment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form id="collectionForm" method="post" action="customassets\collection\add_bill.php">
+          
+          <div class="mb-3">
+            <label for="clientName" class="form-label fw-semibold">Client Name</label>
+            <input type="text" name="client_name" class="form-control rounded-3" id="clientName" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="invoiceNumber" class="form-label fw-semibold">Invoice Number</label>
+            <input type="text" name="invoice_number" class="form-control rounded-3" id="invoiceNumber" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="amountPaid" class="form-label fw-semibold">Amount Paid (₱)</label>
+            <input type="number" name="amount_paid" class="form-control rounded-3" id="amountPaid" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="paymentMethod" class="form-label fw-semibold">Payment Method</label>
+            <select name="payment_method" id="paymentMethod" class="form-select rounded-3" required>
+              <option value="" disabled selected>Select Method</option>
+              <option value="Cash">Cash</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Cheque">Cheque</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="paymentDate" class="form-label fw-semibold">Date of Payment</label>
+            <input type="date" name="payment_date" class="form-control rounded-3" id="paymentDate" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="remarks" class="form-label fw-semibold">Remarks</label>
+            <textarea name="remarks" class="form-control rounded-3" id="remarks" rows="3"></textarea>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-success rounded-3">Submit Collection</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+      </div> <!-- End Card Body -->
+
+    </div> <!-- End Card -->
+
+  </div>
 </section>
 
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this bill?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Success</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="successMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </main>
+
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -268,10 +355,25 @@ include('customassets/cnn/cnncollection.php');
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   
-  <script src=assets/js/main.js></script>
+  <script src="assets/js/main.js"></script>
   <script src="customassets/customjs/signoutnotif.js"></script>
-  <script src=customassets/customjs/collection.js></script>
-  <script src=customassets/customjs/screenshot.js></script>
+  <script src="customassets/customjs/collection.js"></script>
+  <script src="customassets/customjs/screenshot.js"></script>
+  <script src="customassets/customjs/darkmode.js"></script>
+  <script>
+  function showToast(message) {
+    document.getElementById("toastMessage").innerText = message;
+    var toast = new bootstrap.Toast(document.getElementById("successToast"));
+    toast.show();
+}
+</script>
+  <script>
+    function showSuccessModal(message) {
+    document.getElementById("successMessage").innerText = message;
+    var successModal = new bootstrap.Modal(document.getElementById("successModal"));
+    successModal.show();
+}
 
+  </script>
 </body>
 </html>

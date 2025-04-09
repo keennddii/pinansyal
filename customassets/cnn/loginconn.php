@@ -56,6 +56,28 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_SESSION['lockout_time'] <= time())
                 $_SESSION['login_attempts']++;
             }
         }
+                 // Admin login
+                 elseif (isset($_POST['admin-login'])) {
+                    $stmt = $con->prepare("SELECT * FROM tbl_pinansyal_adminacc WHERE username = ? LIMIT 1");
+                    $stmt->bind_param("s", $username);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+        
+                    if ($result->num_rows === 1) {
+                        $row = $result->fetch_assoc();
+        
+                       
+                        if ($password === $row['password']) {
+                            $_SESSION['username'] = $username;
+                            header("Location: adminhome.php"); 
+                            exit;
+                        } else {
+                            $_SESSION['error_message'] = 'Invalid admin password. Please try again.';
+                        }
+                    } else {
+                        $_SESSION['error_message'] = 'Invalid admin username. Please try again.';
+                    }
+                }
 
         // Kung umabot na sa max attempts, i-set ang lockout timer
         if ($_SESSION['login_attempts'] >= $max_attempts) {

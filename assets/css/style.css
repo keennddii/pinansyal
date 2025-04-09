@@ -8,7 +8,7 @@
 
 body {
   font-family: "Inter", sans-serif;
-  background: #f6f9ff;
+  background: #dbe2f0;
   color: #444444;
 }
 
@@ -104,7 +104,7 @@ h6 {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   border: 0;
-  box-shadow: 0 5px 30px 0 rgba(82, 63, 105, 0.2);
+  box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-menu .dropdown-header,
@@ -221,7 +221,6 @@ h6 {
   margin-bottom: 30px;
   border: none;
   border-radius: 5px;
-  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
 }
 
 .card-header,
@@ -230,9 +229,8 @@ h6 {
   background-color: #fff;
   color: #35548a;
   padding: 20px;
-  width: 150%;
+  width: 100%;
 }
-
 
 .card-title {
   padding: 20px 0 15px 0;
@@ -252,14 +250,14 @@ h6 {
   padding: 0 20px 20px 20px;
 }
 
-.card-card {
-  padding: 0 20px 20px 20px;
-  background-color: #f7f7f7;
-  width: 150%;
+.card-body2 {
+  padding: 20px 20px 20px 20px;
 }
+
 .card-img-overlay {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgb(255, 255, 255);
 }
+
 
 .alert-container {
   position: fixed;
@@ -861,11 +859,14 @@ h6 {
 /* Info Cards */
 .dashboard .info-card {
   padding-bottom: 10px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0; /* Add a light gray border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
 .dashboard .info-card h6 {
   font-size: 28px;
-  color: #012970;
+  color: #151516;
   font-weight: 700;
   margin: 0;
   padding: 0;
@@ -1277,7 +1278,7 @@ h6 {
   padding: 20px 0;
   font-size: 14px;
   transition: all 0.3s;
-  border-top: 1px solid #cddfff;
+  border-top: 1px solid #000000;
 }
 
 .footer .copyright {
@@ -1291,74 +1292,4 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
-.switch {
-  position: absolute;
-  display: inline-block;
-  width: 70px;
-  height: 35px;
-  border-radius: 15px;
-  background-color: #ccc;
-  cursor: pointer;
-  margin-left: 70px;
-}
-
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ffffff;
-  border-radius: 15px;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-#sun-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 20px;
-  color: #000000;
-  display: block;
-}
-
-#moon-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 20px;
-  color: yellow;
-  display: none;
-}
-
-input:checked + .slider {
-  background-color: #000000;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #3498db;
-}
-
-input:checked + .slider #sun-icon {
-  display: none;
-}
-
-input:checked + .slider #moon-icon {
-  display: block;
-}
-
-.dark {
-  background-color: #222;
-  color: #e6e6e6;
-}
-
 

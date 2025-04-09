@@ -1,0 +1,127 @@
+    body.dark-mode {
+    --primary-color:rgb(199, 197, 59);
+    --secondary-color: #1f1f1f;
+    --text-color: #e4e6eb;
+    --sidebar-background:rgb(37, 33, 33);
+    --background-color: #2F3136;
+  }
+
+  body.dark-mode {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  body.dark-mode .sidebar {
+    background-color: var(--sidebar-background);
+    color: var(--text-color);
+  }
+  
+  body.dark-mode .sidebar-nav .nav-link {
+    color: var(--text-color);
+  }
+
+  body.dark-mode .sidebar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .theme-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+  }
+
+  .theme-toggle:focus {
+    outline: none;
+  }
+
+  /* Idagdag mo ito sa loob ng iyong existing <style> tags */
+
+/* Para sa mga card kapag naka-dark mode - black background */
+body.dark-mode .card {
+  background-color: #121212;
+  border-color: #2d2d2d;
+}
+
+body.dark-mode .card .card-body {
+  background-color: #121212;
+}
+
+body.dark-mode .card-title {
+  color: #ffffff;
+}
+
+body.dark-mode .table {
+  color: #e4e6eb;
+}
+
+body.dark-mode .table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .footer {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Para sa mga card icons para mas makita */
+body.dark-mode .card-icon {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .text-success {
+  color: #4ade80 !important;
+}
+
+body.dark-mode .text-danger {
+  color: #f87171 !important;
+}
+
+body.dark-mode .text-warning {
+  color: #fbbf24 !important;
+}
+
+/* Para sa header at content text ng cards */
+body.dark-mode .card h6,
+body.dark-mode .card p {
+  color: #e4e6eb;
+}
+
+/* Para sa tables sa dark mode */
+body.dark-mode .table {
+    color: #050505;
+    background-color: #d6d5b3;
+  }
+  
+  body.dark-mode .table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #1a1a1a;
+  }
+  
+  body.dark-mode .table-striped>tbody>tr:nth-of-type(even) {
+    background-color: #121212;
+  }
+  
+  body.dark-mode .table th {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border-color: #2d2d2d;
+  }
+  
+  body.dark-mode .table td {
+    border-color: #2d2d2d;
+  }
+  
+  /* Para mas visible ang lahat ng status sa table */
+  body.dark-mode .table td:contains("Completed") {
+    color: #4ade80;
+  }
+  
+  body.dark-mode .table td:contains("Pending") {
+    color: #fbbf24;
+  }

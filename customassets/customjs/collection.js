@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchBills() {
-    fetch("customassets/cnn/fetch_bills.php")
+    fetch("customassets/collection/fetch_bills.php")
         .then((response) => response.text())
         .then((data) => {
             document.getElementById("billTable").innerHTML = data;
@@ -16,42 +16,40 @@ function toggleForm() {
     formContainer.style.display = formContainer.style.display === "none" ? "block" : "none";
 }
 
-// Handle form submission
-document.getElementById("billForm").addEventListener("submit", function (event) {
-    event.preventDefault();
 
-    let formData = new FormData(this);
 
-    fetch("customassets/cnn/add_bill.php", {
-        method: "POST",
-        body: formData,
-    })
-    .then((response) => response.text())
-    .then((message) => {
-        alert(message);
-        fetchBills(); // Refresh the table with updated data
-        document.getElementById("billForm").reset();
-        toggleForm();
-    })
-    .catch((error) => console.error("Error adding bill:", error));
-});
 
 // Delete a bill
-function deleteBill(id) {
-    if (!confirm("Are you sure you want to delete this bill?")) return;
+let deleteBillId = null;
 
-    fetch("customassets/cnn/delete_bill.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `id=${id}`,
-    })
-    .then((response) => response.text())
-    .then((message) => {
-        alert(message);
-        fetchBills(); // Refresh the table after deletion
-    })
-    .catch((error) => console.error("Error deleting bill:", error));
+function deleteBill(id) {
+    deleteBillId = id; // Store the ID for confirmation
+    let deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+    deleteModal.show();
 }
+
+// Handle actual deletion when user confirms
+document.getElementById("confirmDelete").addEventListener("click", function () {
+    if (deleteBillId) {
+        fetch("customassets/collection/delete_bill.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `id=${deleteBillId}`,
+        })
+        .then((response) => response.text())
+        .then((message) => {
+            showToast("✔ Bill deleted successfully!"); // Show success toast
+            fetchBills(); // Refresh table
+        })
+        .catch((error) => console.error("Error deleting bill:", error));
+        
+        let deleteModal = bootstrap.Modal.getInstance(document.getElementById("deleteModal"));
+        deleteModal.hide();
+        deleteBillId = null;
+    }
+});
+
+
 
 // Edit a bill (prefill the form with existing data)
 function editBill(id, billType, amount, dueDate, status, remarks) {
@@ -88,3 +86,10 @@ document.getElementById("search").addEventListener("keyup", function () {
         row.style.display = text.includes(filter) ? "" : "none";
     });
 });
+
+function openModal() {
+    document.getElementById('collectionModal').classList.remove('hidden');
+  }
+  function closeModal() {
+    document.getElementById('collectionModal').classList.add('hidden');
+  }
