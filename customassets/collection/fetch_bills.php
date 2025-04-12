@@ -9,16 +9,17 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         // Output each row of data as a table row
         echo "<tr>
-                <td>{$row['transaction_id']}</td>
+                <td>{$row['invoice_no']}</td> <!-- Display invoice_no once -->
                 <td>{$row['client_name']}</td>
-                <td>{$row['invoice_no']}</td>
-                <td>{$row['amount']}</td>
+                <td>₱" . number_format($row['amount'], 2) . "</td>
                 <td>{$row['payment_method']}</td>
                 <td>{$row['payment_date']}</td>
                 <td>{$row['status']}</td>
+                <td>{$row['remarks']}</td>
                 <td>
-                    <button class='btn btn-warning btn-sm' onclick='editPayment({$row['transaction_id']})'>Edit</button>
-                    <button class='btn btn-danger btn-sm' onclick='deletePayment({$row['transaction_id']})'>Delete</button>
+                    <button class='btn btn-warning btn-sm' onclick='openEditModal(\"{$row['invoice_no']}\")'>Edit</button> <!-- Use 'invoice_no' here -->
+                    <button class='btn btn-danger btn-sm' onclick='confirmDelete(\"{$row['invoice_no']}\")'>Delete</button> <!-- Use 'invoice_no' here -->
+                    <button class='btn btn-success btn-sm' onclick='markPayment(\"{$row['invoice_no']}\")'>Mark</button> <!-- Use 'invoice_no' here -->
                 </td>
             </tr>";
     }

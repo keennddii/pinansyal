@@ -1,6 +1,5 @@
 <?php
 include('customassets/cnn/user.php');
-include('customassets/AR/save_receivable.php');
 ?>
 
 <!DOCTYPE html>

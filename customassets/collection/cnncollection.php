@@ -3,7 +3,7 @@ $dbhost = "127.0.0.1";
 $dbport = 3306;
 $dbuser = "root";
 $dbpass = "";
-$dbname = "pinansyal_collection";
+$dbname = "financial_system";
 
 // Create a new mysqli object
 $con = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);

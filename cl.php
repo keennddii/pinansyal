@@ -1,6 +1,5 @@
 <?php
 include('customassets/cnn/user.php');
-include('customassets/AR/save_receivable.php');
 ?>
 
 <!DOCTYPE html>
@@ -176,114 +175,27 @@ include('customassets/AR/save_receivable.php');
 
 
 <section class="section dashboard">
-<h2>Accounts Receivable List</h2>
+<h2>Collection</h2>
 
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Invoice No.</th>
-                <th>Client Name</th>
-                <th>Booking Date</th>
-                <th>Amount Due (₱)</th>
-                <th>Due Date</th>
-                <th>Status</th>
+                <th>Amount Paid</th>
+                <th>Payment Method</th>
+                <th>Date of Payment</th>
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody id="arTable">
+        <tbody id="collectionTable">
             <?php
-            include('customassets/AR/list_receivables.php');
+                // Fetch collection data from the database
+                include('customassets/CL/fetch_collection.php');
             ?>
         </tbody>
     </table>
 </div>
-
-<!-- Add Bill Modal -->
-<div class="modal fade" id="addBillModal" tabindex="-1" aria-labelledby="addBillModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addBillModalLabel">Add New Bill</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addBillForm" method="POST">
-                    <div class="mb-3">
-                        <label for="clientName" class="form-label">Client Name</label>
-                        <input type="text" class="form-control" id="clientName" name="client_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="bookingDate" class="form-label">Booking Date</label>
-                        <input type="date" class="form-control" id="bookingDate" name="booking_date" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="amountDue" class="form-label">Amount Due</label>
-                        <input type="number" class="form-control" id="amountDue" name="amount_due" step="0.01" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="dueDate" class="form-label">Due Date</label>
-                        <input type="date" class="form-control" id="dueDate" name="due_date" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="remarks" class="form-label">Remarks</label>
-                        <textarea class="form-control" id="remarks" name="remarks"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Bill</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Button to trigger the modal -->
-<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBillModal">
-    Add New Bill
-</button>
-
-<!-- Pay Modal -->
-<div class="modal fade" id="payModal" tabindex="-1" aria-labelledby="payModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="payForm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="payModalLabel">Pay Invoice</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" id="pay_id" name="id">
-
-          <div class="mb-3">
-            <label for="payment_method" class="form-label">Payment Method</label>
-            <select class="form-select" id="payment_method" name="payment_method" required>
-              <option value="">Select method</option>
-              <option value="Cash">Cash</option>
-              <option value="Bank Transfer">Bank Transfer</option>
-              <option value="Credit Card">Credit Card</option>
-              <option value="GCash">GCash</option>
-            </select>
-          </div>
-
-          <div class="mb-3">
-            <label for="payment_date" class="form-label">Payment Date</label>
-            <input type="date" class="form-control" id="payment_date" name="payment_date" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="amount_paid" class="form-label">Amount Paid</label>
-            <input type="number" step="0.01" class="form-control" id="amount_paid" name="amount_paid" required>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Submit Payment</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
 
 <!-- View Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
@@ -299,6 +211,9 @@ include('customassets/AR/save_receivable.php');
       </div>
   </div>
 </div>
+
+
+
 
 </section>
 </main>
@@ -322,7 +237,8 @@ include('customassets/AR/save_receivable.php');
   </footer>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/chart.js/chart.umd.js"></script>
@@ -334,17 +250,11 @@ include('customassets/AR/save_receivable.php');
 
   <script src=assets/js/main.js></script>
   <script src="customassets/customjs/signoutnotif.js"></script>
-  <script src=customassets/customjs/collection.js></script>
   <script src=customassets/customjs/screenshot.js></script>
-  <script>function openPayModal(id) {
-    document.getElementById('pay_id').value = id;
-    var payModal = new bootstrap.Modal(document.getElementById('payModal'));
-    payModal.show();
-}
-
+  <script>
 function openDetailsModal(id) {
     // Ajax fetch details
-    fetch('customassets/AR/fetch_ar_details.php?id=' + id)
+    fetch('customassets/CL/get_payment_details.php?id=' + id)
     .then(response => response.text())
     .then(data => {
         document.getElementById('detailsContent').innerHTML = data;
@@ -352,22 +262,6 @@ function openDetailsModal(id) {
         detailsModal.show();
     });
 }
-
-// Handle Pay form submit
-document.getElementById('payForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    
-    fetch('customassets/AR/update_payment.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
-    .then(data => {
-        alert(data);
-        location.reload(); // Reload to refresh the table
-    });
-});
 
 </script>
     
