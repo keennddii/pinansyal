@@ -174,7 +174,7 @@
 <main id="main" class="main">
       <section class="section dashboard">
         
-      <form method="POST" action="journal_entry_add.php">
+    <form method="POST" action="journal_entry_add.php">
     <input type="date" name="date" required>
     <input type="text" name="account_code" placeholder="Account Code" required>
     <input type="text" name="description" placeholder="Description" required>

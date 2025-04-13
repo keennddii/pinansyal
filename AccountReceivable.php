@@ -20,6 +20,7 @@ include('customassets/AR/save_receivable.php');
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
@@ -177,10 +178,10 @@ include('customassets/AR/save_receivable.php');
 
 <section class="section dashboard">
 <h2>Accounts Receivable List</h2>
-
+<div class="card shadow-sm rounded-4 p-3">
 <div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-hover align-middle">
+          <thead class="table-light">
             <tr>
                 <th>Invoice No.</th>
                 <th>Client Name</th>
@@ -235,7 +236,7 @@ include('customassets/AR/save_receivable.php');
         </div>
     </div>
 </div>
-
+</div>
 <!-- Button to trigger the modal -->
 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBillModal">
     Add New Bill
