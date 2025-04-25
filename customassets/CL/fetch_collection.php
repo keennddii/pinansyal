@@ -22,7 +22,7 @@
                     <td>" . htmlspecialchars($row['payment_method']) . "</td>
                     <td>" . htmlspecialchars($row['payment_date']) . "</td>
                     <td>
-                        <button class='btn btn-primary btn-sm' onclick='openDetailsModal(".$row['id'].")'>View Details</button>
+                        <button class='btn btn-outline-primary btn-sm' onclick='openDetailsModal(".$row['id'].")'>View Details</button>
                     </td>
                 </tr>";
         }

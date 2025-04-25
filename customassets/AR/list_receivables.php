@@ -17,21 +17,16 @@ if ($result->num_rows > 0) {
 
         // ✅ PAY button (disabled if Voided)
         if ($row['status'] !== 'Voided') {
-            echo "<button class='btn btn-success btn-sm' onclick='openPayModal(".$row['id'].")'>Pay</button> ";
+            echo "<button class='btn btn-outline-success btn-sm' onclick='openPayModal(".$row['id'].")'>Pay</button> ";
         }
 
         // ✅ VIEW button
-        echo "<button class='btn btn-primary btn-sm' onclick='openDetailsModal(".$row['id'].")'>View Details</button> ";
+        echo "<button class='btn btn-outline-primary btn-sm' onclick='openDetailsModal(".$row['id'].")'>View Details</button> ";
 
         // ✅ VOID button (only if not already voided)
         if ($row['status'] !== 'Voided') {
-            echo "<form method='POST' action='AccountReceivable.php' style='display:inline-block; margin-left: 5px;' onsubmit=\"return confirm('Are you sure you want to void this invoice?');\">
-                    <input type='hidden' name='id' value='".$row['id']."'>
-                    <input type='hidden' name='void' value='1'>
-                    <button type='submit' class='btn btn-danger btn-sm'>Void</button>
-                  </form>";
+            echo "<button class='btn btn-outline-danger btn-sm' onclick='voidInvoice(" . $row['id'] . ")'>Void</button>";
         }
-
         echo "</td>";
         echo "</tr>";
     }

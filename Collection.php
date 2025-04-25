@@ -198,8 +198,9 @@ include('customassets/cnn/user.php');
     </div>
 </div>
 
-    <table class="table table-bordered">
-        <thead>
+<div class="card shadow-sm rounded-4 p-3">
+<table class="table table-hover align-middle">
+        <thead class="table-light">
             <tr>
                 <th>Invoice No.</th>
                 <th>Amount Paid</th>
@@ -215,6 +216,7 @@ include('customassets/cnn/user.php');
             ?>
         </tbody>
     </table>
+</div>
 </div>
 
 <!-- View Details Modal -->

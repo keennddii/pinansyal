@@ -251,9 +251,13 @@ include('customassets/AR/save_receivable.php');
           <h5 class="modal-title" id="payModalLabel">Pay Invoice</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <div class="modal-body">
+          <!-- Hidden -->
           <input type="hidden" id="pay_id" name="id">
 
+
+          <!-- 💵 Payment Form -->
           <div class="mb-3">
             <label for="payment_method" class="form-label">Payment Method</label>
             <select class="form-select" id="payment_method" name="payment_method" required>
@@ -276,6 +280,7 @@ include('customassets/AR/save_receivable.php');
           </div>
 
         </div>
+
         <div class="modal-footer">
           <button type="submit" class="btn btn-success">Submit Payment</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -284,6 +289,7 @@ include('customassets/AR/save_receivable.php');
     </form>
   </div>
 </div>
+
 
 
 <!-- View Details Modal -->
@@ -332,12 +338,14 @@ include('customassets/AR/save_receivable.php');
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script src=assets/js/main.js></script>
   <script src="customassets/customjs/signoutnotif.js"></script>
   <script src=customassets/customjs/collection.js></script>
   <script src=customassets/customjs/screenshot.js></script>
-  <script>function openPayModal(id) {
+  <script>
+  function openPayModal(id) {
     document.getElementById('pay_id').value = id;
     var payModal = new bootstrap.Modal(document.getElementById('payModal'));
     payModal.show();
@@ -356,19 +364,90 @@ function openDetailsModal(id) {
 
 // Handle Pay form submit
 document.getElementById('payForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    
-    fetch('customassets/AR/update_payment.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
-    .then(data => {
-        alert(data);
-        location.reload(); // Reload to refresh the table
-    });
+  e.preventDefault();
+
+  const formData = new FormData(this);
+
+  fetch('customassets/AR/update_payment.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.text())
+  .then(data => {
+    // ✅ Optional: use SweetAlert if available
+    if (typeof Swal !== "undefined") {
+      Swal.fire({
+        title: 'Success!',
+        text: data,
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('payModal'));
+        modal.hide(); // Close modal
+        location.reload(); // Reload the table
+      });
+    } else {
+      alert(data);
+      const modal = bootstrap.Modal.getInstance(document.getElementById('payModal'));
+      modal.hide();
+      location.reload();
+    }
+  })
+  .catch(error => {
+    console.error('Payment error:', error);
+    alert('Something went wrong while processing payment.');
+  });
 });
+
+function voidInvoice(id) {
+  if (typeof Swal !== "undefined") {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This invoice will be voided and journal entries reversed.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, void it!",
+      cancelButtonText: "Cancel"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch('customassets/AR/update_payment.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'id=' + encodeURIComponent(id) + '&void=1'
+        })
+        .then(res => res.text())
+        .then(data => {
+          Swal.fire({
+            title: "Voided!",
+            text: data,
+            icon: "success"
+          }).then(() => {
+            location.reload();
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          Swal.fire("Error", "Something went wrong.", "error");
+        });
+      }
+    });
+  } else {
+    // fallback confirm
+    if (confirm("Are you sure you want to void this invoice?")) {
+      const form = new FormData();
+      form.append("id", id);
+      form.append("void", "1");
+
+      fetch('customassets/AR/update_payment.php', {
+        method: "POST",
+        body: form
+      }).then(() => location.reload());
+    }
+  }
+}
+
+
+
 
 </script>
     

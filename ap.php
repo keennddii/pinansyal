@@ -1,182 +1,39 @@
 <?php
-  include('customassets/cnn/display.php');
-  include 'customassets/AP/cnnpayable.php';
-  $total_payables = 0;
-  $total_disbursed = 0;
-  $remaining_payables = 0;
-  
-  
-  $sql = "SELECT 
-              COALESCE(SUM(amount), 0) AS total,
-              COALESCE(SUM(CASE WHEN status = 'Paid' THEN amount ELSE 0 END), 0) AS disbursed
-          FROM accounts_payable";
-  $result = $conn->query($sql);
-  
-  if ($row = $result->fetch_assoc()) {
-      $total_payables = $row['total'];
-      $total_disbursed = $row['disbursed'];
-      $remaining_payables = $total_payables - $total_disbursed;
-  }
-  
-  
-  $payables = $conn->query("SELECT * FROM accounts_payable ORDER BY id DESC");
+include 'customassets/AP/cnnpayable.php';
+$total_payables = 0;
+$total_disbursed = 0;
+$remaining_payables = 0;
+
+
+$sql = "SELECT 
+            COALESCE(SUM(amount), 0) AS total,
+            COALESCE(SUM(CASE WHEN status = 'Paid' THEN amount ELSE 0 END), 0) AS disbursed
+        FROM accounts_payable";
+$result = $conn->query($sql);
+
+if ($row = $result->fetch_assoc()) {
+    $total_payables = $row['total'];
+    $total_disbursed = $row['disbursed'];
+    $remaining_payables = $total_payables - $total_disbursed;
+}
+
+
+$payables = $conn->query("SELECT * FROM accounts_payable ORDER BY id DESC");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Finance Home</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-  
-  <!-- Favicons -->
-  <link href="assets/img/jeybidi.png" rel="icon">
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-  
-
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
-  <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
-
-  
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
-
 <body>
-  <!-- Header Section -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
-    <div class="d-flex align-items-center justify-content-between">
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div>
-    <div class="ms-auto d-flex align-items-center">
-
-      <nav class="header-nav">
-        <ul class="d-flex align-items-center">
-          <!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
-          <li class="nav-item dropdown pe-3">
-            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-              <img src="assets/img/prof.jpg" alt="Profile" class="rounded-circle">
-              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
-            </a>
-
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-              <li class="dropdown-header">
-                <h6><?php echo $username; ?></h6>
-                <span><?php echo $position; ?> </span>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                  <i class="bi bi-person"></i>
-                  <span>My Profile</span>
-                </a>
-              </li>
-
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="#" onclick="openLogoutModal()">
-                  <i class="bi bi-box-arrow-right"></i>
-                  <span>Log Out</span>
-                </a>
-              </li>
-            </ul>
-
-            <div id="logoutModal" class="custom-modal" style="display: none;">
-              <div class="custom-modal-content">
-                <h2>Confirm Logout</h2>
-                <p>Are you sure you want to log out?</p>
-                <div class="modal-buttons">
-                  <button onclick="closeLogoutModal()" class="btn-no">No</button>
-                  <a href="./signout.php" class="btn-yes">Yes</a>
-                </div>
-              </div>
-            </div>
-          </li><!-- LAST LINE NUNG PROFILE  -->
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Sidebar -->
-  <aside id="sidebar" class="sidebar">
-    <ul class="sidebar-nav" id="sidebar-nav">
-      <div class="flex items-center w-full p-1 pl-6" style="display: flex; align-items: center; padding: 4px; width: 40px; background-color: transparent; height: 4rem;">
-        <div class="flex items-center justify-center" style="display: flex; align-items: center; justify-content: center;">
-          <svg width="250" height="auto" viewBox="0 0 180 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="30" font-weight="bold" font-family="Arial Black, sans-serif">
-              <tspan fill="#FFD700">J</tspan>
-              <tspan fill="#00008B">V</tspan>
-              <tspan fill="#FF0000">D</tspan>
-            </text>
-          </svg>
-        </div>
-      </div>
-      <hr class="sidebar-divider">
-      <li class="nav-item">
-        <a class="nav-bar" href="dashboard.php">
-          <i class="bi bi-house-door"></i>
-          <span>Dashboard</span>
-        </a>
-      </li>
-      <hr class="sidebar-divider">
-      <li class="nav-heading">MODULES</li>
-      <li class="nav-item">
-        <a class="nav-bar" href="GeneralLedger.php">
-          <i class="ri-contacts-book-2-line"></i>
-          <span>General Ledger</span>
-        </a>
-        <a class="nav-bar" href="AccountPayable.php">
-          <i class="ri-secure-payment-line"></i>
-          <span>Account Payable</span>
-        </a>
-        <a class="nav-bar" href="AccountReceivable.php">
-          <i class="ri-secure-payment-line"></i>
-          <span>Account Receivable</span>
-        </a>
-        <a class="nav-bar" href="Disbursement.php">
-          <i class="bi bi-layout-text-window-reverse"></i>
-          <span>Disbursement</span>
-        </a>
-        <a class="nav-bar" href="Collection.php">
-          <i class="ri-draft-line"></i>
-          <span>Collection</span>
-        </a>
-        <a class="nav-bar" href="BudgetManagement.php">
-          <i class="bi bi-currency-dollar"></i>
-          <span>Budget Management</span>
-        </a>
-        <hr class="sidebar-divider">  
-      </li>
-    </ul>
-  </aside>
-
-  <!-- Main Content -->
-  <main id="main" class="main">
-  <section class="section dashboard">
-      <h2 class="mb-4">Accounts Payable</h2>
-        <!-- Header -->
+   <!-- Main Page UI: Accounts Payable + Disbursement Dashboard -->
+<div class="container py-5">
+  <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#addPayableModal">
       <i class="bi bi-plus-circle me-1"></i> New Payable
@@ -224,7 +81,7 @@
       <thead class="table-light">
         <tr>
           <th>Payee</th>
-          <th>Remarks</th>
+          <th>Particulars</th>
           <th>Amount</th>
           <th>Due Date</th>
           <th>Status</th>
@@ -251,7 +108,7 @@
           </td>
           <td>
             <?php if ($row['status'] == 'Unpaid' || $row['status'] == 'Partially Paid'): ?>
-              <button class="btn btn-sm btn-outline-primary" onclick="openDisburseModal(<?= $row['id'] ?>)">View</button>
+              <button class="btn btn-sm btn-outline-success" onclick="openDisburseModal(<?= $row['id'] ?>)">Disburse</button>
               <button class="btn btn-sm btn-outline-danger" onclick="voidPayable(<?= $row['id'] ?>)">Void</button>
             <?php else: ?>
               <button class="btn btn-sm btn-outline-secondary" disabled>Processed</button>
@@ -271,7 +128,7 @@
   <div class="modal-dialog">
     <form id="addBillForm" method="POST" action="customassets/AP/save_payable.php">
       <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
+        <div class="modal-header">
           <h5 class="modal-title" id="addBillModalLabel">Add New Payable</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -299,6 +156,7 @@
               <option value="6">Travel Expense</option>
               <option value="7">Utilities Expense</option>
               <option value="8">Supplies Expense</option>
+              <!-- Add more accounts as needed -->
             </select>
           </div>
 
@@ -316,57 +174,56 @@
   </div>
 </div>
 
-<!-- Disbursement Details -->
+<!-- Disbursement Modal -->
 <div class="modal fade" id="disburseModal" tabindex="-1" aria-labelledby="disburseModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form id="disburseForm" method="POST">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="disburseModalLabel">Disburse Details</h5>
+          <h5 class="modal-title" id="disburseModalLabel">Disburse Payment</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="disburse_payable_id" name="payable_id">
-
+        
           <div class="alert alert-light border mb-3">
           <p class="mb-1"><strong>Original Amount:</strong> ₱<span id="modal_total_amount">0.00</span></p>
           <p class="mb-1"><strong>Total Paid:</strong> ₱<span id="modal_total_paid">0.00</span></p>
           <p class="mb-0"><strong>Remaining Balance:</strong> ₱<span id="modal_balance">0.00</span></p>
           </div>
+
+          <!-- Hidden Payable ID -->
+          <input type="hidden" id="disburse_payable_id" name="payable_id">
+
+          <div class="mb-3">
+            <label for="disbursement_date" class="form-label">Disbursement Date</label>
+            <input type="date" class="form-control" id="disbursement_date" name="disbursement_date" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="disburse_amount" class="form-label">Amount</label>
+            <input type="number" step="0.01" class="form-control" id="disburse_amount" name="disburse_amount" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="disburse_remarks" class="form-label">Remarks</label>
+            <textarea class="form-control" id="disburse_remarks" name="disburse_remarks"></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Submit Disbursement</button>
         </div>
       </div>
     </form>
   </div>
-</div>  
+</div>
 
-  </section>
-  </main>
 
-  <!-- Footer -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; FAIR WARNING
-      It is highly forbidden to take screenshots, copy and paste, or use other similar techniques to get and distribute content on other platforms.
-      <br><br>
-      NOTICE: All the financial documents and information shared on this site pertain solely for the use of the company by the financial officers and administrative staff working for the finance department of JVD Event and Travel Management, Co.
-      <br>
-      Please note that the details available on this site were uploaded without proper permission and should not be distributed.
-    </div>
-  </footer>
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/chart.js/chart.umd.js"></script>
-  <script src="assets/vendor/echarts/echarts.min.js"></script>
-  <script src="assets/vendor/quill/quill.js"></script>
-  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
-  <script src="customassets/customjs/signoutnotif.js"></script>
+</div>
+ 
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.getElementById('addBillForm').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -527,5 +384,4 @@ document.getElementById('searchInput').addEventListener('keyup', function () {
   }
 });
 </script>
-</body>
 </html>

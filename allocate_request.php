@@ -22,7 +22,7 @@ if ($result_get->num_rows > 0) {
     $row_get = $result_get->fetch_assoc();
     $requested_amount = $row_get['amount'];
 } else {
-    // If no matching request found, you might want to handle the error
+
     die("Invalid Request ID");
 }
 $stmt_get->close();
