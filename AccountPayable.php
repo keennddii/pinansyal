@@ -291,7 +291,20 @@
             <label for="due_date" class="form-label">Due Date</label>
             <input type="date" class="form-control" id="due_date" name="due_date" required>
           </div>
-
+           
+          <div class="mb-3">
+          <label for="department_io" class="form-label">Department</label>
+          <select class="form-select" id="department_id" name="department_id" required>
+            <option value="">-- Select Department --</option>
+            <?php
+              $departments = $conn->query("SELECT id, name FROM departments");
+              while ($dept = $departments->fetch_assoc()):
+            ?>
+              <option value="<?= $dept['id'] ?>"><?= htmlspecialchars($dept['name']) ?></option>
+            <?php endwhile; ?>
+          </select>
+          </div>
+          
           <div class="mb-3">
             <label for="account_id" class="form-label">Account</label>
             <select class="form-select" id="account_id" name="account_id" required>
@@ -299,9 +312,10 @@
               <option value="6">Travel Expense</option>
               <option value="7">Utilities Expense</option>
               <option value="8">Supplies Expense</option>
+              <!-- Add more accounts as needed -->
             </select>
           </div>
-
+          
           <div class="mb-3">
             <label for="remarks" class="form-label">Remarks</label>
             <textarea class="form-control" id="remarks" name="remarks"></textarea>

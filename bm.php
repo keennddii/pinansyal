@@ -1,8 +1,6 @@
 <?php
   include('customassets/cnn/display.php');
-  include 'customassets/AP/cnnpayable.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -156,100 +154,76 @@
   <!-- Main Content -->
   <main id="main" class="main">
   <section class="section dashboard">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="fw-bold">Disbursement Records</h3>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disburseModal">+ Add Disbursement</button>
-  </div>
+  <div class="container mt-5">
+  <h2 class="mb-4">Department Budget Allocation</h2>
 
   <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>Budgets Overview</span>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#budgetModal">
+        ➕ New Budget
+      </button>
+    </div>
     <div class="card-body">
-      <table class="table table-bordered table-hover table-striped align-middle">
-        <thead class="table-dark">
-        <tr>
-          <th>#</th>
-          <th>Payable ID</th>
-          <th>Date</th>
-          <th>Amount Paid</th>
-          <th>Payment Method</th>
-          <th>Remarks</th>
-        </tr>
+      <table class="table table-bordered table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Department</th>
+            <th>Year</th>
+            <th>Budget</th>
+            <th>Used</th>
+            <th>Remaining</th>
+            <th>Status</th>
+          </tr>
         </thead>
-        <tbody id="disbursementTable">
-          <!-- Dynamic disbursement rows here -->
+        <tbody>
+            <!-- Dynamic budget rows here -->
         </tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="disburseModal" tabindex="-1" aria-labelledby="disburseModalLabel" aria-hidden="true">
+<!-- 💬 Modal for Add/Edit Budget -->
+<div class="modal fade" id="budgetModal" tabindex="-1" aria-labelledby="budgetModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form id="disburseForm" class="needs-validation" novalidate>
-      <div class="modal-content shadow-lg rounded-4">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title fw-semibold" id="disburseModalLabel">Add Disbursement</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="modal-content">
+      <form id="budgetForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="budgetModalLabel">Allocate Budget</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body row g-4">
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="payable_id" class="form-label">Select Payable</label>
-              <select class="form-select" id="payable_id" name="payable_id" required>
-                <option value="">-- Select --</option>
-              </select>
-              <div class="invalid-feedback">Please select a payable.</div>
-            </div>
 
-            <div class="mb-3">
-              <label for="disbursement_date" class="form-label">Disbursement Date</label>
-              <input type="date" class="form-control" name="disbursement_date" required>
-              <div class="invalid-feedback">Please provide a date.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="payment_method" class="form-label">Payment Method</label>
-              <select class="form-select" id="payment_method" name="payment_method" required>
-                <option value="">Select method</option>
-                <option value="Cash">Cash</option>
-                <option value="Check">Check</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-              </select>
-              <div class="invalid-feedback">Please choose a method.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="disburse_amount" class="form-label">Amount</label>
-              <div class="input-group">
-                <span class="input-group-text">₱</span>
-                <input type="number" step="0.01" class="form-control" name="disburse_amount" required>
-              </div>
-              <div class="invalid-feedback">Enter a valid amount.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="disburse_remarks" class="form-label">Remarks</label>
-              <textarea class="form-control" name="disburse_remarks" rows="3" placeholder="Optional..."></textarea>
-            </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="department" class="form-label">Department</label>
+            <select id="department" class="form-select" required>
+              <option value="">Select Department</option>
+              <!-- Dynamic options here -->
+            </select>
           </div>
 
-          <div class="col-md-6">
-            <div class="p-3 bg-light border rounded-3 shadow-sm h-100">
-              <h6 class="mb-3 text-primary fw-bold">Payable Details</h6>
-              <div id="payableDetails">
-                <p class="text-muted">Select a payable to view its details.</p>
-              </div>
-            </div>
+          <div class="mb-3">
+            <label for="year" class="form-label">Year</label>
+            <input type="number" id="year" class="form-control" value="2025" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="budget" class="form-label">Budget Amount</label>
+            <input type="number" id="budget" class="form-control" required>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success px-4">Submit</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Save Budget</button>
         </div>
-      </div>
-    </form>
-  </div> 
+      </form>
+    </div>
+  </div>
+</div>
+
+ 
 
   </section>
   </main>
@@ -280,149 +254,95 @@
   <script src="assets/js/main.js"></script>
   <script src="customassets/customjs/signoutnotif.js"></script>
   <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const disburseForm = document.getElementById('disburseForm');
-  const disbursementTable = document.getElementById('disbursementTable');
-  const payableSelect = document.getElementById('payable_id');
-  const payableDetails = document.getElementById('payableDetails');
-
-  disburseForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-    try {
-      const response = await fetch('customassets/DS/save_disbursements.php', {
-        method: 'POST',
-        body: formData
+document.addEventListener('DOMContentLoaded', function() {
+  // Fetch departments
+  fetch('customassets/BM/fetch_departments.php')
+    .then(response => response.json())
+    .then(data => {
+      const departmentSelect = document.getElementById('department');
+      data.forEach(dept => {
+        const option = document.createElement('option');
+        option.value = dept.id;
+        option.textContent = dept.name;
+        departmentSelect.appendChild(option);
       });
-
-      const result = await response.text();
-      const isSuccess = result.toLowerCase().includes('successfully');
-
-      Swal.fire({
-        icon: isSuccess ? 'success' : 'error',
-        title: isSuccess ? 'Success!' : 'Oops!',
-        text: result,
-        confirmButtonColor: '#3085d6'
-      }).then(() => {
-        if (isSuccess) {
-          this.reset();
-          bootstrap.Modal.getInstance(document.getElementById('disburseModal')).hide();
-          loadDisbursementTable();
-          loadUnpaidPayables(); 
-          payableDetails.innerHTML = `<p class="text-muted">Select a payable to view its details.</p>`;
-        }
-      });
-
-
-    } catch (error) {
-      console.error('Submission error:', error);
-      Swal.fire('Error', 'Something went wrong while submitting.', 'error');
-    }
-  });
-
-  async function loadDisbursementTable() {
-    try {
-      const response = await fetch('customassets/DS/fetch_disbursements.php');
-      const data = await response.json();
-
-      disbursementTable.innerHTML = '';
-
-      if (data.length === 0) {
-        disbursementTable.innerHTML = `<tr><td colspan="6" class="text-center text-muted">No disbursements found.</td></tr>`;
-        return;
-      }
-
-      data.forEach((row, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${index + 1}</td>
-          <td>#${row.payable_id}</td>
-          <td>${row.disbursement_date}</td>
-          <td>₱${parseFloat(row.amount_paid).toFixed(2)}</td>
-          <td>${row.payment_method}</td>
-          <td>${row.remarks}</td>
-        `;
-        disbursementTable.appendChild(tr);
-      });
-    } catch (error) {
-      console.error('Error loading disbursements:', error);
-      disbursementTable.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Failed to load disbursements.</td></tr>`;
-    }
-  }
-
-  async function loadUnpaidPayables() {
-  try {
-    const res = await fetch('customassets/DS/fetch_unpaid_payables.php');
-    const data = await res.json();
-
-    payableSelect.innerHTML = '<option value="">-- Select --</option>';
-
-    data.forEach(row => {
-      const opt = document.createElement('option');
-      opt.value = row.id;
-
-      // Display only "#ID - Payee"
-      opt.textContent = `#${row.id} - ${row.payee}`;
-      
-      // Store extra data as dataset
-      opt.dataset.payee = row.payee;
-      opt.dataset.remaining = row.remaining_amount;
-      opt.dataset.due = row.due_date;
-
-      payableSelect.appendChild(opt);
+    })
+    .catch(error => {
+      console.error('Error fetching departments:', error);
     });
 
-  } catch (error) {
-    console.error('Error fetching payables:', error);
-    Swal.fire('Error', 'Unable to fetch unpaid payables.', 'error');
-  }
-}
+  // Handle budget form submission
+  const budgetForm = document.getElementById('budgetForm');
+  budgetForm.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-// Update details when selecting payable
-payableSelect.addEventListener('change', function () {
-  const selected = this.selectedOptions[0];
-  const amountInput = disburseForm.querySelector('[name="disburse_amount"]');
+    const department_id = document.getElementById('department').value;
+    const year = document.getElementById('year').value;
+    const budget = document.getElementById('budget').value;
 
-  if (!selected.value) {
-    payableDetails.innerHTML = `<p class="text-muted">Select a payable to view its details.</p>`;
-    amountInput.removeAttribute('max');
-    return;
-  }
-
-  const payee = selected.dataset.payee;
-  const remaining = parseFloat(selected.dataset.remaining).toFixed(2);
-  const due = selected.dataset.due;
-
-  payableDetails.innerHTML = `
-    <h6 class="mb-2 fw-semibold">Payee: ${payee}</h6>
-    <p><strong>Remaining Amount:</strong> ₱${remaining}</p>
-    <p><strong>Due Date:</strong> ${due}</p>
-  `;
-
-  // Set max attribute to prevent overpayment
-  amountInput.max = remaining;
-  amountInput.value = '';
-  
-  amountInput.addEventListener('input', function () {
-    if (parseFloat(this.value) > parseFloat(remaining)) {
+    fetch('customassets/BM/save_budget.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `department_id=${department_id}&year=${year}&budget=${budget}`
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
       Swal.fire({
-        icon: 'warning',
-        title: 'Amount exceeds remaining balance',
-        text: `Maximum disbursable amount is ₱${remaining}`,
+        icon: 'success',
+        title: 'Budget Saved!',
+        text: 'New budget allocation successfully added.',
+        timer: 2000,
+        showConfirmButton: false
+      }).then(() => {
+        location.reload(); // Reload page to refresh table
       });
-      this.value = remaining;
-    }
+    })
+    .catch(error => {
+      console.error('Error saving budget:', error);
+    });
   });
 });
 
+// Fetch budgets and populate table
+fetch('customassets/BM/fetch_budgets.php')
+  .then(response => response.json())
+  .then(data => {
+    const tbody = document.querySelector('table tbody');
+    tbody.innerHTML = ''; // clear existing
 
+    data.forEach(budget => {
+      const tr = document.createElement('tr');
+      
+      const remainingFormatted = parseFloat(budget.remaining_amount).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
+      const allocatedFormatted = parseFloat(budget.allocated_amount).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
+      const usedFormatted = parseFloat(budget.used_amount).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
 
-  // Initial loads
-  loadUnpaidPayables();
-  loadDisbursementTable();
-});
+      let statusBadge = '';
+      if (parseFloat(budget.remaining_amount) < 0) {
+        statusBadge = '<span class="badge bg-danger">Over</span>';
+      } else {
+        statusBadge = '<span class="badge bg-success">OK</span>';
+      }
+
+      tr.innerHTML = `
+        <td>${budget.department_name}</td>
+        <td>${budget.year}</td>
+        <td>${allocatedFormatted}</td>
+        <td>${usedFormatted}</td>
+        <td>${remainingFormatted}</td>
+        <td>${statusBadge}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  })
+  .catch(error => {
+    console.error('Error fetching budgets:', error);
+  });
 
 </script>
+
 </body>
 </html>
