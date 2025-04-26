@@ -459,9 +459,9 @@ document.getElementById('disburseForm').addEventListener('submit', function(e) {
       })
       .then(response => {
         if (!response.ok) {
-          throw new Error('Disbursement failed');
+          throw new Error('Network error');
         }
-        return response.text();
+        return response.json(); // <<--- take note JSON na!
       })
       .catch(error => {
         Swal.showValidationMessage(`Request failed: ${error}`);
@@ -470,16 +470,30 @@ document.getElementById('disburseForm').addEventListener('submit', function(e) {
     allowOutsideClick: () => !Swal.isLoading()
   }).then(result => {
     if (result.isConfirmed) {
-      Swal.fire({
-        title: 'Success!',
-        text: result.value,
-        icon: 'success'
-      }).then(() => {
-        const modal = bootstrap.Modal.getInstance(document.getElementById('disburseModal'));
-        modal.hide();
-        form.reset();
-        location.reload();
-      });
+      const response = result.value;
+      if (!response) {
+        Swal.fire('Error', 'Something went wrong.', 'error');
+        return;
+      }
+
+      if (response.status === 'success') {
+        Swal.fire({
+          title: 'Success!',
+          text: response.message,
+          icon: 'success'
+        }).then(() => {
+          const modal = bootstrap.Modal.getInstance(document.getElementById('disburseModal'));
+          modal.hide();
+          form.reset();
+          location.reload();
+        });
+      } else if (response.status === 'error') {
+        Swal.fire({
+          title: 'Error',
+          text: response.message,
+          icon: 'error'
+        });
+      }
     }
   });
 });
@@ -514,6 +528,7 @@ function voidPayable(id) {
     }
   });
 }
+
 </script>
 
 <!-- Search Script -->

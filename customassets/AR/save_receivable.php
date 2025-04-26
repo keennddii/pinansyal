@@ -2,53 +2,124 @@
 include 'cnnAR.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $today = date('Y-m-d');
+    $today  = date('Y-m-d');
+    $period = $today; // or use date('Y-m') for monthly periods
 
-    // ✅ VOID LOGIC
-    if (isset($_POST['void']) && $_POST['void'] == 1 && isset($_POST['id'])) {
+    // ───── VOID LOGIC ─────
+    if (!empty($_POST['void']) && $_POST['void'] == 1 && !empty($_POST['id'])) {
         $id = intval($_POST['id']);
 
-        $check = $conn->prepare("SELECT id FROM journal_entries 
-            WHERE module_type = 'AR' AND reference_id = ? AND remarks LIKE ?");
+        // Check if already voided
+        $check = $conn->prepare("
+            SELECT id 
+              FROM journal_entries 
+             WHERE module_type = 'AR' 
+               AND reference_id = ? 
+               AND remarks LIKE ?
+        ");
         $like = "%VOIDED%";
         $check->bind_param("is", $id, $like);
         $check->execute();
         $check_result = $check->get_result();
 
-        if ($check_result && $check_result->num_rows === 0) {
-            $fetch = $conn->prepare("SELECT invoice_no, amount_due FROM accounts_receivable WHERE id = ?");
+        if ($check_result->num_rows === 0) {
+            // Fetch invoice data
+            $fetch = $conn->prepare("
+                SELECT invoice_no, amount_due 
+                  FROM accounts_receivable 
+                 WHERE id = ?
+            ");
             $fetch->bind_param("i", $id);
             $fetch->execute();
             $row = $fetch->get_result()->fetch_assoc();
             $fetch->close();
 
             $invoice_no = $row['invoice_no'];
-            $amount = floatval($row['amount_due']);
-            $remarks = "VOIDED Invoice: $invoice_no";
+            $amount     = floatval($row['amount_due']);
+            $remarks    = "VOIDED Invoice: $invoice_no";
 
-            $update = $conn->prepare("UPDATE accounts_receivable SET status = 'Voided', amount_due = 0 WHERE id = ?");
-            if ($update) {
-                $update->bind_param("i", $id);
-                $update->execute();
-                $update->close();
+            // Mark invoice voided
+            $update = $conn->prepare("
+                UPDATE accounts_receivable 
+                   SET status = 'Voided', amount_due = 0 
+                 WHERE id = ?
+            ");
+            $update->bind_param("i", $id);
+            $update->execute();
+            $update->close();
 
-                // Journal 1: DR Service Revenue
-                $acct_service_revenue = 3;
-                $j1 = $conn->prepare("INSERT INTO journal_entries 
-                    (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
-                    VALUES (?, ?, ?, 0, 'AR', ?, ?)");
-                $j1->bind_param("sidis", $today, $acct_service_revenue, $amount, $id, $remarks);
-                $j1->execute();
-                $j1->close();
+            // Journal Entry: DR Service Revenue (account_id = 3)
+            $acct_service_revenue = 3;
+            $j1 = $conn->prepare("
+                INSERT INTO journal_entries 
+                  (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
+                VALUES (?, ?, ?, 0, 'AR', ?, ?)
+            ");
+            $j1->bind_param("sidis", $today, $acct_service_revenue, $amount, $id, $remarks);
+            $j1->execute();
+            $j1->close();
 
-                // Journal 2: CR Accounts Receivable
-                $acct_ar = 2;
-                $j2 = $conn->prepare("INSERT INTO journal_entries 
-                    (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
-                    VALUES (?, ?, 0, ?, 'AR', ?, ?)");
-                $j2->bind_param("sidis", $today, $acct_ar, $amount, $id, $remarks);
-                $j2->execute();
-                $j2->close();
+            // Journal Entry: CR Accounts Receivable (account_id = 2)
+            $acct_ar = 2;
+            $j2 = $conn->prepare("
+                INSERT INTO journal_entries 
+                  (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
+                VALUES (?, ?, 0, ?, 'AR', ?, ?)
+            ");
+            $j2->bind_param("sidis", $today, $acct_ar, $amount, $id, $remarks);
+            $j2->execute();
+            $j2->close();
+
+            // Update General Ledger for both accounts
+            $entries = [
+                ['aid' => $acct_service_revenue, 'deb' => $amount, 'cred' => 0],
+                ['aid' => $acct_ar,                'deb' => 0,       'cred' => $amount],
+            ];
+            foreach ($entries as $e) {
+                $aid  = $e['aid'];
+                $deb  = $e['deb'];
+                $cred = $e['cred'];
+
+                // Check existing
+                $chk = $conn->prepare("
+                    SELECT id, debit, credit 
+                      FROM general_ledger 
+                     WHERE account_id = ? 
+                       AND period = ?
+                ");
+                $chk->bind_param("is", $aid, $period);
+                $chk->execute();
+                $res = $chk->get_result();
+
+                if ($res->num_rows) {
+                    $lg       = $res->fetch_assoc();
+                    $nid      = $lg['id'];
+                    $nd       = $lg['debit']  + $deb;
+                    $nc       = $lg['credit'] + $cred;
+                    $nb       = $nd - $nc;
+                    $up       = $conn->prepare("
+                        UPDATE general_ledger 
+                           SET debit   = ?, 
+                               credit  = ?, 
+                               balance = ? 
+                         WHERE id = ?
+                    ");
+                    $up->bind_param("dddi", $nd, $nc, $nb, $nid);
+                    $up->execute();
+                    $up->close();
+                } else {
+                    $aname = ""; // fetch from chart_of_accounts if desired
+                    $bal   = $deb - $cred;
+                    $ins   = $conn->prepare("
+                        INSERT INTO general_ledger 
+                          (account_id, account_name, debit, credit, balance, period)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    ");
+                    $ins->bind_param("isddds", $aid, $aname, $deb, $cred, $bal, $period);
+                    $ins->execute();
+                    $ins->close();
+                }
+                $chk->close();
             }
         }
 
@@ -57,108 +128,226 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // ✅ PAYMENT LOGIC
+    // ───── PAYMENT LOGIC ─────
     if (isset($_POST['id'], $_POST['payment_method'], $_POST['payment_date'], $_POST['amount_paid'])) {
-        $id = intval($_POST['id']);
+        $id             = intval($_POST['id']);
         $payment_method = $_POST['payment_method'];
-        $payment_date = $_POST['payment_date'];
-        $amount_paid = floatval($_POST['amount_paid']);
+        $payment_date   = $_POST['payment_date'];
+        $amount_paid    = floatval($_POST['amount_paid']);
 
-        $sel = $conn->prepare("SELECT amount_due, invoice_no FROM accounts_receivable WHERE id = ?");
+        // Fetch invoice info
+        $sel = $conn->prepare("
+            SELECT amount_due, invoice_no 
+              FROM accounts_receivable 
+             WHERE id = ?
+        ");
         $sel->bind_param("i", $id);
         $sel->execute();
         $row = $sel->get_result()->fetch_assoc();
         $sel->close();
 
         $current_due = floatval($row['amount_due']);
-        $invoice_no = $row['invoice_no'];
-        $balance = $current_due - $amount_paid;
+        $invoice_no  = $row['invoice_no'];
+        $balance     = $current_due - $amount_paid;
 
+        // Update AR status
         if ($balance <= 0) {
-            $upd = $conn->prepare("UPDATE accounts_receivable SET status = 'Fully Paid', amount_due = 0 WHERE id = ?");
+            $upd = $conn->prepare("
+                UPDATE accounts_receivable 
+                   SET status = 'Fully Paid', amount_due = 0 
+                 WHERE id = ?
+            ");
             $upd->bind_param("i", $id);
         } else {
-            $upd = $conn->prepare("UPDATE accounts_receivable SET status = 'Partially Paid', amount_due = ? WHERE id = ?");
+            $upd = $conn->prepare("
+                UPDATE accounts_receivable 
+                   SET status = 'Partially Paid', amount_due = ? 
+                 WHERE id = ?
+            ");
             $upd->bind_param("di", $balance, $id);
         }
         $upd->execute();
         $upd->close();
 
-        $insert = $conn->prepare("INSERT INTO collection (invoice_id, payment_method, payment_date, amount_paid)
-                                  VALUES (?, ?, ?, ?)");
-        $insert->bind_param("issd", $id, $payment_method, $payment_date, $amount_paid);
-        $insert->execute();
+        // Insert into collection
+        $ins = $conn->prepare("
+            INSERT INTO collection 
+              (invoice_id, payment_method, payment_date, amount_paid)
+            VALUES (?, ?, ?, ?)
+        ");
+        $ins->bind_param("issd", $id, $payment_method, $payment_date, $amount_paid);
+        $ins->execute();
         $collection_id = $conn->insert_id;
-        $insert->close();
+        $ins->close();
 
         $remarks = "Payment for Invoice: $invoice_no";
 
-        // Journal 1: DR Cash
-        $acct_cash = 1;
-        $j1 = $conn->prepare("INSERT INTO journal_entries 
-            (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
-            VALUES (?, ?, ?, 0, 'COLLECTION', ?, ?)");
-        $j1->bind_param("sidis", $today, $acct_cash, $amount_paid, $collection_id, $remarks);
-        $j1->execute();
-        $j1->close();
+        // Journal entries and GL update
+        $entries = [
+            ['aid' => 1, 'deb' => $amount_paid, 'cred' => 0],     // Cash
+            ['aid' => 2, 'deb' => 0,           'cred' => $amount_paid], // AR
+        ];
+        foreach ($entries as $e) {
+            $aid  = $e['aid'];
+            $deb  = $e['deb'];
+            $cred = $e['cred'];
 
-        // Journal 2: CR Accounts Receivable
-        $acct_ar = 2;
-        $j2 = $conn->prepare("INSERT INTO journal_entries 
-            (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
-            VALUES (?, ?, 0, ?, 'COLLECTION', ?, ?)");
-        $j2->bind_param("sidis", $today, $acct_ar, $amount_paid, $collection_id, $remarks);
-        $j2->execute();
-        $j2->close();
+            $j = $conn->prepare("
+                INSERT INTO journal_entries 
+                  (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
+                VALUES (?, ?, ?, ?, 'COLLECTION', ?, ?)
+            ");
+            $j->bind_param("sidiss", $today, $aid, $deb, $cred, $collection_id, $remarks);
+            $j->execute();
+            $j->close();
+
+            // GL update/insert
+            $chk = $conn->prepare("
+                SELECT id, debit, credit 
+                  FROM general_ledger 
+                 WHERE account_id = ? 
+                   AND period = ?
+            ");
+            $chk->bind_param("is", $aid, $period);
+            $chk->execute();
+            $res = $chk->get_result();
+
+            if ($res->num_rows) {
+                $lg       = $res->fetch_assoc();
+                $nid      = $lg['id'];
+                $nd       = $lg['debit']  + $deb;
+                $nc       = $lg['credit'] + $cred;
+                $nb       = $nd - $nc;
+                $up       = $conn->prepare("
+                    UPDATE general_ledger 
+                       SET debit   = ?, 
+                           credit  = ?, 
+                           balance = ? 
+                     WHERE id = ?
+                ");
+                $up->bind_param("dddi", $nd, $nc, $nb, $nid);
+                $up->execute();
+                $up->close();
+            } else {
+                $aname = "";
+                $bal   = $deb - $cred;
+                $ins2  = $conn->prepare("
+                    INSERT INTO general_ledger 
+                      (account_id, account_name, debit, credit, balance, period)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                ");
+                $ins2->bind_param("isddds", $aid, $aname, $deb, $cred, $bal, $period);
+                $ins2->execute();
+                $ins2->close();
+            }
+            $chk->close();
+        }
 
         echo "Payment recorded.";
         exit();
     }
 
-    // ✅ CREATE INVOICE LOGIC
+    // ───── CREATE INVOICE LOGIC ─────
     if (isset($_POST['client_name'], $_POST['booking_date'], $_POST['amount_due'], $_POST['due_date'], $_POST['remarks'])) {
-        $client_name = $conn->real_escape_string($_POST['client_name']);
+        $client_name  = $conn->real_escape_string($_POST['client_name']);
         $booking_date = $conn->real_escape_string($_POST['booking_date']);
-        $amount_due = floatval($_POST['amount_due']);
-        $due_date = $conn->real_escape_string($_POST['due_date']);
-        $remarks = $conn->real_escape_string($_POST['remarks']);
+        $amount_due   = floatval($_POST['amount_due']);
+        $due_date     = $conn->real_escape_string($_POST['due_date']);
+        $remarks      = $conn->real_escape_string($_POST['remarks']);
 
-        $stmt = $conn->prepare("INSERT INTO accounts_receivable (client_name, booking_date, amount_due, due_date, remarks)
-                                VALUES (?, ?, ?, ?, ?)");
+        // Insert invoice
+        $stmt = $conn->prepare("
+            INSERT INTO accounts_receivable 
+              (client_name, booking_date, amount_due, due_date, remarks)
+            VALUES (?, ?, ?, ?, ?)
+        ");
         $stmt->bind_param("ssdss", $client_name, $booking_date, $amount_due, $due_date, $remarks);
         $stmt->execute();
         $last_id = $conn->insert_id;
         $stmt->close();
 
-        $date_today = date('Ymd');
-        $count = $conn->query("SELECT COUNT(*) AS daily_count FROM accounts_receivable WHERE DATE(created_at) = CURDATE()");
+        // Generate invoice number
+        $date_today  = date('Ymd');
+        $count       = $conn->query("
+            SELECT COUNT(*) AS daily_count 
+              FROM accounts_receivable 
+             WHERE DATE(created_at) = CURDATE()
+        ");
         $daily_count = $count->fetch_assoc()['daily_count'];
+        $invoice_no  = 'INV-' . $date_today . '-' . str_pad($daily_count, 3, '0', STR_PAD_LEFT);
 
-        $invoice_no = 'INV-' . $date_today . '-' . str_pad($daily_count, 3, '0', STR_PAD_LEFT);
-        $update_stmt = $conn->prepare("UPDATE accounts_receivable SET invoice_no = ? WHERE id = ?");
-        $update_stmt->bind_param("si", $invoice_no, $last_id);
-        $update_stmt->execute();
-        $update_stmt->close();
+        // Update invoice no
+        $upd2 = $conn->prepare("
+            UPDATE accounts_receivable 
+               SET invoice_no = ? 
+             WHERE id = ?
+        ");
+        $upd2->bind_param("si", $invoice_no, $last_id);
+        $upd2->execute();
+        $upd2->close();
 
         $journal_remarks = "Invoice: $invoice_no";
 
-        // Journal 1: DR Accounts Receivable
-        $acct_ar = 2;
-        $j1 = $conn->prepare("INSERT INTO journal_entries 
-            (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
-            VALUES (?, ?, ?, 0, 'AR', ?, ?)");
-        $j1->bind_param("sidis", $today, $acct_ar, $amount_due, $last_id, $journal_remarks);
-        $j1->execute();
-        $j1->close();
+        // Journal entries and GL update
+        $entries = [
+            ['aid' => 2, 'deb' => $amount_due, 'cred' => 0],   // AR
+            ['aid' => 3, 'deb' => 0,            'cred' => $amount_due], // Service Revenue
+        ];
+        foreach ($entries as $e) {
+            $aid  = $e['aid'];
+            $deb  = $e['deb'];
+            $cred = $e['cred'];
 
-        // Journal 2: CR Service Revenue
-        $acct_service_revenue = 3;
-        $j2 = $conn->prepare("INSERT INTO journal_entries 
-            (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
-            VALUES (?, ?, 0, ?, 'AR', ?, ?)");
-        $j2->bind_param("sidis", $today, $acct_service_revenue, $amount_due, $last_id, $journal_remarks);
-        $j2->execute();
-        $j2->close();
+            $j = $conn->prepare("
+                INSERT INTO journal_entries 
+                  (transaction_date, account_id, debit, credit, module_type, reference_id, remarks)
+                VALUES (?, ?, ?, ?, 'AR', ?, ?)
+            ");
+            $j->bind_param("sidiss", $today, $aid, $deb, $cred, $last_id, $journal_remarks);
+            $j->execute();
+            $j->close();
+
+            // GL update/insert
+            $chk = $conn->prepare("
+                SELECT id, debit, credit 
+                  FROM general_ledger 
+                 WHERE account_id = ? 
+                   AND period = ?
+            ");
+            $chk->bind_param("is", $aid, $period);
+            $chk->execute();
+            $res = $chk->get_result();
+
+            if ($res->num_rows) {
+                $lg       = $res->fetch_assoc();
+                $nid      = $lg['id'];
+                $nd       = $lg['debit']  + $deb;
+                $nc       = $lg['credit'] + $cred;
+                $nb       = $nd - $nc;
+                $up       = $conn->prepare("
+                    UPDATE general_ledger 
+                       SET debit   = ?, 
+                           credit  = ?, 
+                           balance = ? 
+                     WHERE id = ?
+                ");
+                $up->bind_param("dddi", $nd, $nc, $nb, $nid);
+                $up->execute();
+                $up->close();
+            } else {
+                $aname = "";
+                $bal   = $deb - $cred;
+                $ins2  = $conn->prepare("
+                    INSERT INTO general_ledger 
+                      (account_id, account_name, debit, credit, balance, period)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                ");
+                $ins2->bind_param("isddds", $aid, $aname, $deb, $cred, $bal, $period);
+                $ins2->execute();
+                $ins2->close();
+            }
+            $chk->close();
+        }
 
         header("Location: /pinansyal/AccountReceivable.php?success=1");
         exit();
