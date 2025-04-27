@@ -180,11 +180,12 @@
 
 <div class="forecast">
   <h3>Forecasting AI</h3>
-  <p id="predictedDisbursement">₱0.00</p>
+  <canvas id="salesForecastChart" height="150"></canvas>
+
 
 </div>
 
-<canvas id="salesForecastChart" height="100"></canvas>
+
 
 
 
@@ -221,58 +222,65 @@
     <!-- Template Main JS File -->
     <script src=assets/js/main.js></script>
     <script src="customassets/customjs/signoutnotif.js"></script>
-
-    <script>
+<script>
 $(function() {
-  // Load Forecast Data
-  $.getJSON('customassets/dashboard/forecast_sales.php', function(forecast) {
-    var labels = forecast.map(r => r.month);
-    var data   = forecast.map(r => r.predicted_sales);
+  $.getJSON('customassets/dashboard/forecast_sales.php', function(json) {
+    // Combine history + forecast
+    var labels = json.labels;             // next 6 months
+    var histLen = json.history.length;
+    // build full labels array: last hist points + next months
+    var histLabels = [], histData = [];
+    for (var i = 0; i < histLen; i++) {
+      // optional: generate historical month labels if needed
+      histLabels.push(i+1);  // or actual month names if you have them
+      histData.push(json.history[i]);
+    }
 
-    var ctx = document.getElementById('salesForecastChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar', // pwede mo rin gawing 'line' kung gusto mo
+    // full labels/data
+    var fullLabels = histLabels.concat(labels);
+    var fullData   = histData.concat(json.forecast);
+
+    new Chart(document.getElementById('salesForecastChart').getContext('2d'), {
+      type: 'line',
       data: {
-        labels: labels,
+        labels: fullLabels,
         datasets: [{
-          label: 'Predicted Sales (₱)',
-          data: data,
-          backgroundColor: 'rgba(54, 162, 235, 0.6)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 2
+          label: 'Historical Sales',
+          data: histData,
+          borderColor: 'rgba(75,192,192,1)',
+          backgroundColor: 'rgba(75,192,192,0.2)',
+          fill: false,
+        },
+        {
+          label: 'Forecasted Sales',
+          data: Array(histLen).fill(null).concat(json.forecast),
+          borderColor: 'rgba(255,99,132,1)',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderDash: [5,5],
+          fill: false,
         }]
       },
       options: {
         responsive: true,
         scales: {
           y: {
-            beginAtZero: true,
             ticks: {
-              callback: function(value) {
-                return '₱' + value.toLocaleString();
-              }
+              callback: val => '₱' + val.toLocaleString()
             }
           }
         },
         plugins: {
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                return '₱' + context.parsed.y.toLocaleString();
-              }
-            }
-          },
           title: {
             display: true,
-            text: 'Sales Forecast (Next 6 Months)'
+            text: 'Sales Forecast (Holt–Winters, next 6 months)'
           }
         }
       }
     });
   });
 });
+</script>
 
-    </script>
   </body>
 
   </html>
