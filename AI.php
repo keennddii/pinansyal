@@ -1,4 +1,4 @@
-  <?php 
+<?php 
   include('customassets/cnn/display.php');
   
   ?>
@@ -178,88 +178,16 @@
   <main id="main" class="main">
   <section class="section dashboard">
 
-    <!-- 📊 Quick Stats Cards -->
-    <div class="row g-4 mb-4">
-      <div class="col-md-3">
-        <div class="card text-white bg-primary h-100">
-          <div class="card-body">
-            <h5 class="card-title">Total Budget</h5>
-            <p class="card-text fs-4 fw-bold" id="dashboardTotalBudget">₱0.00</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-danger h-100">
-          <div class="card-body">
-            <h5 class="card-title">Used Budget</h5>
-            <p class="card-text fs-4 fw-bold" id="dashboardUsedBudget">₱0.00</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-warning h-100">
-          <div class="card-body">
-            <h5 class="card-title">Unpaid AP</h5>
-            <p class="card-text fs-4 fw-bold" id="dashboardUnpaidAP">₱0.00</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-success h-100">
-          <div class="card-body">
-            <h5 class="card-title">Total Disbursements</h5>
-            <p class="card-text fs-4 fw-bold" id="dashboardDisbursements">₱0.00</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 📈 Charts -->
-    <div class="row mb-4">
-      <div class="col-lg-6">
-        <div class="card h-100">
-          <div class="card-header">Budget Usage per Department</div>
-          <div class="card-body">
-            <canvas id="chartBudgetPerDept" height="200"></canvas>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="card h-100">
-          <div class="card-header">Monthly Expenses Trend</div>
-          <div class="card-body">
-            <canvas id="chartMonthlyExpenses" height="200"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
 <div class="forecast">
   <h3>Forecasting AI</h3>
   <p id="predictedDisbursement">₱0.00</p>
-  <canvas id="chartSalesForecast" height="100"></canvas>
 
 </div>
 
+<canvas id="salesForecastChart" height="100"></canvas>
 
-    <!-- 🔗 Quick Links -->
-    <div class="row">
-      <div class="col text-center">
-        <a href="AccountPayable.php" class="btn btn-outline-secondary me-2">
-          <i class="bi bi-secure-payment"></i> Account Payable
-        </a>
-        <a href="Disbursement.php" class="btn btn-outline-secondary me-2">
-          <i class="bi bi-cash-stack"></i> Disbursement
-        </a>
-        <a href="GeneralLedger.php" class="btn btn-outline-secondary me-2">
-          <i class="bi bi-book"></i> General Ledger
-        </a>
-        <a href="BudgetManagement.php" class="btn btn-outline-secondary">
-          <i class="bi bi-currency-dollar"></i> Budget Mgmt
-        </a>
-      </div>
-    </div>
+
+
 
   </section>
 </main>
@@ -289,97 +217,61 @@
     <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Template Main JS File -->
     <script src=assets/js/main.js></script>
     <script src="customassets/customjs/signoutnotif.js"></script>
 
     <script>
-    $(function() {
-      // 1) Quick Stats
-      $.getJSON('customassets/dashboard/totals.php', function(d) {
-        $('#dashboardTotalBudget').text('₱'+d.totalBudget.toLocaleString(undefined,{minimumFractionDigits:2}));
-        $('#dashboardUsedBudget').text('₱'+d.usedBudget.toLocaleString(undefined,{minimumFractionDigits:2}));
-        $('#dashboardUnpaidAP').text('₱'+d.unpaidAP.toLocaleString(undefined,{minimumFractionDigits:2}));
-        $('#dashboardDisbursements').text('₱'+d.totalDisbursements.toLocaleString(undefined,{minimumFractionDigits:2}));
-      });
+$(function() {
+  // Load Forecast Data
+  $.getJSON('customassets/dashboard/forecast_sales.php', function(forecast) {
+    var labels = forecast.map(r => r.month);
+    var data   = forecast.map(r => r.predicted_sales);
 
-      // 2) Budget per Dept (Bar)
-      $.getJSON('customassets/dashboard/budget_per_dept.php', function(depts) {
-        const labels    = depts.map(r=>r.department);
-        const used      = depts.map(r=>r.used);
-        const allocated = depts.map(r=>r.allocated);
-        const ctxDept = document.getElementById('chartBudgetPerDept').getContext('2d');
-        new Chart(ctxDept, {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [
-              { label:'Used',      data: used },
-              { label:'Allocated', data: allocated }
-            ]
+    var ctx = document.getElementById('salesForecastChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar', // pwede mo rin gawing 'line' kung gusto mo
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Predicted Sales (₱)',
+          data: data,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '₱' + value.toLocaleString();
+              }
+            }
           }
-        });
-      });
-
-      // 3) Monthly Expenses Trend (Line)
-      $.getJSON('customassets/dashboard/monthly_expenses.php', function(months) {
-        const labels = months.map(r=>r.month);
-        const data   = months.map(r=>r.expense);
-        const ctxExp = document.getElementById('chartMonthlyExpenses').getContext('2d');
-        new Chart(ctxExp, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [
-              { label:'Expenses', data: data }
-            ]
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return '₱' + context.parsed.y.toLocaleString();
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: 'Sales Forecast (Next 6 Months)'
           }
-        });
-      });
-
-      $(function() {
-  // 1) Fetch and display the forecasted disbursement
-  $.getJSON('customassets/dashboard/forecasting.php', function(data) {
-    $('#predictedDisbursement').text('₱' + data.predictedDisbursement.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+        }
+      }
+    });
   });
 });
 
-$.getJSON('customassets/dashboard/forecast_sales.php', function(data) {
-    var labels = data.months;
-    var salesData = data.sales;
-    var forecast = data.forecast;
-
-    // Idagdag yung forecasted month (Next Month)
-    var nextMonth = "Next Month";
-    labels.push(nextMonth);
-    salesData.push(forecast);
-
-    new Chart($('#chartSalesForecast'), {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Sales',
-                data: salesData,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-});
-
-    });
     </script>
   </body>
 
