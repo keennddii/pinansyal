@@ -35,7 +35,16 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
     <link rel="stylesheet" href="customassets/customcss/darkmode.css">
-    
+    <style>
+      .glass-card {
+    background: rgba(255, 255, 255, 0.1); /* transparent bg */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+  }
+
+    </style>
   </head>
 
   <body>
@@ -178,61 +187,81 @@
   <main id="main" class="main">
   <section class="section dashboard">
 
-    <!-- 📊 Quick Stats Cards -->
-    <div class="row g-4 mb-4">
-      <div class="col-md-3">
-        <div class="card text-white bg-primary h-100">
-          <div class="card-body">
-            <h5 class="card-title">Total Budget</h5>
-            <p class="card-text fs-4 fw-bold" id="dashboardTotalBudget">₱0.00</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-danger h-100">
-          <div class="card-body">
-            <h5 class="card-title">Used Budget</h5>
-            <p class="card-text fs-4 fw-bold" id="dashboardUsedBudget">₱0.00</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-warning h-100">
-          <div class="card-body">
-            <h5 class="card-title">Unpaid AP</h5>
-            <p class="card-text fs-4 fw-bold" id="dashboardUnpaidAP">₱0.00</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-success h-100">
-          <div class="card-body">
-            <h5 class="card-title">Total Disbursements</h5>
-            <p class="card-text fs-4 fw-bold" id="dashboardDisbursements">₱0.00</p>
-          </div>
+<!-- 📊 Quick Stats Cards (glass effect with black text and icons) -->
+<div class="row g-4 mb-4">
+  <div class="col-md-3">
+    <div class="card glass-card text-dark h-100 border-0">
+      <div class="card-body d-flex align-items-center">
+        <i class="bi bi-cash-stack fs-1 me-3 text-primary"></i>
+        <div>
+          <h6 class="card-title mb-1">Total Budget</h6>
+          <p class="fs-4 fw-bold mb-0" id="dashboardTotalBudget">₱0.00</p>
         </div>
       </div>
     </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card glass-card text-dark h-100 border-0">
+      <div class="card-body d-flex align-items-center">
+        <i class="bi bi-graph-down fs-1 me-3 text-danger"></i>
+        <div>
+          <h6 class="card-title mb-1">Used Budget</h6>
+          <p class="fs-4 fw-bold mb-0" id="dashboardUsedBudget">₱0.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card glass-card text-dark h-100 border-0">
+      <div class="card-body d-flex align-items-center">
+        <i class="bi bi-file-earmark-excel fs-1 me-3 text-warning"></i>
+        <div>
+          <h6 class="card-title mb-1">Unpaid AP</h6>
+          <p class="fs-4 fw-bold mb-0" id="dashboardUnpaidAP">₱0.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card glass-card text-dark h-100 border-0">
+      <div class="card-body d-flex align-items-center">
+        <i class="bi bi-credit-card-2-front fs-1 me-3 text-success"></i>
+        <div>
+          <h6 class="card-title mb-1">Total Disbursements</h6>
+          <p class="fs-4 fw-bold mb-0" id="dashboardDisbursements">₱0.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <!-- 📈 Charts -->
-    <div class="row mb-4">
-      <div class="col-lg-6">
-        <div class="card h-100">
-          <div class="card-header">Budget Usage per Department</div>
-          <div class="card-body">
-            <canvas id="chartBudgetPerDept" height="200"></canvas>
-          </div>
-        </div>
+
+<!-- 📈 Modern Glass-Style Charts -->
+<div class="row mb-4">
+  <div class="col-lg-6">
+    <div class="card glass-card text-dark h-100 border-0 shadow-sm">
+      <div class="card-header bg-transparent border-bottom-0 d-flex align-items-center">
+        <i class="bi bi-pie-chart-fill me-2 text-primary"></i>
+        <span class="fw-semibold">Budget Usage per Department</span>
       </div>
-      <div class="col-lg-6">
-        <div class="card h-100">
-          <div class="card-header">Monthly Expenses Trend</div>
-          <div class="card-body">
-            <canvas id="chartMonthlyExpenses" height="200"></canvas>
-          </div>
-        </div>
+      <div class="card-body">
+        <canvas id="chartBudgetPerDept" height="200"></canvas>
       </div>
     </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card glass-card text-dark h-100 border-0 shadow-sm">
+      <div class="card-header bg-transparent border-bottom-0 d-flex align-items-center">
+        <i class="bi bi-bar-chart-line-fill me-2 text-success"></i>
+        <span class="fw-semibold">Monthly Expenses Trend</span>
+      </div>
+      <div class="card-body">
+        <canvas id="chartMonthlyExpenses" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <div class="forecast">

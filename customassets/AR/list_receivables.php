@@ -12,21 +12,39 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['booking_date']) . "</td>";
         echo "<td>₱" . number_format($row['amount_due'], 2) . "</td>";
         echo "<td>" . htmlspecialchars($row['due_date']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['status']) . "</td>";
-        echo "<td>";
 
-        // ✅ PAY button (disabled if Voided)
-        if ($row['status'] !== 'Voided') {
+        $status = htmlspecialchars($row['status']);
+        $badgeClass = 'secondary';
+
+        switch ($status) {
+            case 'Unpaid':
+                $badgeClass = 'warning';
+                break;
+            case 'Partial Paid':
+                $badgeClass = 'info';
+                break;
+            case 'Fully Paid':
+                $badgeClass = 'success';
+                break;
+            case 'Voided':
+                $badgeClass = 'danger';
+                break;
+        }
+
+        echo "<td><span class='badge bg-$badgeClass'>$status</span></td>";
+
+        echo "<td>";
+        
+        if ($status !== 'Voided' && $status !== 'Fully Paid') {
             echo "<button class='btn btn-outline-success btn-sm' onclick='openPayModal(".$row['id'].")'>Pay</button> ";
         }
 
-        // ✅ VIEW button
         echo "<button class='btn btn-outline-primary btn-sm' onclick='openDetailsModal(".$row['id'].")'>View Details</button> ";
 
-        // ✅ VOID button (only if not already voided)
-        if ($row['status'] !== 'Voided') {
+        if ($status !== 'Voided' && $status !== 'Fully Paid') {
             echo "<button class='btn btn-outline-danger btn-sm' onclick='voidInvoice(" . $row['id'] . ")'>Void</button>";
         }
+
         echo "</td>";
         echo "</tr>";
     }

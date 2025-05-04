@@ -178,18 +178,32 @@
   <main id="main" class="main">
   <section class="section dashboard">
 
-<div class="forecast">
-  <h3>Forecasting AI</h3>
-  <canvas id="salesForecastChart" height="150"></canvas>
+  <div class="container mt-4">
+  <h4 class="mb-4">📈 Forecasted Sales (Historical + 6-Month Forecast)</h4>
 
 
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <canvas id="salesForecastChart" height="100"></canvas>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h5>📋 Data Table</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover" id="salesForecastTable">
+        <thead class="table-light">
+          <tr>
+            <th>Month</th>
+            <th>Amount</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
 </div>
-
-
-
-
-
-
   </section>
 </main>
 
@@ -222,63 +236,92 @@
     <!-- Template Main JS File -->
     <script src=assets/js/main.js></script>
     <script src="customassets/customjs/signoutnotif.js"></script>
-<script>
-$(function() {
-  $.getJSON('customassets/dashboard/forecast_sales.php', function(json) {
-    // Combine history + forecast
-    var labels = json.labels;             // next 6 months
-    var histLen = json.history.length;
-    // build full labels array: last hist points + next months
-    var histLabels = [], histData = [];
-    for (var i = 0; i < histLen; i++) {
-      // optional: generate historical month labels if needed
-      histLabels.push(i+1);  // or actual month names if you have them
-      histData.push(json.history[i]);
-    }
+    <script>
+fetch('customassets/dashboard/forecast_sales.php')
+  .then(res => res.json())
+  .then(data => {
+    const ctx = document.getElementById('salesForecastChart').getContext('2d');
 
-    // full labels/data
-    var fullLabels = histLabels.concat(labels);
-    var fullData   = histData.concat(json.forecast);
-
-    new Chart(document.getElementById('salesForecastChart').getContext('2d'), {
+    // Chart Configuration
+    const chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: fullLabels,
-        datasets: [{
-          label: 'Historical Sales',
-          data: histData,
-          borderColor: 'rgba(75,192,192,1)',
-          backgroundColor: 'rgba(75,192,192,0.2)',
-          fill: false,
-        },
-        {
-          label: 'Forecasted Sales',
-          data: Array(histLen).fill(null).concat(json.forecast),
-          borderColor: 'rgba(255,99,132,1)',
-          backgroundColor: 'rgba(255,99,132,0.2)',
-          borderDash: [5,5],
-          fill: false,
-        }]
+        labels: data.labels,
+        datasets: [
+          {
+            label: 'Historical',
+            data: data.history,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+            spanGaps: true
+          },
+          {
+            label: 'Forecast',
+            data: Array(data.history.length).fill(null).concat(data.forecast),
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            borderDash: [5, 5],
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+            spanGaps: true
+          }
+        ]
       },
       options: {
         responsive: true,
-        scales: {
-          y: {
-            ticks: {
-              callback: val => '₱' + val.toLocaleString()
-            }
+        plugins: {
+          legend: {
+            position: 'top'
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
           }
         },
-        plugins: {
-          title: {
-            display: true,
-            text: 'Sales Forecast (Holt–Winters, next 6 months)'
+        interaction: {
+          mode: 'nearest',
+          axis: 'x',
+          intersect: false
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Amount Paid'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Month'
+            }
           }
         }
       }
     });
+
+    // Populate Table
+    const tbody = document.querySelector('#salesForecastTable tbody');
+    data.combined.forEach(row => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${row.label}</td>
+        <td>${row.value.toLocaleString()}</td>
+        <td>
+          <span class="badge ${row.type === 'forecast' ? 'bg-warning text-dark' : 'bg-primary'}">
+            ${row.type.charAt(0).toUpperCase() + row.type.slice(1)}
+          </span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
   });
-});
+
 </script>
 
   </body>

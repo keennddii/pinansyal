@@ -1,90 +1,17 @@
 <?php
-
-session_start();
 include('customassets/cnn/loginconn.php');
-require 'vendor/autoload.php';
+// ✅ Check kung naka-login na ang user
+if (isset($_SESSION['username'])) {
+  header("Location: dashboard.php"); // Redirect sa dashboard
+  exit();
+}
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-// Prevent caching
+// ✅ Prevent browser cache (para hindi bumalik sa login page)
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 header("Expires: Thu, 01 Jan 1970 00:00:00 GMT");
 
-// OTP mailer helper
-function sendOTPEmail($toEmail, $otp, &$errorOut) {
-    $mail = new PHPMailer(true);
-    try {
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'bcpclinicmanagement@gmail.com';
-        $mail->Password   = 'fvzf ldba jroq xzjf'; 
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-
-        // Debug: itala sa error_log kung may problema
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-        $mail->Debugoutput = 'error_log';
-
-        $mail->setFrom('no-reply@yourdomain.com', 'Pinansyal System');
-        $mail->addAddress($toEmail);
-        $mail->isHTML(true);
-        $mail->Subject = 'Your Secure 2FA Code';
-        $mail->Body    = "<p>Your OTP is: <strong>{$otp}</strong> (valid 5 min)</p>";
-        $mail->AltBody = "Your OTP is: {$otp} (valid 5 min)";
-
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        $errorOut = $mail->ErrorInfo;
-        error_log("PHPMailer failed: {$mail->ErrorInfo}");
-        return false;
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sign-in'])) {
-    $username = trim($_POST['username']);
-    $password = $_POST['password'];
-
-    // 1) Validate credentials
-    $stmt = $conn->prepare("SELECT password, email FROM tbl_pinansyal_acc WHERE username = ?");
-    $stmt->bind_param('s', $username);
-    $stmt->execute();
-    $stmt->bind_result($dbPassHash, $userEmail);
-    if ($stmt->fetch() && password_verify($password, $dbPassHash)) {
-        $stmt->close();
-
-        // 2) Generate & store OTP
-        $otpCode = rand(100000, 999999);
-        $expiry  = date('Y-m-d H:i:s', strtotime('+5 minutes'));
-        $u = $conn->prepare("UPDATE tbl_pinansyal_acc SET otp_code = ?, otp_expiration = ? WHERE username = ?");
-        $u->bind_param('sss', $otpCode, $expiry, $username);
-        $u->execute();
-        $u->close();
-
-        // 3) Send email
-        $smtpError = '';
-        if (sendOTPEmail($userEmail, $otpCode, $smtpError)) {
-            $_SESSION['pending_user'] = $username;
-            header("Location: otp_verify.php");
-            exit();
-        } else {
-            $_SESSION['error_message'] = "Hindi naipadala ang OTP. (SMTP error: {$smtpError})";
-        }
-    } else {
-        $_SESSION['error_message'] = 'Maling username o password.';
-        $stmt->close();
-    }
-
-    header("Location: login.php");
-    exit();
-}
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -173,7 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sign-in'])) {
                     <div class="col-12">
                       <button class="btn btn-primary w-100" type="submit" name="sign-in">Login</button>
                       <br><br>
-                      <button class="btn btn-secondary w-100" type="submit" name="admin-login">Login as Admin</button>
                     </div>
                   </form>
                 </div>

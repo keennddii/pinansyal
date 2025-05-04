@@ -1,5 +1,5 @@
 <?php
-include 'cnnGL.php'; // Adjust the path to your database connection file
+include 'cnnGL.php';
 header('Content-Type: application/json');
 
 $sql = "

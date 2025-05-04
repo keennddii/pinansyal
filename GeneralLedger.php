@@ -31,11 +31,33 @@
     <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
     <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
-
+    <style>
+    /* Animation styles for General Ledger */
+    .animate-up {
+      color: green;
+      font-weight: bold;
+      animation: riseEffect 0.4s ease-in;
+    }
+    .animate-down {
+      color: red;
+      font-weight: bold;
+      animation: dropEffect 0.4s ease-in;
+    }
+    @keyframes riseEffect {
+      0% { transform: translateY(5px); opacity: 0.5; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes dropEffect {
+      0% { transform: translateY(-5px); opacity: 0.5; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    </style>
+    
   </head>
 
   <body>
@@ -171,37 +193,85 @@
 
    </aside><!-- End Sidebar-->
 
-<main id="main" class="main">
-<section class="section dashboard">
+   <main id="main" class="main">
+  <section class="section dashboard">
 
-  <ul class="nav nav-tabs" id="ledgerTabs">
-    <li class="nav-item"><a class="nav-link active" id="summary-tab" data-bs-toggle="tab" href="#journalentries">Journal Entries</a></li>
-    <li class="nav-item"><a class="nav-link" id="generalledeger-tab" data-bs-toggle="tab" href="#generalledger">General Ledger</a></li>
-    <li class="nav-item"><a class="nav-link" id="chartofaccounts-tab" data-bs-toggle="tab" href="#chartofaccounts">Chart of Accounts</a></li>
-  </ul>
+    <ul class="nav nav-tabs" id="ledgerTabs">
+      <li class="nav-item">
+        <a class="nav-link active" id="summary-tab" data-bs-toggle="tab" href="#journalentries">Journal Entries</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="generalledeger-tab" data-bs-toggle="tab" href="#generalledger">General Ledger</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="chartofaccounts-tab" data-bs-toggle="tab" href="#chartofaccounts">Chart of Accounts</a>
+      </li>
+    </ul>
 
-  <div class="tab-content mt-4">
+    <div class="tab-content mt-4">
 
-  <!-- JOURNAL ENTRIES -->
-<div class="tab-pane fade show active" id="journalentries">
-    <h2 class="mb-4">Journal Entries</h2>
-    <div id="journalentries-content">
-        <!-- Dynamic Journal Entries Table will be loaded here -->
+      <!-- JOURNAL ENTRIES -->
+      <div class="tab-pane fade show active" id="journalentries">
+        <div class="card shadow-sm rounded bg-white p-3">
+          <h2 class="mb-4">Journal Entries</h2>
+          <div id="journalentries-content" class="table-responsive">
+            <!-- Dynamic Journal Entries Table will be loaded here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERAL LEDGER -->
+      <div class="tab-pane fade" id="generalledger">
+        <div class="card shadow-sm rounded bg-white p-3">
+          <h2 class="mb-4">General Ledger</h2>
+          <div id="generalledger" class="table-responsive">
+            <!-- Dynamic General Ledger Table will be loaded here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- CHART OF ACCOUNTS -->
+      <div class="tab-pane fade" id="chartofaccounts">
+        <div class="card shadow-sm rounded bg-white p-3">
+          <h2 class="mb-4">Chart of Accounts</h2>
+          <div id="chartofaccounts" class="table-responsive">
+            <!-- Dynamic COA Table will be loaded here -->
+          </div>
+        </div>
+      </div>
+
     </div>
-</div>
 
- <!-- GENERAL LEDGER -->
- <div class="tab-pane fade" id="generalledger">
- <h2 class="mb-4">General Ledger</h2>
-  </div>
-<!-- CHART OF ACCOUNTS -->
-<div class="tab-pane fade" id="chartofaccounts">
-<h2 class="mb-4">Chart of Accounts</h2>
-</div>
+    <!-- Ledger Details Modal -->
+    <div class="modal fade" id="viewLedgerDetails" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ledger Details - <span id="ledgerTitle"></span></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body table-responsive">
+            <table class="table table-bordered table-hover table-sm shadow-sm rounded" id="ledgerDetailsTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                  <th>Module</th>
+                  <th>Reference</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
-</div>
-</section>
+  </section>
 </main>
+
 
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
@@ -222,7 +292,6 @@
     <i class="bi bi-arrow-up-short"></i>
 
     <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/chart.js/chart.umd.js"></script>
     <script src="assets/vendor/echarts/echarts.min.js"></script>
     <script src="assets/vendor/quill/quill.js"></script>
@@ -230,122 +299,179 @@
     <script src="assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="assets/vendor/php-email-form/validate.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <script src="assets/js/main.js"></script>
     <script src="customassets/customjs/signoutnotif.js"></script>
     <script src="customassets/customjs/screenshot.js"></script>
     <script>
-$(document).ready(function() {
-    // Fetch Journal Entries using AJAX
+let previousGL = {}; // Only once
+
+$(document).ready(function () {
+
+    // ✅ viewLedgerDetails - Move this here so it's part of this block
+    function viewLedgerDetails(accountId, accountName) {
+        $('#ledgerTitle').text(accountName);
+        $('#ledgerDetailsTable tbody').html('<tr><td colspan="6">Loading...</td></tr>');
+
+        $.ajax({
+            url: 'customassets/GL/ledger_details.php',
+            method: 'GET',
+            data: { account_id: accountId },
+            dataType: 'json',
+            success: function(data) {
+                let rows = '';
+                if (data.length === 0) {
+                    rows = '<tr><td colspan="6" class="text-center">No entries found.</td></tr>';
+                } else {
+                    data.forEach(function(e){
+                        rows += '<tr>'
+                              + '<td>' + e.transaction_date + '</td>'
+                              + '<td>₱' + e.debit.toLocaleString(undefined, {minimumFractionDigits: 2}) + '</td>'
+                              + '<td>₱' + e.credit.toLocaleString(undefined, {minimumFractionDigits: 2}) + '</td>'
+                              + '<td>' + e.module_type + '</td>'
+                              + '<td>' + e.reference_id + '</td>'
+                              + '<td>' + e.remarks + '</td>'
+                              + '</tr>';
+                    });
+                }
+
+                $('#ledgerDetailsTable tbody').html(rows);
+                const modal = new bootstrap.Modal(document.getElementById('viewLedgerDetails'));
+                modal.show();
+            },
+            error: function(e){
+                console.error('Error fetching ledger details:', e);
+                $('#ledgerDetailsTable tbody').html('<tr><td colspan="6" class="text-danger">Error loading data.</td></tr>');
+            }
+        });
+    }
+
+    window.viewLedgerDetails = viewLedgerDetails; // Make accessible outside
+
+    // JOURNAL ENTRIES
     $.ajax({
-        url: 'customassets/GL/journal_entry.php', // replace with your backend script URL
+        url: 'customassets/GL/journal_entry.php',
         method: 'GET',
         dataType: 'json',
-        success: function(data) {
-            var journalEntriesHtml = '<table class="table table-striped"><thead><tr><th>Account Name</th><th>Debit</th><th>Credit</th><th>Date</th></tr></thead><tbody>';
-            
-            data.forEach(function(entry) {
+        success: function (data) {
+            let journalEntriesHtml = '<table id="journalTable" class="table table-striped">';
+            journalEntriesHtml += '<thead><tr><th>Account Name</th><th>Debit</th><th>Credit</th><th>Module Type</th><th>Date</th></tr></thead><tbody>';
+
+            data.forEach(function (entry) {
                 journalEntriesHtml += '<tr>';
                 journalEntriesHtml += '<td>' + entry.account_name + '</td>';
                 journalEntriesHtml += '<td>' + entry.debit + '</td>';
                 journalEntriesHtml += '<td>' + entry.credit + '</td>';
+                journalEntriesHtml += '<td>' + entry.module_type + '</td>';
                 journalEntriesHtml += '<td>' + entry.transaction_date + '</td>';
                 journalEntriesHtml += '</tr>';
             });
-            
+
             journalEntriesHtml += '</tbody></table>';
-            
-            // Inject the HTML into the Journal Entries tab
-            $('#journalentries').html(journalEntriesHtml);
+            $('#journalentries-content').html(journalEntriesHtml);
+
+            $('#journalTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100],
+                ordering: false
+            });
         },
-        error: function(error) {
-            console.error("Error fetching data: ", error);
+        error: function (error) {
+            console.error("Error fetching journal entries:", error);
         }
     });
-});
 
-$(document).ready(function() {
-    // Fetch General Ledger using AJAX
+    // GENERAL LEDGER
+    function fetchGeneralLedger() {
+        $.ajax({
+            url: 'customassets/GL/general_ledger.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var html = '<table class="table table-striped"><thead>'
+                         + '<tr>'
+                         +   '<th>Account Name</th>'
+                         +   '<th>Total Debit</th>'
+                         +   '<th>Total Credit</th>'
+                         +   '<th>Balance</th>'
+                         +   '<th>Action</th>'
+                         + '</tr>'
+                         + '</thead><tbody>';
+
+                data.forEach(function(r){
+                    let key = r.account_name;
+                    let prev = previousGL[key] || { debit: 0, credit: 0, balance: 0 };
+
+                    let debitDiff = r.total_debit - prev.debit;
+                    let creditDiff = r.total_credit - prev.credit;
+                    let balanceDiff = r.balance - prev.balance;
+
+                    let debitClass = debitDiff > 0 ? 'animate-up' : (debitDiff < 0 ? 'animate-down' : '');
+                    let creditClass = creditDiff > 0 ? 'animate-up' : (creditDiff < 0 ? 'animate-down' : '');
+                    let balanceClass = balanceDiff > 0 ? 'animate-up' : (balanceDiff < 0 ? 'animate-down' : '');
+
+                    let debitIcon = debitDiff > 0 ? ' 🔺' : (debitDiff < 0 ? ' 🔻' : '');
+                    let creditIcon = creditDiff > 0 ? ' 🔺' : (creditDiff < 0 ? ' 🔻' : '');
+                    let balanceIcon = balanceDiff > 0 ? ' 🔺' : (balanceDiff < 0 ? ' 🔻' : '');
+
+                    html += '<tr>'
+                          +   '<td>'+ r.account_name +'</td>'
+                          +   '<td class="'+debitClass+'">₱'+ r.total_debit.toLocaleString(undefined,{minimumFractionDigits:2}) + debitIcon +'</td>'
+                          +   '<td class="'+creditClass+'">₱'+ r.total_credit.toLocaleString(undefined,{minimumFractionDigits:2}) + creditIcon +'</td>'
+                          +   '<td class="'+balanceClass+'">₱'+ r.balance.toLocaleString(undefined,{minimumFractionDigits:2}) + balanceIcon +'</td>'
+                          +   '<td><button class="btn btn-sm btn-primary" onclick="viewLedgerDetails('+ r.account_id +', \''+ r.account_name.replace(/'/g, "\\'") +'\')">View</button></td>'
+                          + '</tr>';
+
+                    previousGL[key] = {
+                        debit: r.total_debit,
+                        credit: r.total_credit,
+                        balance: r.balance
+                    };
+                });
+
+                html += '</tbody></table>';
+                $('#generalledger').html(html);
+            },
+            error: function(e){
+                console.error('GL fetch error:', e);
+            }
+        });
+    }
+
+    fetchGeneralLedger();
+    setInterval(fetchGeneralLedger, 5000);
+
+    // CHART OF ACCOUNTS
     $.ajax({
-  url: 'customassets/GL/general_ledger.php',
-  method: 'GET',
-  dataType: 'json',
-  success: function(data) {
-    var html = '<table class="table table-striped"><thead>'
-             + '<tr><th>Account Name</th><th>Total Debit</th><th>Total Credit</th></tr>'
-             + '</thead><tbody>';
-    data.forEach(function(r){
-      html += '<tr>'
-           +  '<td>'+ r.account_name +'</td>'
-           +  '<td>'+ r.total_debit.toFixed(2) +'</td>'
-           +  '<td>'+ r.total_credit.toFixed(2) +'</td>'
-           +  '</tr>';
+        url: 'customassets/GL/chart_of_accounts.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var html = '<table class="table table-striped"><thead>'
+                     + '<tr><th>Code</th><th>Name</th><th>Type</th><th>Description</th></tr>'
+                     + '</thead><tbody>';
+            data.forEach(function(r){
+                html += '<tr>'
+                     +  '<td>'+ r.account_code +'</td>'
+                     +  '<td>'+ r.account_name +'</td>'
+                     +  '<td>'+ r.account_type +'</td>'
+                     +  '<td>'+ r.description +'</td>'
+                     +  '</tr>';
+            });
+            html += '</tbody></table>';
+            $('#chartofaccounts').html(html);
+        },
+        error: function(e){
+            console.error('COA fetch error:', e);
+        }
     });
-    html += '</tbody></table>';
-    $('#generalledger').html(html);
-  }
-});
 
 });
-
-$(function(){
-  // fetch general ledger
-  $.ajax({
-  url: 'customassets/GL/general_ledger.php',
-  method: 'GET',
-  dataType: 'json',
-  success: function(data) {
-    var html = '<table class="table table-striped"><thead>'
-             + '<tr>'
-             +   '<th>Account Name</th>'
-             +   '<th>Total Debit</th>'
-             +   '<th>Total Credit</th>'
-             +   '<th>Balance</th>'
-             + '</tr>'
-             + '</thead><tbody>';
-    data.forEach(function(r){
-      html += '<tr>'
-           +   '<td>'+ r.account_name +'</td>'
-           +   '<td>₱'+ r.total_debit.toLocaleString(undefined,{minimumFractionDigits:2}) +'</td>'
-           +   '<td>₱'+ r.total_credit.toLocaleString(undefined,{minimumFractionDigits:2}) +'</td>'
-           +   '<td>₱'+ r.balance.toLocaleString(undefined,{minimumFractionDigits:2}) +'</td>'
-           + '</tr>';
-    });
-    html += '</tbody></table>';
-    $('#generalledger').html(html);
-  },
-  error: function(e){
-    console.error('GL fetch error:', e);
-  }
-});
+</script>
 
 
-  // fetch chart of accounts
-  $.ajax({
-    url: 'customassets/GL/chart_of_accounts.php',
-    method: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      var html = '<table class="table table-striped"><thead>'
-               + '<tr><th>Code</th><th>Name</th><th>Type</th><th>Description</th></tr>'
-               + '</thead><tbody>';
-      data.forEach(function(r){
-        html += '<tr>'
-             +  '<td>'+ r.account_code +'</td>'
-             +  '<td>'+ r.account_name +'</td>'
-             +  '<td>'+ r.account_type +'</td>'
-             +  '<td>'+ r.description +'</td>'
-             +  '</tr>';
-      });
-      html += '</tbody></table>';
-      $('#chartofaccounts').html(html);
-    },
-    error: function(e){ console.error('COA fetch error:', e); }
-  });
-});
-
-  </script>
-  
   </body>
 
   </html>

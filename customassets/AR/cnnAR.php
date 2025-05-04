@@ -1,9 +1,8 @@
 <?php
-// 1. Database connection
 $host = 'localhost';
 $user = 'root';
 $pass = '';
-$dbname = 'financial_system'; // <-- palitan mo sa database mo
+$dbname = 'financial_system';
 $conn = new mysqli($host, $user, $pass, $dbname);
 
 // Check connection
