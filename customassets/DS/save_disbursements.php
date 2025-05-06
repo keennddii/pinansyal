@@ -148,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $up->execute();
                 $up->close();
             } else {
-                $aname = ""; // optionally fetch account_name from chart_of_accounts
+                $aname = ""; 
                 $bal   = $deb - $cred;
 
                 $ins2 = $conn->prepare("

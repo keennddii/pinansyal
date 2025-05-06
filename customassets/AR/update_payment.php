@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
 
             // Journal entries
             $entries = [
+                ['aid' => 1, 'deb' => 0, 'cred' => $amount], // CR Cash (acct 1)
                 ['aid' => 3, 'deb' => $amount, 'cred' => 0],       // DR Service Revenue (acct 3)
                 ['aid' => 2, 'deb' => 0,       'cred' => $amount],  // CR Accounts Receivable (acct 2)
             ];

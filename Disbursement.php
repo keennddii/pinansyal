@@ -153,45 +153,53 @@
     </ul>
   </aside>
 
-  <!-- Main Content -->
-  <main id="main" class="main">
+<!-- Main Content -->
+<main id="main" class="main">
   <section class="section dashboard">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="fw-bold">Disbursement Records</h3>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disburseModal">+ Add Disbursement</button>
-  </div>
-
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <table class="table table-bordered table-hover table-striped align-middle">
-        <thead class="table-dark">
-        <tr>
-          <th>#</th>
-          <th>Payable ID</th>
-          <th>Date</th>
-          <th>Amount Paid</th>
-          <th>Payment Method</th>
-          <th>Remarks</th>
-        </tr>
-        </thead>
-        <tbody id="disbursementTable">
-          <!-- Dynamic disbursement rows here -->
-        </tbody>
-      </table>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-bold text-primary">Disbursement Records</h3>
+      <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#disburseModal">
+        <i class="bi bi-plus-circle"></i> Add Disbursement
+      </button>
     </div>
-  </div>
-</div>
+
+    <div class="card shadow-sm rounded-4 border-0">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="disbursementTableMain" class="table table-bordered table-hover table-striped align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Payable ID</th>
+                <th>Date</th>
+                <th>Amount Paid</th>
+                <th>Payment Method</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody id="disbursementTable">
+              <!-- Dynamic rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 
 <!-- Modal -->
 <div class="modal fade" id="disburseModal" tabindex="-1" aria-labelledby="disburseModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <form id="disburseForm" class="needs-validation" novalidate>
-      <div class="modal-content shadow-lg rounded-4">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title fw-semibold" id="disburseModalLabel">Add Disbursement</h5>
+      <div class="modal-content shadow rounded-4 border-0">
+        <div class="modal-header bg-primary text-white rounded-top-4">
+          <h5 class="modal-title fw-semibold" id="disburseModalLabel">
+            <i class="bi bi-cash-coin me-2"></i> Add Disbursement
+          </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body row g-4">
+        <div class="modal-body p-4 row g-4">
+          <!-- Left Side Form -->
           <div class="col-md-6">
             <div class="mb-3">
               <label for="payable_id" class="form-label">Select Payable</label>
@@ -233,26 +241,30 @@
             </div>
           </div>
 
+          <!-- Right Side Info -->
           <div class="col-md-6">
-            <div class="p-3 bg-light border rounded-3 shadow-sm h-100">
+            <div class="bg-light rounded-4 p-4 shadow-sm h-100 border">
               <h6 class="mb-3 text-primary fw-bold">Payable Details</h6>
               <div id="payableDetails">
-                <p class="text-muted">Select a payable to view its details.</p>
+                <p class="text-muted fst-italic">Select a payable to view its details.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success px-4">Submit</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <div class="modal-footer px-4 py-3 bg-light rounded-bottom-4">
+          <button type="submit" class="btn btn-success px-4">
+            <i class="bi bi-check-circle me-1"></i> Submit
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i> Cancel
+          </button>
         </div>
       </div>
     </form>
-  </div> 
+  </div>
+</div>
 
-  </section>
-  </main>
 
   <!-- Footer -->
   <footer id="footer" class="footer">

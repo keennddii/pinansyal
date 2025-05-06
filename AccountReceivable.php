@@ -180,7 +180,7 @@ include('customassets/AR/save_receivable.php');
 <h2>Accounts Receivable List</h2>
 <div class="card shadow-sm rounded-4 p-3">
 <div class="table-responsive">
-    <table class="table table-hover align-middle">
+    <table id="arDataTable" class="table table-hover align-middle">
           <thead class="table-light">
             <tr>
                 <th>Invoice No.</th>
@@ -361,6 +361,13 @@ function openDetailsModal(id) {
         detailsModal.show();
     });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const dataTable = new simpleDatatables.DataTable("#arDataTable", {
+    perPage: 10,
+    perPageSelect: [5, 10, 25, 50, 100]
+  });
+});
 
 // Handle Pay form submit
 document.getElementById('payForm').addEventListener('submit', function(e) {

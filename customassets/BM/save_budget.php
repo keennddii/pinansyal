@@ -1,6 +1,5 @@
 <?php
-include 'cnnbm.php'; // adjust mo path kung nasaan connection mo
-
+include 'cnnbm.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $department_id = intval($_POST['department_id']);
     $year = intval($_POST['year']);
