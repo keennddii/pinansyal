@@ -1,5 +1,5 @@
 <?php
-include 'cnnpayable.php'; // or your connection file
+include 'cnnpayable.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     $id = intval($_POST['id']);
