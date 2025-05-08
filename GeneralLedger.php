@@ -421,7 +421,7 @@ $(document).ready(function () {
                           +   '<td class="'+debitClass+'">₱'+ r.total_debit.toLocaleString(undefined,{minimumFractionDigits:2}) + debitIcon +'</td>'
                           +   '<td class="'+creditClass+'">₱'+ r.total_credit.toLocaleString(undefined,{minimumFractionDigits:2}) + creditIcon +'</td>'
                           +   '<td class="'+balanceClass+'">₱'+ r.balance.toLocaleString(undefined,{minimumFractionDigits:2}) + balanceIcon +'</td>'
-                          +   '<td><button class="btn btn-sm btn-primary" onclick="viewLedgerDetails('+ r.account_id +', \''+ r.account_name.replace(/'/g, "\\'") +'\')">View</button></td>'
+                          +   '<td><button class="btn btn-sm btn-outline-primary" onclick="viewLedgerDetails('+ r.account_id +', \''+ r.account_name.replace(/'/g, "\\'") +'\')">View Details</button></td>'
                           + '</tr>';
 
                     previousGL[key] = {
