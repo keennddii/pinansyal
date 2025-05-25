@@ -42,9 +42,12 @@
 <body>
   <!-- Header Section -->
   <header id="header" class="header fixed-top d-flex align-items-center">
+    
     <div class="d-flex align-items-center justify-content-between">
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
+    <!-- Para sa logo -->
+    
     <div class="ms-auto d-flex align-items-center">
 
       <nav class="header-nav">
@@ -53,13 +56,13 @@
           <li class="nav-item dropdown pe-3">
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src="assets/img/prof.jpg" alt="Profile" class="rounded-circle">
-              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?= htmlspecialchars($_SESSION['username']) ?></span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li class="dropdown-header">
-                <h6><?php echo $username; ?></h6>
-                <span><?php echo $position; ?> </span>
+                <h6><?= htmlspecialchars($_SESSION['username']) ?></h6>
+                <span><?= htmlspecialchars($_SESSION['role']) ?></span>
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -99,6 +102,7 @@
       </nav>
     </div>
   </header>
+
 
   <!-- Sidebar -->
   <aside id="sidebar" class="sidebar">

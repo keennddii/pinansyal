@@ -48,10 +48,6 @@
     <!-- Para sa logo -->
     
     <div class="ms-auto d-flex align-items-center">
-      <!-- Dark Mode Toggle Button -->
-      <button class="theme-toggle" id="theme-toggle">
-        <i class="bi bi-moon-fill" id="theme-icon"></i>
-      </button>
 
       <nav class="header-nav">
         <ul class="d-flex align-items-center">
@@ -59,13 +55,13 @@
           <li class="nav-item dropdown pe-3">
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src="assets/img/prof.jpg" alt="Profile" class="rounded-circle">
-              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?= htmlspecialchars($_SESSION['username']) ?></span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li class="dropdown-header">
-                <h6><?php echo $username; ?></h6>
-                <span><?php echo $position; ?> </span>
+                <h6><?= htmlspecialchars($_SESSION['username']) ?></h6>
+                <span><?= htmlspecialchars($_SESSION['role']) ?></span>
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -175,37 +171,58 @@
   </ul>
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
+<main id="main" class="main">
   <section class="section dashboard">
+    <div class="container py-4">
 
-  <div class="container mt-4">
-  <h4 class="mb-4">📈 Forecasted Sales (Historical + 6-Month Forecast)</h4>
+      <div class="row mb-4">
+        <div class="col-lg-12">
+          <h4 class="fw-bold"><i class="bi bi-graph-up-arrow text-primary"></i> Forecasted Sales (Historical + 6-Month Forecast)</h4>
+          <p class="text-muted mb-0">📅 Based on historical trends and predictive analytics</p>
+        </div>
+      </div>
 
+      <!-- Chart Card -->
+      <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+          <canvas id="salesForecastChart" height="100"></canvas>
+        </div>
+      </div>
 
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <canvas id="salesForecastChart" height="100"></canvas>
+      <!-- Table Section -->
+      <div class="card border-0 shadow mb-4">
+        <div class="card-header bg-light fw-semibold">
+          <i class="bi bi-table"></i> Forecast Breakdown
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle mb-0" id="salesForecastTable">
+              <thead class="table-light">
+                <tr>
+                  <th><i class="bi bi-calendar3"></i> Month</th>
+                  <th><i class="bi bi-cash-coin"></i> Amount</th>
+                  <th><i class="bi bi-layers-half"></i> Type</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    <!-- Summary + AI Insight Box -->
+    <div class="alert shadow-sm" style="background-color: #e8f1ff; border-left: 4px solid #0d6efd;">
+      <h6 class="fw-bold text-primary"><i class="bi bi-stars"></i> Forecast Summary & AI Suggestion</h6>
+      
+      <p class="mb-1"><strong>📊 Summary:</strong> <span id="forecast_summary"></span></p>
+      
+      <p class="mb-0"><strong>🤖 AI Insight:</strong></p>
+      <div id="ai_suggestion" class="mt-1"><?= $aiSuggestion ?></div>
     </div>
-  </div>
-
-  <div class="mt-4">
-    <h5>📋 Data Table</h5>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover" id="salesForecastTable">
-        <thead class="table-light">
-          <tr>
-            <th>Month</th>
-            <th>Amount</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
     </div>
-  </div>
-</div>
   </section>
 </main>
+
 
 
     <!-- ======= Footer ======= -->
@@ -236,13 +253,15 @@
     <!-- Template Main JS File -->
     <script src=assets/js/main.js></script>
     <script src="customassets/customjs/signoutnotif.js"></script>
-    <script>
+ <script>
 fetch('customassets/dashboard/forecast_sales.php')
   .then(res => res.json())
   .then(data => {
     const ctx = document.getElementById('salesForecastChart').getContext('2d');
+    document.getElementById('forecast_summary').textContent = data.summary;
+    document.getElementById('ai_suggestion').innerHTML = data.ai_insight;
 
-    // Chart Configuration
+
     const chart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -321,8 +340,8 @@ fetch('customassets/dashboard/forecast_sales.php')
       tbody.appendChild(tr);
     });
   });
-
 </script>
+
 
   </body>
 

@@ -44,67 +44,67 @@ include('customassets/AR/save_receivable.php');
 
 
   <header id="header" class="header fixed-top d-flex align-items-center">
-
+    
     <div class="d-flex align-items-center justify-content-between">
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
     <!-- Para sa logo -->
+    
+    <div class="ms-auto d-flex align-items-center">
 
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
+      <nav class="header-nav">
+        <ul class="d-flex align-items-center">
+          <!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
+          <li class="nav-item dropdown pe-3">
+            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+              <img src="assets/img/prof.jpg" alt="Profile" class="rounded-circle">
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?= htmlspecialchars($_SESSION['username']) ?></span>
+            </a>
 
-        <!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
-        <li class="nav-item dropdown pe-3">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+              <li class="dropdown-header">
+                <h6><?= htmlspecialchars($_SESSION['username']) ?></h6>
+                <span><?= htmlspecialchars($_SESSION['role']) ?></span>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/prof.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username; ?></span>
-          </a>
+              <li>
+                <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                  <i class="bi bi-person"></i>
+                  <span>My Profile</span>
+                </a>
+              </li>
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6><?php echo $username; ?></h6>
-              <span><?php echo $position; ?> </span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center" href="#" onclick="openLogoutModal()">
+                  <i class="bi bi-box-arrow-right"></i>
+                  <span>Log Out</span>
+                </a>
+              </li>
+            </ul>
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#" onclick="openLogoutModal()">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Log Out</span>
-              </a>
-            </li>
-          </ul>
-
-          <div id="logoutModal" class="custom-modal" style="display: none;">
-            <div class="custom-modal-content">
-              <h2>Confirm Logout</h2>
-              <p>Are you sure you want to log out?</p>
-              <div class="modal-buttons">
-                <button onclick="closeLogoutModal()" class="btn-no">No</button>
-                <a href="./signout.php" class="btn-yes">Yes</a>
+            <div id="logoutModal" class="custom-modal" style="display: none;">
+              <div class="custom-modal-content">
+                <h2>Confirm Logout</h2>
+                <p>Are you sure you want to log out?</p>
+                <div class="modal-buttons">
+                  <button onclick="closeLogoutModal()" class="btn-no">No</button>
+                  <a href="./signout.php" class="btn-yes">Yes</a>
+                </div>
               </div>
             </div>
-          </div>
-
-
-        </li><!-- LAST LINE NUNG PROFILE  -->
-      </ul>
-    </nav>
+          </li><!-- LAST LINE NUNG PROFILE  -->
+        </ul>
+      </nav>
+    </div>
   </header>
+
 
 
   <aside id="sidebar" class="sidebar"><!-- Start ng Side Bar -->

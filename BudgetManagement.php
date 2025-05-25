@@ -1,5 +1,8 @@
 <?php
   include('customassets/cnn/display.php');
+   include 'customassets/AP/cnnpayable.php';
+  $query = "SELECT * FROM payable_requests WHERE status = 'Pending'";
+$result = mysqli_query($conn, $query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,11 +41,13 @@
 </head>
 
 <body>
-  <!-- Header Section -->
   <header id="header" class="header fixed-top d-flex align-items-center">
+    
     <div class="d-flex align-items-center justify-content-between">
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
+    <!-- Para sa logo -->
+    
     <div class="ms-auto d-flex align-items-center">
 
       <nav class="header-nav">
@@ -51,13 +56,13 @@
           <li class="nav-item dropdown pe-3">
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src="assets/img/prof.jpg" alt="Profile" class="rounded-circle">
-              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?= htmlspecialchars($_SESSION['username']) ?></span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li class="dropdown-header">
-                <h6><?php echo $username; ?></h6>
-                <span><?php echo $position; ?> </span>
+                <h6><?= htmlspecialchars($_SESSION['username']) ?></h6>
+                <span><?= htmlspecialchars($_SESSION['role']) ?></span>
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -98,7 +103,7 @@
     </div>
   </header>
 
-  <!-- Sidebar -->
+
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <div class="flex items-center w-full p-1 pl-6" style="display: flex; align-items: center; padding: 4px; width: 40px; background-color: transparent; height: 4rem;">
@@ -151,7 +156,6 @@
     </ul>
   </aside>
 
-<!-- Main Content -->
 <main id="main" class="main">
 <section class="section dashboard">
 <div class="container mt-5">
@@ -215,9 +219,55 @@
       </table>
     </div>
   </div>
-
+<button class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#payableRequestsModal">
+  View Payable Requests
+</button>      
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="payableRequestsModal" tabindex="-1" aria-labelledby="payableRequestsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content shadow rounded-4 border-0">
+      <div class="modal-header bg-primary text-white rounded-top-4">
+        <h5 class="modal-title fw-bold" id="payableRequestsModalLabel">Pending Payable Requests</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive rounded shadow-sm">
+          <table class="table table-hover align-middle table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>Payee</th>
+                <th>Amount</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while ($row = mysqli_fetch_assoc($result)): ?>
+              <tr>
+                <td><?= htmlspecialchars($row['payee']) ?></td>
+                <td>₱<?= number_format($row['amount'], 2) ?></td>
+                <td><?= htmlspecialchars($row['due_date']) ?></td>
+                <td>
+                  <span class="badge bg-warning text-dark"><?= htmlspecialchars($row['status']) ?></span>
+                </td>
+                <td>
+                  <button class="btn btn-success btn-sm rounded-pill approve-btn" data-id="<?= $row['id'] ?>">Approve</button>
+                  <button class="btn btn-danger btn-sm rounded-pill reject-btn" data-id="<?= $row['id'] ?>">Reject</button>
+                </td>
+              </tr>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer bg-light rounded-bottom-4">
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- 💬 Modal for Add/Edit Budget -->
 <div class="modal fade" id="budgetModal" tabindex="-1" aria-labelledby="budgetModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -430,6 +480,48 @@ fetch('customassets/BM/fetch_budgets.php')
     console.error('Error fetching budgets:', error);
   });
 </script>
+<script>
+  document.querySelectorAll('.approve-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const id = button.getAttribute('data-id');
 
+      Swal.fire({
+        title: 'Approve Request?',
+        text: "You want to approve this?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Approve',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#6c757d'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `customassets/AP/approve_request.php?id=${id}`;
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('.reject-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const id = button.getAttribute('data-id');
+
+      Swal.fire({
+        title: 'Reject Request?',
+        text: "You want to reject this?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Reject',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `customassets/AP/reject_request.php?id=${id}`;
+        }
+      });
+    });
+  });
+</script>
 </body>
 </html>

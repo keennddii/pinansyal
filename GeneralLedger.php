@@ -2,6 +2,7 @@
   include('customassets/cnn/user.php');
   ?>
 
+
   <!DOCTYPE html>
   <html lang="en">
 
@@ -12,18 +13,12 @@
     <title>General Ledger</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
-    <!-- Favicons -->
     <link href="assets/img/jeybidi.png" rel="icon">
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet">
-
-    <!-- Vendor CSS Files -->
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -32,12 +27,11 @@
     <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-
-    <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="customassets/customcss/signoutnotif.css">
+
     <style>
-    /* Animation styles for General Ledger */
+    /* Para sa animation to na up and down sa general ledger */
     .animate-up {
       color: green;
       font-weight: bold;
@@ -62,28 +56,28 @@
 
   <body>
 
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    
+    <div class="d-flex align-items-center justify-content-between">
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+    <!-- Para sa logo -->
+    
+    <div class="ms-auto d-flex align-items-center">
 
-    <header id="header" class="header fixed-top d-flex align-items-center">
-
-      <div class="d-flex align-items-center justify-content-between">
-        <i class="bi bi-list toggle-sidebar-btn"></i>
-      </div>
-      <!-- Para sa logo -->
-
-      <nav class="header-nav ms-auto">
+      <nav class="header-nav">
         <ul class="d-flex align-items-center">
-
           <!-- DITO NAKALAGAY YUNG SA PROFILE NUNG NAKALOGIN -->
           <li class="nav-item dropdown pe-3">
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src="assets/img/prof.jpg" alt="Profile" class="rounded-circle">
-              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username; ?></span>
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?= htmlspecialchars($_SESSION['username']) ?></span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li class="dropdown-header">
-                <h6><?php echo $username; ?></h6>
-                <span><?php echo $position; ?> </span>
+                <h6><?= htmlspecialchars($_SESSION['username']) ?></h6>
+                <span><?= htmlspecialchars($_SESSION['role']) ?></span>
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -118,12 +112,11 @@
                 </div>
               </div>
             </div>
-
-
           </li><!-- LAST LINE NUNG PROFILE  -->
         </ul>
       </nav>
-    </header>
+    </div>
+  </header>
 
 
     <aside id="sidebar" class="sidebar">
@@ -191,9 +184,9 @@
         <hr class="sidebar-divider">
       </ul>
 
-   </aside><!-- End Sidebar-->
+   </aside>
 
-   <main id="main" class="main">
+<main id="main" class="main">
   <section class="section dashboard">
 
     <ul class="nav nav-tabs" id="ledgerTabs">
@@ -248,6 +241,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Ledger Details - <span id="ledgerTitle"></span></h5>
+            <button id="exportLedgerExcelBtn" class="btn btn-outline-success btn-sm ms-2 d-flex align-items-center gap-1">
+              <i class="bi bi-file-earmark-excel-fill"></i> Export Excel
+            </button>
+            <button id="exportLedgerPDFBtn" class="btn btn-outline-danger btn-sm ms-2 d-flex align-items-center gap-1">
+              <i class="bi bi-file-earmark-pdf-fill"></i> Export PDF
+            </button>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body table-responsive">
@@ -268,7 +267,7 @@
         </div>
       </div>
     </div>
-
+<span id="loggedInUser" class="d-none"><?= $_SESSION['username']; ?></span>
   </section>
 </main>
 
@@ -301,12 +300,16 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
 
     <script src="assets/js/main.js"></script>
     <script src="customassets/customjs/signoutnotif.js"></script>
     <script src="customassets/customjs/screenshot.js"></script>
     <script>
-let previousGL = {}; // Only once
+let previousGL = {};
 
 $(document).ready(function () {
 
@@ -348,7 +351,7 @@ $(document).ready(function () {
         });
     }
 
-    window.viewLedgerDetails = viewLedgerDetails; // Make accessible outside
+    window.viewLedgerDetails = viewLedgerDetails;
 
     // JOURNAL ENTRIES
     $.ajax({
@@ -470,7 +473,130 @@ $(document).ready(function () {
 
 });
 </script>
+<script>
+$('#exportLedgerPDFBtn').on('click', function () {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const title = $('#ledgerTitle').text().trim();
+    const date = new Date().toLocaleDateString();
+    const preparedBy = $('#loggedInUser').text().trim() || "Finance Team";
 
+    // HEADER - Company Info
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+    doc.text("JVD Classic Travel and Tours", 14, 15);
+    doc.setFontSize(10);
+    doc.text("UNIT 6 - Aryanna Village Center", 14, 21);
+    doc.text("Brgy 175. Susano Road Camarin, Caloocan City, Philippines", 14, 27);
+    doc.text("Contact: 0975 058 0829 | Email: jvdclassic@gmail.com", 14, 33);
+
+    // Divider
+    doc.setLineWidth(0.5);
+    doc.line(14, 36, 196, 36);
+
+    // Title and metadata
+    doc.setFontSize(12);
+    doc.text(`Ledger Report: ${title}`, 14, 44);
+    doc.setFontSize(10);
+    doc.text(`Date Generated: ${date}`, 14, 50);
+    doc.text(`Prepared By: ${preparedBy}`, 14, 56);
+
+    // Prepare table data
+    const head = [['Date', 'Debit (₱)', 'Credit (₱)', 'Module', 'Reference', 'Remarks']];
+    const rows = [];
+    let totalDebit = 0;
+    let totalCredit = 0;
+
+    $('#ledgerDetailsTable tbody tr').each(function () {
+        const row = [];
+        let debit = 0;
+        let credit = 0;
+
+        $(this).find('td').each(function (index) {
+            let text = $(this).text().trim();
+
+            // Remove any +, - or ₱ signs for clean number parsing
+            if (index === 1 || index === 2) {
+                text = text.replace(/[^0-9.-]+/g, '').trim();
+                const amount = parseFloat(text) || 0;
+
+                if (index === 1) {
+                    totalDebit += amount;
+                    row.push(amount.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+                }
+                if (index === 2) {
+                    totalCredit += amount;
+                    row.push(amount.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+                }
+            } else {
+                row.push(text);
+            }
+        });
+
+        rows.push(row);
+    });
+
+    if (rows.length === 0) {
+        alert("No data available to export.");
+        return;
+    }
+
+    // Create the table
+    doc.autoTable({
+        startY: 64,
+        head: head,
+        body: rows,
+        theme: 'grid',
+        styles: {
+            font: 'helvetica',
+            fontSize: 9,
+            cellPadding: 3,
+            valign: 'middle',
+        },
+        headStyles: {
+            fillColor: [40, 116, 166],
+            textColor: 255,
+            fontStyle: 'bold',
+            fontSize: 10,
+        },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+    });
+
+    // Add totals below the table
+    const finalY = doc.lastAutoTable.finalY + 10;
+    doc.setFontSize(10);
+    doc.setFont(undefined, 'bold');
+    doc.text(`TOTAL DEBIT: ₱${totalDebit.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, 14, finalY);
+    doc.text(`TOTAL CREDIT: ₱${totalCredit.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, 14, finalY + 6);
+
+    // Optional Signature Section
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'normal');
+    doc.text("Prepared By:", 14, finalY + 20);
+    doc.line(35, finalY + 20, 100, finalY + 20); // line for signature
+    doc.text(preparedBy, 36, finalY + 25);
+
+    // Save PDF
+    doc.save(`${title.replace(/\s+/g, '_')}_LedgerDetails.pdf`);
+});
+</script>
+
+
+<script>
+  $('#exportLedgerExcelBtn').on('click', function () {
+    const title = $('#ledgerTitle').text().trim().replace(/\s+/g, '_') + '_LedgerDetails';
+    const table = document.getElementById("ledgerDetailsTable");
+
+    if (!table || table.rows.length <= 1) {
+        alert("No data available to export.");
+        return;
+    }
+
+    let wb = XLSX.utils.table_to_book(table, { sheet: "Ledger Details" });
+    XLSX.writeFile(wb, `${title}.xlsx`);
+});
+
+</script>
 
   </body>
 

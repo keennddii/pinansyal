@@ -10,9 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $department_id = isset($_POST['department_id']) ? intval($_POST['department_id']) : null;
     $remarks       = trim($_POST['remarks']);
     $date_today    = date('Y-m-d');
-    $period        = $date_today;         // or date('Y-m') if you want monthly
+    $period        = $date_today;
 
-    // Validate required fields
     if (empty($payee) || $amount <= 0 || empty($due_date) || empty($account_id)) {
         echo "Invalid input. Please complete all required fields.";
         exit;
@@ -31,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $budgetResult = $budgetQuery->get_result();
 
         if ($budgetResult->num_rows > 0) {
-            $budgetRow       = $budgetResult->fetch_assoc();
+            $budgetRow = $budgetResult->fetch_assoc();
             $remaining_budget = $budgetRow['remaining_budget'];
             if ($remaining_budget < $amount) {
                 echo "Insufficient Department Budget.";
@@ -44,43 +43,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $budgetQuery->close();
     }
 
-    // Insert into accounts_payable
+    // ✅ Insert into accounts_payable
     $stmt = $conn->prepare("
         INSERT INTO accounts_payable 
-          (payee, amount, due_date, account_id, department_id, remarks) 
+            (payee, amount, due_date, account_id, department_id, remarks) 
         VALUES (?, ?, ?, ?, ?, ?)
     ");
-    if (!$stmt) {
-        echo "Prepare failed: " . $conn->error;
-        exit;
-    }
     $stmt->bind_param("sdsiss", $payee, $amount, $due_date, $account_id, $department_id, $remarks);
 
     if ($stmt->execute()) {
         $payable_id = $conn->insert_id;
 
-        // 1) Debit entry (expense)
+        // ✅ Journal Entry - Debit
         $journal1 = $conn->prepare("
             INSERT INTO journal_entries 
-              (transaction_date, account_id, debit, credit, module_type, reference_id, remarks) 
+                (transaction_date, account_id, debit, credit, module_type, reference_id, remarks) 
             VALUES (?, ?, ?, 0, 'AP', ?, ?)
         ");
         $journal1->bind_param("sidis", $date_today, $account_id, $amount, $payable_id, $remarks);
         $journal1->execute();
         $journal1->close();
 
-        // 2) Credit entry (accounts payable)
+        // ✅ Journal Entry - Credit (Accounts Payable)
         $account_payable_id = 4; 
         $journal2 = $conn->prepare("
             INSERT INTO journal_entries 
-              (transaction_date, account_id, debit, credit, module_type, reference_id, remarks) 
+                (transaction_date, account_id, debit, credit, module_type, reference_id, remarks) 
             VALUES (?, ?, 0, ?, 'AP', ?, ?)
         ");
         $journal2->bind_param("sidis", $date_today, $account_payable_id, $amount, $payable_id, $remarks);
         $journal2->execute();
         $journal2->close();
 
-        // ✅ Update or Insert into General Ledger
+        // ✅ General Ledger Entry (check if account already exists)
         $checkLedger = $conn->prepare("
             SELECT id, debit, credit 
             FROM general_ledger 
@@ -91,12 +86,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $checkResult = $checkLedger->get_result();
 
         if ($checkResult->num_rows > 0) {
-            // Update existing GL record
             $ledger      = $checkResult->fetch_assoc();
             $new_debit   = $ledger['debit']  + $amount;
-            $new_credit  = $ledger['credit'] + $amount;
-            $new_balance = $new_debit - $new_credit;
+            $new_credit  = $ledger['credit'];
             $ledger_id   = $ledger['id'];
+
+            // Get account_type
+            $getType = $conn->prepare("SELECT account_type FROM chart_of_accounts WHERE id = ?");
+            $getType->bind_param("i", $account_id);
+            $getType->execute();
+            $typeResult = $getType->get_result();
+            $account_type = ($typeResult->num_rows > 0) ? $typeResult->fetch_assoc()['account_type'] : 'Asset';
+            $getType->close();
+
+            // Compute new balance
+            if (in_array($account_type, ['Asset', 'Expense'])) {
+                $new_balance = $new_debit - $new_credit;
+            } else {
+                $new_balance = $new_credit - $new_debit;
+            }
 
             $updateLedger = $conn->prepare("
                 UPDATE general_ledger 
@@ -107,14 +115,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $updateLedger->execute();
             $updateLedger->close();
         } else {
-            // Insert new GL record
+            // Insert new ledger record
             $credit_amount = 0.0;
-            $balance       = $amount - $credit_amount;
-            $account_name  = ""; // fetch from chart_of_accounts if needed
+
+            // Get account info
+            $getInfo = $conn->prepare("SELECT account_name, account_type FROM chart_of_accounts WHERE id = ?");
+            $getInfo->bind_param("i", $account_id);
+            $getInfo->execute();
+            $infoResult = $getInfo->get_result();
+            $account_data = $infoResult->fetch_assoc();
+            $account_name = $account_data['account_name'];
+            $account_type = $account_data['account_type'];
+            $getInfo->close();
+
+            // Compute balance
+            if (in_array($account_type, ['Asset', 'Expense'])) {
+                $balance = $amount - $credit_amount;
+            } else {
+                $balance = $credit_amount - $amount;
+            }
 
             $insertLedger = $conn->prepare("
                 INSERT INTO general_ledger 
-                  (account_id, account_name, debit, credit, balance, period) 
+                    (account_id, account_name, debit, credit, balance, period) 
                 VALUES (?, ?, ?, ?, ?, ?)
             ");
             $insertLedger->bind_param(

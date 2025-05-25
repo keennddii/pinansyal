@@ -61,9 +61,12 @@
 <body>
   <!-- Header Section -->
   <header id="header" class="header fixed-top d-flex align-items-center">
+    
     <div class="d-flex align-items-center justify-content-between">
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
+    <!-- Para sa logo -->
+    
     <div class="ms-auto d-flex align-items-center">
 
       <nav class="header-nav">
@@ -72,13 +75,13 @@
           <li class="nav-item dropdown pe-3">
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src="assets/img/prof.jpg" alt="Profile" class="rounded-circle">
-              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?= htmlspecialchars($_SESSION['username']) ?></span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li class="dropdown-header">
-                <h6><?php echo $username; ?></h6>
-                <span><?php echo $position; ?> </span>
+                <h6><?= htmlspecialchars($_SESSION['username']) ?></h6>
+                <span><?= htmlspecialchars($_SESSION['role']) ?></span>
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -181,7 +184,10 @@
     <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#addPayableModal">
       <i class="bi bi-plus-circle me-1"></i> New Payable
     </button>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#payableRequestModal">New Request</button>
   </div>
+  
+
 
 <!-- Summary Cards -->
 <div class="row mb-4 g-4">
@@ -267,7 +273,8 @@
   </div>
 
   <!-- Add Bill Modal -->
-<div class="modal fade" id="addPayableModal" tabindex="-1" aria-labelledby="addBillModalLabel" aria-hidden="true">
+<!--
+  <div class="modal fade" id="addPayableModal" tabindex="-1" aria-labelledby="addBillModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form id="addBillForm" method="POST" action="customassets/AP/save_payable.php">
       <div class="modal-content">
@@ -304,18 +311,32 @@
             <?php endwhile; ?>
           </select>
           </div>
-          
           <div class="mb-3">
             <label for="account_id" class="form-label">Account</label>
             <select class="form-select" id="account_id" name="account_id" required>
               <option value="">-- Select Expense Account --</option>
-              <option value="6">Travel Expense</option>
-              <option value="7">Utilities Expense</option>
-              <option value="8">Supplies Expense</option>
-              <!-- Add more accounts as needed -->
+
+              <optgroup label="For HR Department">
+                <option value="9">Salaries and Wages Expense</option>
+                <option value="10">Training and Development Expense</option>
+                <option value="14">Communication Expense</option>
+              </optgroup>
+
+              <optgroup label="For Core Department">
+                <option value="6">Travel Expense</option>
+                <option value="7">Utilities Expense</option>
+                <option value="13">Repair and Maintenance Expense</option>
+                <option value="15">Professional Fee Expense</option>
+              </optgroup>
+
+              <optgroup label="For Logistics Department">
+                <option value="8">Supplies Expense</option>
+                <option value="11">Office Supplies Expense</option>
+                <option value="12">Transportation Expense</option>
+              </optgroup>
             </select>
           </div>
-          
+
           <div class="mb-3">
             <label for="remarks" class="form-label">Remarks</label>
             <textarea class="form-control" id="remarks" name="remarks"></textarea>
@@ -328,8 +349,82 @@
       </div>
     </form>
   </div>
-</div>
-
+</div>   -->
+   <!-- Payable Request Modal -->
+<div class="modal fade" id="payableRequestModal" tabindex="-1" aria-labelledby="payableRequestModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow rounded-4 border-0">
+      <div class="modal-header bg-primary text-white rounded-top-4">
+        <h5 class="modal-title" id="payableRequestModalLabel">New Payable Request</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="customassets/AP/submit_payable_request.php" method="POST">
+        <div class="modal-body py-4 px-5">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <label for="pr_payee" class="form-label fw-semibold">Payee</label>
+              <input type="text" class="form-control rounded-3" id="pr_payee" name="payee" required>
+            </div>
+            <div class="col-md-6">
+              <label for="pr_amount" class="form-label fw-semibold">Amount</label>
+              <input type="number" step="0.01" class="form-control rounded-3" id="pr_amount" name="amount" required>
+            </div>
+            <div class="col-md-6">
+              <label for="pr_due_date" class="form-label fw-semibold">Due Date</label>
+              <input type="date" class="form-control rounded-3" id="pr_due_date" name="due_date" required>
+            </div>
+            <div class="col-md-6">
+              <label for="pr_department_id" class="form-label fw-semibold">Department</label>
+              <select class="form-select rounded-3" id="pr_department_id" name="department_id" required>
+                <option value="">-- Select Department --</option>
+                <?php
+                  if (isset($conn)) {
+                    $departments = $conn->query("SELECT id, name FROM departments");
+                    while ($dept = $departments->fetch_assoc()):
+                ?>
+                    <option value="<?= $dept['id'] ?>"><?= htmlspecialchars($dept['name']) ?></option>
+                <?php 
+                    endwhile;
+                  }
+                ?>
+              </select>
+            </div>
+            <div class="col-12">
+              <label for="pr_account_id" class="form-label fw-semibold">Expense Account</label>
+              <select class="form-select rounded-3" id="pr_account_id" name="account_id" required>
+                <option value="">-- Select Expense Account --</option>
+                <optgroup label="For HR Department">
+                  <option value="9">Salaries and Wages Expense</option>
+                  <option value="10">Training and Development Expense</option>
+                  <option value="14">Communication Expense</option>
+                </optgroup>
+                <optgroup label="For Core Department">
+                  <option value="6">Travel Expense</option>
+                  <option value="7">Utilities Expense</option>
+                  <option value="13">Repair and Maintenance Expense</option>
+                  <option value="15">Professional Fee Expense</option>
+                </optgroup>
+                <optgroup label="For Logistics Department">
+                  <option value="8">Supplies Expense</option>
+                  <option value="11">Office Supplies Expense</option>
+                  <option value="12">Transportation Expense</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="col-12">
+              <label for="pr_remarks" class="form-label fw-semibold">Remarks</label>
+              <textarea class="form-control rounded-3" id="pr_remarks" name="remarks" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light rounded-bottom-4 px-4 py-3">
+          <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary rounded-pill">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>         
 <!-- Disbursement Details -->
 <div class="modal fade" id="disburseModal" tabindex="-1" aria-labelledby="disburseModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -438,66 +533,6 @@ function openDisburseModal(id) {
 }
 </script>
 <script>
-document.getElementById('disburseForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const form = this;
-  const formData = new FormData(form);
-
-  Swal.fire({
-    title: 'Confirm Disbursement',
-    text: "Are you sure you want to disburse this payment?",
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, Disburse',
-    cancelButtonText: 'Cancel',
-    showLoaderOnConfirm: true,
-    preConfirm: () => {
-      return fetch('customassets/AP/save_disbursement.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network error');
-        }
-        return response.json(); // <<--- take note JSON na!
-      })
-      .catch(error => {
-        Swal.showValidationMessage(`Request failed: ${error}`);
-      });
-    },
-    allowOutsideClick: () => !Swal.isLoading()
-  }).then(result => {
-    if (result.isConfirmed) {
-      const response = result.value;
-      if (!response) {
-        Swal.fire('Error', 'Something went wrong.', 'error');
-        return;
-      }
-
-      if (response.status === 'success') {
-        Swal.fire({
-          title: 'Success!',
-          text: response.message,
-          icon: 'success'
-        }).then(() => {
-          const modal = bootstrap.Modal.getInstance(document.getElementById('disburseModal'));
-          modal.hide();
-          form.reset();
-          location.reload();
-        });
-      } else if (response.status === 'error') {
-        Swal.fire({
-          title: 'Error',
-          text: response.message,
-          icon: 'error'
-        });
-      }
-    }
-  });
-});
-
 function voidPayable(id) {
   Swal.fire({
     title: 'Are you sure?',

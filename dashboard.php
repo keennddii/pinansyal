@@ -1,6 +1,9 @@
   <?php 
-  include('customassets/cnn/display.php');
-  
+session_start();
+if ($_SESSION['role'] !== 'admin') {
+    header("Location: index.php");
+    exit();
+}
   ?>
 
   <!DOCTYPE html>
@@ -57,10 +60,6 @@
     <!-- Para sa logo -->
     
     <div class="ms-auto d-flex align-items-center">
-      <!-- Dark Mode Toggle Button -->
-      <button class="theme-toggle" id="theme-toggle">
-        <i class="bi bi-moon-fill" id="theme-icon"></i>
-      </button>
 
       <nav class="header-nav">
         <ul class="d-flex align-items-center">
@@ -68,13 +67,13 @@
           <li class="nav-item dropdown pe-3">
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src="assets/img/prof.jpg" alt="Profile" class="rounded-circle">
-              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $username;?></span>
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?= htmlspecialchars($_SESSION['username']) ?></span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li class="dropdown-header">
-                <h6><?php echo $username; ?></h6>
-                <span><?php echo $position; ?> </span>
+                <h6><?= htmlspecialchars($_SESSION['username']) ?></h6>
+                <span><?= htmlspecialchars($_SESSION['role']) ?></span>
               </li>
               <li>
                 <hr class="dropdown-divider">
