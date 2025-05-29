@@ -196,7 +196,7 @@ function getAISuggestion(array $series, array $forecast, array $forecast_labels,
 
 
     // Final formatted return with HTML-safe line breaks
-    return "$monthlyRemark<br><br>$coreInsight<br><br>💡 <strong>AI Recommendation:</strong> $recommendation";
+    return "$monthlyRemark<br>$coreInsight<br>💡<strong>AI Recommendation:</strong> $recommendation";
 }
 
 

@@ -235,7 +235,7 @@ if ($_SESSION['role'] !== 'admin') {
 </div>
 
 
-<!-- 📈 Modern Glass-Style Charts -->
+<!-- Modern Glass-Style Charts -->
 <div class="row mb-4">
   <div class="col-lg-6">
     <div class="card glass-card text-dark h-100 border-0 shadow-sm">
@@ -261,17 +261,7 @@ if ($_SESSION['role'] !== 'admin') {
   </div>
 </div>
 
-
-
-<div class="forecast">
-  <h3>Forecasting AI</h3>
-  <p id="predictedDisbursement">₱0.00</p>
-  <canvas id="chartSalesForecast" height="100"></canvas>
-
-</div>
-
-
-    <!-- 🔗 Quick Links -->
+    <!-- Quick Links -->
     <div class="row">
       <div class="col text-center">
         <a href="AccountPayable.php" class="btn btn-outline-secondary me-2">

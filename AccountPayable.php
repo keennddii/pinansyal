@@ -29,7 +29,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Finance Home</title>
+  <title>Accounts Payable</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
   
@@ -181,10 +181,9 @@
       <h2 class="mb-4">Accounts Payable</h2>
         <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#addPayableModal">
-      <i class="bi bi-plus-circle me-1"></i> New Payable
+    <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#payableRequestModal">
+      <i class="bi bi-plus-circle me-1"></i> New Request
     </button>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#payableRequestModal">New Request</button>
   </div>
   
 
@@ -270,86 +269,9 @@
   </div>
 </div>
 
-  </div>
+</div>
 
-  <!-- Add Bill Modal -->
-<!--
-  <div class="modal fade" id="addPayableModal" tabindex="-1" aria-labelledby="addBillModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="addBillForm" method="POST" action="customassets/AP/save_payable.php">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="addBillModalLabel">Add New Payable</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
 
-          <div class="mb-3">
-            <label for="payee" class="form-label">Payee Name</label>
-            <input type="text" class="form-control" id="payee" name="payee" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="amount" class="form-label">Amount</label>
-            <input type="number" class="form-control" step="0.01" id="amount" name="amount" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="due_date" class="form-label">Due Date</label>
-            <input type="date" class="form-control" id="due_date" name="due_date" required>
-          </div>
-           
-          <div class="mb-3">
-          <label for="department_io" class="form-label">Department</label>
-          <select class="form-select" id="department_id" name="department_id" required>
-            <option value="">-- Select Department --</option>
-            <?php
-              $departments = $conn->query("SELECT id, name FROM departments");
-              while ($dept = $departments->fetch_assoc()):
-            ?>
-              <option value="<?= $dept['id'] ?>"><?= htmlspecialchars($dept['name']) ?></option>
-            <?php endwhile; ?>
-          </select>
-          </div>
-          <div class="mb-3">
-            <label for="account_id" class="form-label">Account</label>
-            <select class="form-select" id="account_id" name="account_id" required>
-              <option value="">-- Select Expense Account --</option>
-
-              <optgroup label="For HR Department">
-                <option value="9">Salaries and Wages Expense</option>
-                <option value="10">Training and Development Expense</option>
-                <option value="14">Communication Expense</option>
-              </optgroup>
-
-              <optgroup label="For Core Department">
-                <option value="6">Travel Expense</option>
-                <option value="7">Utilities Expense</option>
-                <option value="13">Repair and Maintenance Expense</option>
-                <option value="15">Professional Fee Expense</option>
-              </optgroup>
-
-              <optgroup label="For Logistics Department">
-                <option value="8">Supplies Expense</option>
-                <option value="11">Office Supplies Expense</option>
-                <option value="12">Transportation Expense</option>
-              </optgroup>
-            </select>
-          </div>
-
-          <div class="mb-3">
-            <label for="remarks" class="form-label">Remarks</label>
-            <textarea class="form-control" id="remarks" name="remarks"></textarea>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Save Payable</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>   -->
    <!-- Payable Request Modal -->
 <div class="modal fade" id="payableRequestModal" tabindex="-1" aria-labelledby="payableRequestModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">

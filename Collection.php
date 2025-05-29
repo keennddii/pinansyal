@@ -10,7 +10,7 @@ include('customassets/CL/collection_summary.php');
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Account Receivable</title>
+  <title>Collection</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -303,8 +303,7 @@ include('customassets/CL/collection_summary.php');
     </div>
 
   </footer>
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -320,6 +319,7 @@ include('customassets/CL/collection_summary.php');
   <script src=assets/js/main.js></script>
   <script src="customassets/customjs/signoutnotif.js"></script>
   <script src=customassets/customjs/screenshot.js></script>
+
   <script>
 function openDetailsModal(id) {
     // Ajax fetch details

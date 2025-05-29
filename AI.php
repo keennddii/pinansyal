@@ -216,7 +216,7 @@
       
       <p class="mb-1"><strong>📊 Summary:</strong> <span id="forecast_summary"></span></p>
       
-      <p class="mb-0"><strong>🤖 AI Insight:</strong></p>
+      <p class="mb-0"></p>
       <div id="ai_suggestion" class="mt-1"><?= $aiSuggestion ?></div>
     </div>
     </div>
