@@ -3,6 +3,21 @@
    include 'customassets/AP/cnnpayable.php';
   $query = "SELECT * FROM payable_requests WHERE status = 'Pending'";
 $result = mysqli_query($conn, $query);
+$usage = $conn->query("
+  SELECT 
+    d.name AS department,
+    ap.remarks,
+    ap.payee,
+    ap.amount,
+    ap.status,
+    ap.due_date AS transaction_date
+  FROM accounts_payable ap
+  INNER JOIN departments d ON ap.department_id = d.id
+  WHERE ap.status = 'Paid'
+  ORDER BY ap.due_date DESC
+");
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -191,8 +206,6 @@ $result = mysqli_query($conn, $query);
 
 </div>
 <!-- End Budget Summary Cards -->
-
-
   <!-- Existing Table -->
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center">
@@ -221,8 +234,47 @@ $result = mysqli_query($conn, $query);
   </div>
 <button class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#payableRequestsModal">
   View Payable Requests
-</button>      
+</button>
+
+<!-- Budget Logs Table -->
+<h5>Budget Logs</h5>
+<table class="table table-bordered table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>Department</th>
+      <th>Purpose / Remarks</th>
+      <th>Payee</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php while ($row = $usage->fetch_assoc()): ?>
+    <tr>
+      <td><?= htmlspecialchars($row['department']) ?></td>
+      <td><?= htmlspecialchars($row['remarks']) ?></td>
+      <td><?= htmlspecialchars($row['payee']) ?></td>
+      <td>₱<?= number_format($row['amount'], 2) ?></td>
+      <td>
+        <?php if ($row['status'] == 'Paid'): ?>
+          <span class="badge bg-success">Paid</span>
+        <?php elseif ($row['status'] == 'Partially Paid'): ?>
+          <span class="badge bg-primary">Partially Paid</span>
+        <?php else: ?>
+          <span class="badge bg-warning text-dark">Unpaid</span>
+        <?php endif; ?>
+      </td>
+      <td><?= date('M d, Y', strtotime($row['transaction_date'])) ?></td>
+    </tr>
+    <?php endwhile; ?>
+  </tbody>
+</table>
+   
 </div>
+
+
+
 <!-- Modal -->
 <div class="modal fade" id="payableRequestsModal" tabindex="-1" aria-labelledby="payableRequestsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">

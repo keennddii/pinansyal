@@ -19,7 +19,16 @@
   }
   
   
-  $payables = $conn->query("SELECT * FROM accounts_payable ORDER BY id DESC");
+  $payables = $conn->query("
+  SELECT 
+    ap.*, 
+    d.name AS department_name
+  FROM 
+    accounts_payable ap
+  INNER JOIN 
+    departments d ON ap.department_id = d.id
+  ORDER BY ap.id DESC
+");
 ?>
 
 <!DOCTYPE html>
@@ -229,7 +238,7 @@
       <thead class="table-light">
         <tr>
           <th>Payee</th>
-          <th>Remarks</th>
+          <th>Department</th>
           <th>Amount</th>
           <th>Due Date</th>
           <th>Status</th>
@@ -240,7 +249,7 @@
         <?php while ($row = $payables->fetch_assoc()): ?>
         <tr>
           <td><?= ucwords(strtolower(htmlspecialchars($row['payee']))) ?></td>
-          <td><?= ucfirst(htmlspecialchars($row['remarks'])) ?></td>
+          <td><?= htmlspecialchars($row['department_name']) ?></td>
           <td>₱<?= number_format($row['amount'], 2) ?></td>
           <td><?= date('M d, Y', strtotime($row['due_date'])) ?></td>
           <td>
