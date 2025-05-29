@@ -216,7 +216,7 @@ if ($_SESSION['role'] !== 'employee') {
       </a>
     </li>
     <li class="nav-item mt-auto">
-      <a class="nav-bar" href="logout.php">
+      <a class="nav-bar" href="../signout.php">
         <i class="bi bi-box-arrow-right"></i><span> Logout</span>
       </a>
     </li>

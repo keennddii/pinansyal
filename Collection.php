@@ -361,7 +361,6 @@ $('#exportCollectionPDFBtn').on('click', function () {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const date = new Date().toLocaleDateString();
-    const preparedBy = $('#loggedInUser').text().trim() || "Finance Team";
 
     // Header
     doc.setFontSize(12);
@@ -380,7 +379,6 @@ $('#exportCollectionPDFBtn').on('click', function () {
     doc.text("Collection Report", 14, 44);
     doc.setFontSize(10);
     doc.text(`Date Generated: ${date}`, 14, 50);
-    doc.text(`Prepared By: ${preparedBy}`, 14, 56);
 
     // Prepare table
     const head = [['Invoice No.', 'Amount Paid (₱)', 'Payment Method', 'Payment Date']];
@@ -437,12 +435,6 @@ $('#exportCollectionPDFBtn').on('click', function () {
     doc.setFont(undefined, 'bold');
     doc.text(`TOTAL COLLECTION: ₱${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, 14, finalY);
 
-    // Signature
-    doc.setFontSize(9);
-    doc.setFont(undefined, 'normal');
-    doc.text("Prepared By:", 14, finalY + 20);
-    doc.line(35, finalY + 20, 100, finalY + 20);
-    doc.text(preparedBy, 36, finalY + 25);
 
     // Save PDF
     doc.save(`Collection_Report_${date.replace(/\//g, '-')}.pdf`);
