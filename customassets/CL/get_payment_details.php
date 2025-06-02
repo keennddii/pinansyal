@@ -33,7 +33,6 @@ if ($result->num_rows > 0) {
     echo "<div><strong>Original Total:</strong> ₱" . number_format($original_total, 2) . "</div>";
     echo "<div><strong>Total Paid:</strong> ₱" . number_format($row['total_paid'], 2) . "</div>";
     echo "<div><strong>Remaining Balance:</strong> ₱" . number_format($remaining_balance, 2) . "</div>";
-    echo "<div><strong>Due Date:</strong> " . htmlspecialchars($row['due_date']) . "</div>";
     echo "<div><strong>Status:</strong> " . htmlspecialchars($row['status']) . "</div>";
     echo "<hr>";
     echo "<div><strong>Amount Paid (this record):</strong> ₱" . number_format($row['amount_paid'], 2) . "</div>";

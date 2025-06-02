@@ -124,20 +124,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // ───── CREATE INVOICE LOGIC ─────
-    if (isset($_POST['client_name'], $_POST['booking_date'], $_POST['amount_due'], $_POST['due_date'], $_POST['remarks'])) {
+    if (isset($_POST['client_name'], $_POST['booking_date'], $_POST['amount_due'], $_POST['remarks'])) {
         $client_name  = $conn->real_escape_string($_POST['client_name']);
         $booking_date = $conn->real_escape_string($_POST['booking_date']);
         $amount_due   = floatval($_POST['amount_due']);
-        $due_date     = $conn->real_escape_string($_POST['due_date']);
         $remarks      = $conn->real_escape_string($_POST['remarks']);
 
         // Insert invoice
         $stmt = $conn->prepare("
             INSERT INTO accounts_receivable 
-              (client_name, booking_date, amount_due, due_date, remarks)
-            VALUES (?, ?, ?, ?, ?)
+              (client_name, booking_date, amount_due, remarks)
+            VALUES (?, ?, ?, ?)
         ");
-        $stmt->bind_param("ssdss", $client_name, $booking_date, $amount_due, $due_date, $remarks);
+        $stmt->bind_param("ssds", $client_name, $booking_date, $amount_due,  $remarks);
         $stmt->execute();
         $last_id = $conn->insert_id;
         $stmt->close();

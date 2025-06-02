@@ -216,24 +216,7 @@ include('customassets/CL/collection_summary.php');
 </div>
 
 <div class="table-responsive">
-<div class="row mb-4">
-    <div class="col-md-3">
-        <input type="text" id="filterClient" class="form-control" placeholder="Search by Client Name" oninput="filterPayments()">
-    </div>
-    <div class="col-md-2">
-        <select id="filterStatus" class="form-control" onchange="filterPayments()">
-            <option value="">All Status</option>
-            <option value="Paid">Paid</option>
-            <option value="Unpaid">Unpaid</option>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <input type="date" id="filterFrom" class="form-control" onchange="filterPayments()">
-    </div>
-    <div class="col-md-2">
-        <input type="date" id="filterTo" class="form-control" onchange="filterPayments()">
-    </div>
-</div>
+
 <a href="customassets/CL/export_collection_excel.php" class="btn btn-outline-success mb-3">
     <i class="bi bi-file-earmark-excel-fill"></i> Export to Excel
 </a>

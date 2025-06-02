@@ -180,6 +180,7 @@ if ($_SESSION['role'] !== 'admin') {
       <i class="ri-secure-payment-line"></i>
       <span>AI FORECASTING</span>
   </a>
+  
   </ul>
   </aside><!-- End Sidebar-->
 

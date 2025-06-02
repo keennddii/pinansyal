@@ -1,6 +1,7 @@
 <?php
 include('customassets/cnn/user.php');
 include('customassets/AR/save_receivable.php');
+include('customassets/AR/coreAPI.php');
 ?>
 
 <!DOCTYPE html>
@@ -184,10 +185,9 @@ include('customassets/AR/save_receivable.php');
           <thead class="table-light">
             <tr>
                 <th>Invoice No.</th>
-                <th>Client Name</th>
-                <th>Booking Date</th>
+                <th>Client/Customer Name</th>
+                <th>Payment Date</th>
                 <th>Amount Due (₱)</th>
-                <th>Due Date</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -211,20 +211,16 @@ include('customassets/AR/save_receivable.php');
             <div class="modal-body">
                 <form id="addBillForm" method="POST">
                     <div class="mb-3">
-                        <label for="clientName" class="form-label">Client Name</label>
+                        <label for="clientName" class="form-label">Client/Customer Name</label>
                         <input type="text" class="form-control" id="clientName" name="client_name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="bookingDate" class="form-label">Booking Date</label>
+                        <label for="bookingDate" class="form-label">Payment Date</label>
                         <input type="date" class="form-control" id="bookingDate" name="booking_date" required>
                     </div>
                     <div class="mb-3">
                         <label for="amountDue" class="form-label">Amount Due</label>
                         <input type="number" class="form-control" id="amountDue" name="amount_due" step="0.01" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="dueDate" class="form-label">Due Date</label>
-                        <input type="date" class="form-control" id="dueDate" name="due_date" required>
                     </div>
                     <div class="mb-3">
                         <label for="remarks" class="form-label">Remarks</label>
@@ -241,6 +237,163 @@ include('customassets/AR/save_receivable.php');
 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBillModal">
     Add New Bill
 </button>
+<br><br><br>
+
+<!-- Tabs naman para sa  CORE 1 -->
+  <h2 class="mb-4">List of Payments</h2>
+  <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#vehicle-tab" type="button" role="tab">Vehicle</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#hotel-tab" type="button" role="tab">Hotel</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tour-tab" type="button" role="tab">Tour</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#card-tab" type="button" role="tab">ID payments</button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-4">
+    <!-- Vehicle Bookings -->
+    <div class="tab-pane fade show active" id="vehicle-tab" role="tabpanel">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <button onclick="loadVehicleBookings()" class="btn btn-outline-primary mb-3">Refresh Vehicle Bookings</button>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Full Name</th>
+                  <th>Total Price</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="vehicle-body">
+                <tr><td colspan="6" class="text-center">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Hotel Bookings -->
+<div class="tab-pane fade" id="hotel-tab" role="tabpanel">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <button onclick="loadHotelBookings()" class="btn btn-outline-primary mb-3">Refresh Hotel Bookings</button>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Full Name</th>
+              <th>Total Price</th>
+              <th>Created At</th>
+              <th>Actions</th>
+              
+            </tr>
+          </thead>
+          <tbody id="hotel-body">
+            <tr><td colspan="7" class="text-center">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <!-- Tour Bookings -->
+<div class="tab-pane fade" id="tour-tab" role="tabpanel">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <button onclick="loadTourBookings()" class="btn btn-outline-primary mb-3">Refresh Tour Bookings</button>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Full Name</th>
+              <th>Booking Date</th> 
+              <th>Total Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tour-body">
+            <tr><td colspan="6" class="text-center">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!-- Integration sa Core 2 to-->
+<div class="tab-pane fade" id="card-tab" role="tabpanel">
+<!-- Table -->
+<div class="card shadow mt-4">
+    <div class="card-header bg-dark text-white d-flex justify-content-between">
+        <h5 class="mb-0">Payments</h5>
+        <input type="text" id="searchInput" class="form-control w-25" placeholder="Search...">
+    </div>
+    <div class="card-body p-0">
+        <?php if (count($payments)): ?>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mb-0" id="paymentsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($payments as $p): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($p['payment_id']) ?></td>
+                                <td><?= number_format($p['amount'], 2) ?></td>
+                                <td><?= htmlspecialchars($p['date']) ?></td>
+                                <td><?= htmlspecialchars($p['customer_name']) ?></td>
+                                <td><?= htmlspecialchars($p['payment_method']) ?></td>
+                                <td>
+                                    <?php if ($p['status'] === 'Done'): ?>
+                                        <span class="badge bg-success">Done</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($p['status'] === 'Done'): ?>
+                                        <button class="btn btn-secondary btn-sm" disabled>Done</button>
+                                    <?php else: ?>
+                                        <button class="btn btn-success btn-sm"
+                                            onclick="markPaymentAsDone(<?= $p['id'] ?>)">Mark as Done</button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else: ?>
+            <div class="p-3 text-center">No payments found.</div>
+        <?php endif ?>
+    </div>
+</div>
+</div>
+ 
+</div> 
+
 
 <!-- Pay Modal -->
 <div class="modal fade" id="payModal" tabindex="-1" aria-labelledby="payModalLabel" aria-hidden="true">
@@ -344,6 +497,7 @@ include('customassets/AR/save_receivable.php');
   <script src="customassets/customjs/signoutnotif.js"></script>
   <script src=customassets/customjs/collection.js></script>
   <script src=customassets/customjs/screenshot.js></script>
+  <script src="customassets/customjs/AR/bookings.js"></script>
   <script>
   function openPayModal(id) {
     document.getElementById('pay_id').value = id;
@@ -452,13 +606,47 @@ function voidInvoice(id) {
     }
   }
 }
-
-
-
-
 </script>
-    
 
+<!-- Javascript to ng table sa core2 -->
+<script>
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        document.querySelectorAll("#paymentsTable tbody tr").forEach(function (row) {
+            let text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? "" : "none";
+        });
+    });
+
+function markPaymentAsDone(paymentId) {
+  Swal.fire({
+    title: "Mark as Done?",
+    text: "Are you sure this payment is complete?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Yes, mark it",
+    cancelButtonText: "Cancel"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch("api/mark-payment-done.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `payment_id=${paymentId}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          Swal.fire("Marked as Done", "", "success").then(() => location.reload());
+        } else {
+          Swal.fire("Error", data.message, "error");
+        }
+      });
+    }
+  });
+}
+</script>
 </body>
 
 </html>

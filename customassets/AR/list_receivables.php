@@ -9,9 +9,8 @@ if ($result->num_rows > 0) {
         echo "<tr>";
         echo "<td>" . htmlspecialchars($row['invoice_no']) . "</td>";
         echo "<td>" . htmlspecialchars($row['client_name']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['booking_date']) . "</td>";
+        echo "<td>" . date("F d, Y", strtotime($row['booking_date'])) . "</td>";
         echo "<td>₱" . number_format($row['amount_due'], 2) . "</td>";
-        echo "<td>" . htmlspecialchars($row['due_date']) . "</td>";
 
         $status = htmlspecialchars($row['status']);
         $badgeClass = 'secondary';

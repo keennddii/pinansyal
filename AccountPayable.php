@@ -241,6 +241,7 @@
           <th>Department</th>
           <th>Amount</th>
           <th>Due Date</th>
+          <th>Remarks</th>
           <th>Status</th>
           <th>Action</th>
         </tr>
@@ -252,6 +253,7 @@
           <td><?= htmlspecialchars($row['department_name']) ?></td>
           <td>₱<?= number_format($row['amount'], 2) ?></td>
           <td><?= date('M d, Y', strtotime($row['due_date'])) ?></td>
+          <td><?= ucfirst(htmlspecialchars($row['remarks'])) ?></td>
           <td>
             <?php if ($row['status'] == 'Paid'): ?>
               <span class="badge bg-success">Paid</span>
