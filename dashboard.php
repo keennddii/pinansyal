@@ -175,21 +175,113 @@ if ($_SESSION['role'] !== 'admin') {
   </a>
 
   <hr class="sidebar-divider">
-  <a class="nav-bar" href="Employee.php">
+   <a class="nav-bar" href="Employee.php">
       <i class="bi bi-person-circle"></i>
-      <span>Employee List</span>
+      <span>Employee Management</span>
   </a>
   <a class="nav-bar" href="AI.php">
       <i class="bi bi-robot"></i>
       <span>AI FORECASTING</span>
   </a>
-
   
   </ul>
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
   <section class="section dashboard">
+
+<!-- 📊 Quick Stats Cards (glass effect with black text and icons) -->
+<div class="row g-4 mb-4">
+  <div class="col-md-3">
+    <div class="card glass-card text-dark h-100 border-0">
+      <div class="card-body d-flex align-items-center">
+        <i class="bi bi-cash-stack fs-1 me-3 text-primary"></i>
+        <div>
+          <h6 class="card-title mb-1">Total Budget</h6>
+          <p class="fs-4 fw-bold mb-0" id="dashboardTotalBudget">₱0.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card glass-card text-dark h-100 border-0">
+      <div class="card-body d-flex align-items-center">
+        <i class="bi bi-graph-down fs-1 me-3 text-danger"></i>
+        <div>
+          <h6 class="card-title mb-1">Used Budget</h6>
+          <p class="fs-4 fw-bold mb-0" id="dashboardUsedBudget">₱0.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card glass-card text-dark h-100 border-0">
+      <div class="card-body d-flex align-items-center">
+        <i class="bi bi-file-earmark-excel fs-1 me-3 text-warning"></i>
+        <div>
+          <h6 class="card-title mb-1">Unpaid AP</h6>
+          <p class="fs-4 fw-bold mb-0" id="dashboardUnpaidAP">₱0.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card glass-card text-dark h-100 border-0">
+      <div class="card-body d-flex align-items-center">
+        <i class="bi bi-credit-card-2-front fs-1 me-3 text-success"></i>
+        <div>
+          <h6 class="card-title mb-1">Total Disbursements</h6>
+          <p class="fs-4 fw-bold mb-0" id="dashboardDisbursements">₱0.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modern Glass-Style Charts -->
+<div class="row mb-4">
+  <div class="col-lg-6">
+    <div class="card glass-card text-dark h-100 border-0 shadow-sm">
+      <div class="card-header bg-transparent border-bottom-0 d-flex align-items-center">
+        <i class="bi bi-pie-chart-fill me-2 text-primary"></i>
+        <span class="fw-semibold">Budget Usage per Department</span>
+      </div>
+      <div class="card-body">
+        <canvas id="chartBudgetPerDept" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card glass-card text-dark h-100 border-0 shadow-sm">
+      <div class="card-header bg-transparent border-bottom-0 d-flex align-items-center">
+        <i class="bi bi-bar-chart-line-fill me-2 text-success"></i>
+        <span class="fw-semibold">Monthly Expenses Trend</span>
+      </div>
+      <div class="card-body">
+        <canvas id="chartMonthlyExpenses" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Quick Links -->
+    <div class="row">
+      <div class="col text-center">
+        <a href="AccountPayable.php" class="btn btn-outline-secondary me-2">
+          <i class="bi bi-secure-payment"></i> Account Payable
+        </a>
+        <a href="Disbursement.php" class="btn btn-outline-secondary me-2">
+          <i class="bi bi-cash-stack"></i> Disbursement
+        </a>
+        <a href="GeneralLedger.php" class="btn btn-outline-secondary me-2">
+          <i class="bi bi-book"></i> General Ledger
+        </a>
+        <a href="BudgetManagement.php" class="btn btn-outline-secondary">
+          <i class="bi bi-currency-dollar"></i> Budget Mgmt
+        </a>
+      </div>
+    </div>
 
   </section>
 </main>
@@ -224,7 +316,93 @@ if ($_SESSION['role'] !== 'admin') {
     <script src=assets/js/main.js></script>
     <script src="customassets/customjs/signoutnotif.js"></script>
 
+    <script>
+    $(function() {
+      // 1) Quick Stats
+      $.getJSON('customassets/dashboard/totals.php', function(d) {
+        $('#dashboardTotalBudget').text('₱'+d.totalBudget.toLocaleString(undefined,{minimumFractionDigits:2}));
+        $('#dashboardUsedBudget').text('₱'+d.usedBudget.toLocaleString(undefined,{minimumFractionDigits:2}));
+        $('#dashboardUnpaidAP').text('₱'+d.unpaidAP.toLocaleString(undefined,{minimumFractionDigits:2}));
+        $('#dashboardDisbursements').text('₱'+d.totalDisbursements.toLocaleString(undefined,{minimumFractionDigits:2}));
+      });
 
+      // 2) Budget per Dept (Bar)
+      $.getJSON('customassets/dashboard/budget_per_dept.php', function(depts) {
+        const labels    = depts.map(r=>r.department);
+        const used      = depts.map(r=>r.used);
+        const allocated = depts.map(r=>r.allocated);
+        const ctxDept = document.getElementById('chartBudgetPerDept').getContext('2d');
+        new Chart(ctxDept, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              { label:'Used',      data: used },
+              { label:'Allocated', data: allocated }
+            ]
+          }
+        });
+      });
+
+      // 3) Monthly Expenses Trend (Line)
+      $.getJSON('customassets/dashboard/monthly_expenses.php', function(months) {
+        const labels = months.map(r=>r.month);
+        const data   = months.map(r=>r.expense);
+        const ctxExp = document.getElementById('chartMonthlyExpenses').getContext('2d');
+        new Chart(ctxExp, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              { label:'Expenses', data: data }
+            ]
+          }
+        });
+      });
+
+      $(function() {
+  // 1) Fetch and display the forecasted disbursement
+  $.getJSON('customassets/dashboard/forecasting.php', function(data) {
+    $('#predictedDisbursement').text('₱' + data.predictedDisbursement.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+  });
+});
+
+$.getJSON('customassets/dashboard/forecast_sales.php', function(data) {
+    var labels = data.months;
+    var salesData = data.sales;
+    var forecast = data.forecast;
+
+    // Idagdag yung forecasted month (Next Month)
+    var nextMonth = "Next Month";
+    labels.push(nextMonth);
+    salesData.push(forecast);
+
+    new Chart($('#chartSalesForecast'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Sales',
+                data: salesData,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+
+    });
+    </script>
   </body>
 
   </html>
