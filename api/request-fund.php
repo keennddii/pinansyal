@@ -1,15 +1,43 @@
 <?php
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// CORS Headers - dapat una ito
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Content-Type: application/json");
+
+// IMPORTANT: Handle OPTIONS preflight request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+// Only process POST requests for actual data
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode([
+        "status" => "error",
+        "message" => "Method not allowed. Only POST requests are accepted."
+    ]);
+    exit();
+}
 
 require_once '../config/db.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
+
+// Check if JSON decode was successful
+if ($data === null) {
+    http_response_code(400);
+    echo json_encode([
+        "status" => "error",
+        "message" => "Invalid JSON data"
+    ]);
+    exit();
+}
 
 // Validate required fields
 $required_fields = ['department', 'payee', 'amount', 'purpose', 'request_type', 'requested_by', 'request_date'];
@@ -69,15 +97,17 @@ $stmt->bind_param(
 if ($stmt->execute()) {
     echo json_encode([
         "status" => "success",
-        "message" => "Fund request submitted successfully."
+        "message" => "Fund request submitted successfully.",
+        "id" => $conn->insert_id
     ]);
 } else {
     http_response_code(500);
     echo json_encode([
         "status" => "error",
-        "message" => "Failed to submit fund request."
+        "message" => "Failed to submit fund request: " . $stmt->error
     ]);
 }
 
 $stmt->close();
 $conn->close();
+?>

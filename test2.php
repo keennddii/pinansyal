@@ -335,7 +335,7 @@
             };
             
             try {
-                const response = await fetch('https://finance.easetravelandtours.com/api/request-fund.php', {
+                const response = await fetch('api/request-fund.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

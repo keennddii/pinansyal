@@ -175,6 +175,7 @@
               <tr>
                 <th>#</th>
                 <th>Payable ID</th>
+                <th>Department</th>
                 <th>Date</th>
                 <th>Amount Paid</th>
                 <th>Payment Method</th>
@@ -337,35 +338,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  async function loadDisbursementTable() {
-    try {
-      const response = await fetch('customassets/DS/fetch_disbursements.php');
-      const data = await response.json();
+async function loadDisbursementTable() {
+  try {
+    const response = await fetch('customassets/DS/fetch_disbursements.php');
+    const data = await response.json();
 
-      disbursementTable.innerHTML = '';
+    disbursementTable.innerHTML = '';
 
-      if (data.length === 0) {
-        disbursementTable.innerHTML = `<tr><td colspan="6" class="text-center text-muted">No disbursements found.</td></tr>`;
-        return;
-      }
-
-      data.forEach((row, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${index + 1}</td>
-          <td>#${row.payable_id}</td>
-          <td>${row.disbursement_date}</td>
-          <td>₱${parseFloat(row.amount_paid).toFixed(2)}</td>
-          <td>${row.payment_method}</td>
-          <td>${row.remarks}</td>
-        `;
-        disbursementTable.appendChild(tr);
-      });
-    } catch (error) {
-      console.error('Error loading disbursements:', error);
-      disbursementTable.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Failed to load disbursements.</td></tr>`;
+    if (data.length === 0) {
+      disbursementTable.innerHTML = `<tr><td colspan="7" class="text-center text-muted">No disbursements found.</td></tr>`;
+      return;
     }
+
+    data.forEach((row, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${row.payee || 'N/A'}</td>
+        <td>${row.department_name || 'N/A'}</td>
+        <td>${formatDate(row.disbursement_date)}</td>
+        <td>₱${parseFloat(row.amount_paid).toFixed(2)}</td>
+        <td>${row.payment_method}</td>
+        <td>${row.remarks}</td>
+      `;
+      disbursementTable.appendChild(tr);
+    });
+  } catch (error) {
+    console.error('Error loading disbursements:', error);
+    disbursementTable.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Failed to load disbursements.</td></tr>`;
   }
+}
+
+// Optional: Format date to readable form (e.g. June 3, 2025)
+function formatDate(dateStr) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateStr).toLocaleDateString(undefined, options);
+}
+
+
 
   async function loadUnpaidPayables() {
   try {
@@ -378,10 +388,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const opt = document.createElement('option');
       opt.value = row.id;
 
-      // Display only "#ID - Payee"
       opt.textContent = `#${row.id} - ${row.payee}`;
       
-      // Store extra data as dataset
       opt.dataset.payee = row.payee;
       opt.dataset.remaining = row.remaining_amount;
       opt.dataset.due = row.due_date;

@@ -1,9 +1,18 @@
 <?php
+include 'assets/db.php';
 session_start();
 if ($_SESSION['role'] !== 'employee') {
     header("Location: login.php");
     exit();
 }
+  $my_username = $_SESSION['username'];
+  $my_payables = $conn->query("
+    SELECT pr.id, pr.payee, pr.amount, pr.due_date, d.name AS department, pr.status
+    FROM payable_requests pr
+    LEFT JOIN departments d ON pr.department_id = d.id
+    WHERE pr.requested_by = '" . $conn->real_escape_string($my_username) . "'
+    ORDER BY pr.created_at DESC
+  ");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -210,11 +219,6 @@ if ($_SESSION['role'] !== 'employee') {
         <i class="bi bi-folder2-open"></i><span> My Requests</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-bar <?php if(basename($_SERVER['PHP_SELF']) == 'view_budget.php') echo 'active'; ?>" href="view_budget.php">
-        <i class="bi bi-cash-coin"></i><span> View Budget</span>
-      </a>
-    </li>
     <li class="nav-item mt-auto">
       <a class="nav-bar" href="../signout.php">
         <i class="bi bi-box-arrow-right"></i><span> Logout</span>
@@ -225,39 +229,64 @@ if ($_SESSION['role'] !== 'employee') {
 
 
   <!-- Main -->
-  <div class="main" id="main">
-    <h2 class="fw-bold mb-4">Welcome, <?= htmlspecialchars($_SESSION['username']) ?> 👋</h2>
-
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card card-modern text-center p-4">
-          <div class="card-body">
-            <div class="card-icon mb-2"><i class="bi bi-clipboard-data"></i></div>
-            <h5 class="card-title">Total Requests Submitted</h5>
-            <p class="fs-4 fw-semibold text-primary">15</p>
-          </div>
-        </div>
+<div class="main" id="main">
+<div class="container my-4">
+  <div class="card shadow rounded-4 border-0">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold text-primary mb-0">My Payable Requests</h5>
+        <input type="text" class="form-control w-25" placeholder="Search..." id="searchInput">
       </div>
-      <div class="col-md-4">
-        <div class="card card-modern text-center p-4">
-          <div class="card-body">
-            <div class="card-icon mb-2"><i class="bi bi-check2-circle"></i></div>
-            <h5 class="card-title">Approved Requests</h5>
-            <p class="fs-4 fw-semibold text-success">10</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-modern text-center p-4">
-          <div class="card-body">
-            <div class="card-icon mb-2"><i class="bi bi-wallet2"></i></div>
-            <h5 class="card-title">Remaining Budget</h5>
-            <p class="fs-4 fw-semibold text-warning">₱120,000.00</p>
-          </div>
-        </div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle text-center" id="payableTable">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Payee</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Due Date</th>
+              <th scope="col">Department</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if ($my_payables->num_rows > 0): ?>
+              <?php while ($row = $my_payables->fetch_assoc()): ?>
+                <tr>
+                  <td><?= $row['id'] ?></td>
+                  <td class="text-start"><?= htmlspecialchars($row['payee']) ?></td>
+                  <td class="text-end text-success">₱<?= number_format($row['amount'], 2) ?></td>
+                  <td><?= date('M d, Y', strtotime($row['due_date'])) ?></td>
+                  <td><?= htmlspecialchars($row['department']) ?></td>
+                  <td>
+                    <?php
+                      switch ($row['status']) {
+                        case 'Approved':
+                          echo '<span class="badge rounded-pill bg-success px-3">Approved</span>';
+                          break;
+                        case 'Rejected':
+                          echo '<span class="badge rounded-pill bg-danger px-3">Rejected</span>';
+                          break;
+                        default:
+                          echo '<span class="badge rounded-pill bg-warning text-dark px-3">Pending</span>';
+                          break;
+                      }
+                    ?>
+                  </td>
+                </tr>
+              <?php endwhile; ?>
+            <?php else: ?>
+              <tr><td colspan="6" class="text-muted">No payable requests found.</td></tr>
+            <?php endif; ?>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
+</div>
+
+
+  </div><!-- End of Main -->
 
   <!-- Toggle Script -->
   <script>
@@ -273,7 +302,15 @@ if ($_SESSION['role'] !== 'employee') {
     const sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("collapsed");
   }
-
+</script>
+<script>
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    var value = this.value.toLowerCase();
+    var rows = document.querySelectorAll("#payableTable tbody tr");
+    rows.forEach(function (row) {
+      row.style.display = row.textContent.toLowerCase().includes(value) ? "" : "none";
+    });
+  });
 </script>
 
 </body>
