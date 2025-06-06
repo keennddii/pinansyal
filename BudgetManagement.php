@@ -1,5 +1,9 @@
 <?php
-  include('customassets/cnn/display.php');
+  session_start();
+  if (!isset($_SESSION['username']) || !isset($_SESSION['role'])) {
+      header("Location: index.php"); 
+      exit();
+  }
    include 'customassets/AP/cnnpayable.php';
   $query = "SELECT * FROM payable_requests WHERE status = 'Pending'";
 $result = mysqli_query($conn, $query);

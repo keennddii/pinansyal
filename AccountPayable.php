@@ -1,5 +1,9 @@
 <?php
-  include('customassets/cnn/display.php');
+  session_start();
+  if (!isset($_SESSION['username']) || !isset($_SESSION['role'])) {
+      header("Location: index.php"); 
+      exit();
+  }
   include 'customassets/AP/cnnpayable.php';
   $total_payables = 0;
   $total_disbursed = 0;
