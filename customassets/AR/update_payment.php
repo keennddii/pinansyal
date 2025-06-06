@@ -6,12 +6,47 @@ session_start();
 $user_id = $_SESSION['user_id'] ?? 0; // fallback kung walang session
 
 function updateGeneralLedger($conn, $aid, $deb, $cred, $period, $aname = "") {
-    // unchanged
+    // Check if record exists
+    $stmt = $conn->prepare("SELECT id, debit, credit FROM general_ledger WHERE account_id = ? AND period = ?");
+    $stmt->bind_param("is", $aid, $period);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+
+    if ($row) {
+        // Update existing record
+        $new_debit = $row['debit'] + $deb;
+        $new_credit = $row['credit'] + $cred;
+        $new_balance = $new_debit - $new_credit;
+
+        $upd = $conn->prepare("UPDATE general_ledger SET debit = ?, credit = ?, balance = ? WHERE id = ?");
+        $upd->bind_param("dddi", $new_debit, $new_credit, $new_balance, $row['id']);
+        $upd->execute();
+        $upd->close();
+    } else {
+        // Insert new record
+        $balance = $deb - $cred;
+        $ins = $conn->prepare("INSERT INTO general_ledger (account_id, account_name, debit, credit, balance, period) VALUES (?, ?, ?, ?, ?, ?)");
+        $ins->bind_param("isddds", $aid, $aname, $deb, $cred, $balance, $period);
+        $ins->execute();
+        $ins->close();
+    }
 }
 
+
 function insertJournalEntry($conn, $today, $aid, $deb, $cred, $module_type, $ref_id, $remarks) {
-    // unchanged
+    $stmt = $conn->prepare("INSERT INTO journal_entries (transaction_date, account_id, debit, credit, module_type, reference_id, remarks) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+    $stmt->bind_param("siddsis", $today, $aid, $deb, $cred, $module_type, $ref_id, $remarks);
+    if (!$stmt->execute()) {
+        die("Execute failed: " . $stmt->error);
+    }
+    $stmt->close();
 }
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
     $id     = intval($_POST['id']);
