@@ -1,5 +1,8 @@
 <?php
+session_start(); 
 include 'cnnpayable.php';
+require_once '../../functions.php'; 
+$user_id = $_SESSION['user_id'] ?? null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize inputs
@@ -53,7 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt->execute()) {
         $payable_id = $conn->insert_id;
-
+    if ($user_id) {
+        $desc = "Accepted payable for {$payee} amounting to ₱" . number_format($amount, 2);
+        logAudit($conn, $user_id, 'Create Payable', $desc, 'Accounts Payable');
+    }
         // ✅ Journal Entry - Debit
         $journal1 = $conn->prepare("
             INSERT INTO journal_entries 

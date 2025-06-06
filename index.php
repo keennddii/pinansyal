@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'customassets/AR/cnnAR.php';
-
+include 'functions.php';
 $error = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['username'] = $row['username']; 
             $_SESSION['role'] = $row['role'];
-
+            logAudit($conn, $row['id'], 'Login', 'User logged in', 'Authentication');
             // Redirect based on role
           if ($row['role'] === 'admin') {
               header("Location: dashboard.php");

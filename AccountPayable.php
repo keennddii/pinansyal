@@ -306,80 +306,130 @@
 </div>
 
    <!-- Payable Request Modal -->
-<div class="modal fade" id="payableRequestModal" tabindex="-1" aria-labelledby="payableRequestModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content shadow rounded-4 border-0">
-      <div class="modal-header bg-primary text-white rounded-top-4">
-        <h5 class="modal-title" id="payableRequestModalLabel">New Payable Request</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal fade" id="payableRequestModal" tabindex="-1" aria-labelledby="payableRequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content shadow border-0 rounded-4">
+        <div class="modal-header bg-primary text-white rounded-top-4">
+          <h5 class="modal-title fw-semibold" id="payableRequestModalLabel">New Payable Request</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+<form action="customassets/AP/submit_payable_request.php" method="POST">
+<div class="modal-body px-4 py-4">
+  <div class="row g-4">
+    <!-- Left side: Form -->
+    <div class="col-lg-6">
+      <div class="row g-3">
+        <div class="col-12">
+          <label for="pr_payee" class="form-label">Payee</label>
+          <input type="text" class="form-control rounded-pill" id="pr_payee" name="payee" required>
+        </div>
+        <div class="col-12">
+          <label for="pr_amount" class="form-label">Amount</label>
+          <input type="number" step="0.01" class="form-control rounded-pill" id="pr_amount" name="amount" required>
+        </div>
+        <div class="col-12">
+          <label for="pr_due_date" class="form-label">Due Date</label>
+          <input type="date" class="form-control rounded-pill" id="pr_due_date" name="due_date" required>
+        </div>
+        <div class="col-12">
+          <label for="pr_department_id" class="form-label">Department</label>
+          <select class="form-select rounded-pill" id="pr_department_id" name="department_id" required>
+            <option value="">-- Select Department --</option>
+            <?php
+              if (isset($conn)) {
+                $departments = $conn->query("SELECT id, name FROM departments");
+                while ($dept = $departments->fetch_assoc()):
+            ?>
+              <option value="<?= $dept['id'] ?>"><?= htmlspecialchars($dept['name']) ?></option>
+            <?php endwhile; } ?>
+          </select>
+        </div>
+        <div class="col-12">
+          <label for="pr_account_id" class="form-label">Expense Account</label>
+          <select class="form-select rounded-3" id="pr_account_id" name="account_id" required>
+            <option value="">-- Select Expense Account --</option>
+            <!-- Account Options Here -->
+            <optgroup label="For HR Department">
+              <option value="9">Salaries and Wages Expense</option>
+              <option value="10">Training and Development Expense</option>
+              <option value="14">Communication Expense</option>
+            </optgroup>
+            <optgroup label="For Core Department">
+              <option value="6">Travel Expense</option>
+              <option value="7">Utilities Expense</option>
+              <option value="13">Repair and Maintenance Expense</option>
+              <option value="15">Professional Fee Expense</option>
+            </optgroup>
+            <optgroup label="For Logistics Department">
+              <option value="8">Supplies Expense</option>
+              <option value="11">Office Supplies Expense</option>
+              <option value="12">Transportation Expense</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="col-12">
+          <label for="pr_remarks" class="form-label">Remarks</label>
+          <textarea class="form-control rounded-3" id="pr_remarks" name="remarks" rows="3"></textarea>
+        </div>
+          <div class="modal-footer bg-light rounded-bottom-4 px-4 py-3">
+        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary rounded-pill">Submit Request</button>
       </div>
-      <form action="customassets/AP/submit_payable_request.php" method="POST">
-        <div class="modal-body py-4 px-5">
-          <div class="row g-4">
-            <div class="col-md-6">
-              <label for="pr_payee" class="form-label fw-semibold">Payee</label>
-              <input type="text" class="form-control rounded-3" id="pr_payee" name="payee" required>
-            </div>
-            <div class="col-md-6">
-              <label for="pr_amount" class="form-label fw-semibold">Amount</label>
-              <input type="number" step="0.01" class="form-control rounded-3" id="pr_amount" name="amount" required>
-            </div>
-            <div class="col-md-6">
-              <label for="pr_due_date" class="form-label fw-semibold">Due Date</label>
-              <input type="date" class="form-control rounded-3" id="pr_due_date" name="due_date" required>
-            </div>
-            <div class="col-md-6">
-              <label for="pr_department_id" class="form-label fw-semibold">Department</label>
-              <select class="form-select rounded-3" id="pr_department_id" name="department_id" required>
-                <option value="">-- Select Department --</option>
-                <?php
-                  if (isset($conn)) {
-                    $departments = $conn->query("SELECT id, name FROM departments");
-                    while ($dept = $departments->fetch_assoc()):
-                ?>
-                    <option value="<?= $dept['id'] ?>"><?= htmlspecialchars($dept['name']) ?></option>
-                <?php 
-                    endwhile;
-                  }
-                ?>
-              </select>
-            </div>
-            <div class="col-12">
-              <label for="pr_account_id" class="form-label fw-semibold">Expense Account</label>
-              <select class="form-select rounded-3" id="pr_account_id" name="account_id" required>
-                <option value="">-- Select Expense Account --</option>
-                <optgroup label="For HR Department">
-                  <option value="9">Salaries and Wages Expense</option>
-                  <option value="10">Training and Development Expense</option>
-                  <option value="14">Communication Expense</option>
-                </optgroup>
-                <optgroup label="For Core Department">
-                  <option value="6">Travel Expense</option>
-                  <option value="7">Utilities Expense</option>
-                  <option value="13">Repair and Maintenance Expense</option>
-                  <option value="15">Professional Fee Expense</option>
-                </optgroup>
-                <optgroup label="For Logistics Department">
-                  <option value="8">Supplies Expense</option>
-                  <option value="11">Office Supplies Expense</option>
-                  <option value="12">Transportation Expense</option>
-                </optgroup>
-              </select>
-            </div>
-            <div class="col-12">
-              <label for="pr_remarks" class="form-label fw-semibold">Remarks</label>
-              <textarea class="form-control rounded-3" id="pr_remarks" name="remarks" rows="3"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer bg-light rounded-bottom-4 px-4 py-3">
-          <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary rounded-pill">Submit Request</button>
-        </div>
-      </form>
+      </div>
+    </div>
+
+    <!-- Right side: Pending Requests Table -->
+    <div class="col-lg-6">
+      <label class="form-label fw-semibold">Recent Pending Requests</label>
+      <div class="table-responsive border rounded-3" style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-sm table-bordered align-middle mb-0">
+          <thead class="table-light text-center small">
+            <tr>
+              <th>ID</th>
+              <th>Department</th>
+              <th>Payee</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody class="small text-center">
+            <?php
+            if (isset($conn)) {
+              $pending = $conn->query("
+                SELECT id, department, payee, amount, purpose, status
+                FROM request_table
+                WHERE status = 'pending'
+                ORDER BY request_date DESC
+                LIMIT 5
+              ");
+
+              if ($pending->num_rows > 0) {
+                while ($row = $pending->fetch_assoc()):
+            ?>
+              <tr>
+                <td><?= $row['id'] ?></td>
+                <td><?= htmlspecialchars($row['department']) ?></td>
+                <td><?= htmlspecialchars($row['payee']) ?></td>
+                <td>₱<?= number_format($row['amount'], 2) ?></td>
+                <td><span class="badge bg-warning text-dark"><?= ucfirst($row['status']) ?></span></td>
+              </tr>
+            <?php
+                endwhile;
+              } else {
+                echo '<tr><td colspan="5" class="text-center text-muted">No pending requests found.</td></tr>';
+              }
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>         
+</div>
+          </form>
+      </div>
+    </div>
+  </div>         
 <!-- Disbursement Details -->
 <div class="modal fade" id="disburseModal" tabindex="-1" aria-labelledby="disburseModalLabel" aria-hidden="true">
   <div class="modal-dialog">

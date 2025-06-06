@@ -1,5 +1,7 @@
 <?php
+require_once 'functions.php';
 include 'cnndisburse.php';
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $payable_id      = intval($_POST['payable_id']);
@@ -8,6 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $remarks         = trim($_POST['disburse_remarks']);
     $payment_method  = trim($_POST['payment_method']);
     $period          = $disburse_date; // use the disbursement date as period
+
+    $user_id = $_SESSION['user_id'] ?? 0;
 
     // Step 1: Get current payable info
     $stmt = $conn->prepare("
@@ -108,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $budget_stmt->close();
         }
 
-        // Step 7: Update/Insert into General Ledger for both accounts
+        // Step 7: Update/Insert General Ledger
         $entries = [
             ['aid' => $acct_ap,   'deb' => $amount, 'cred' => 0],
             ['aid' => $acct_cash, 'deb' => 0,       'cred' => $amount],
@@ -119,7 +123,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $deb  = $e['deb'];
             $cred = $e['cred'];
 
-            // Check existing GL record
             $chk = $conn->prepare("
                 SELECT id, debit, credit 
                   FROM general_ledger 
@@ -131,24 +134,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $res = $chk->get_result();
 
             if ($res->num_rows) {
-                $lg       = $res->fetch_assoc();
-                $nid      = $lg['id'];
-                $nd       = $lg['debit']  + $deb;
-                $nc       = $lg['credit'] + $cred;
-                $nb       = $nd - $nc;
+                $lg  = $res->fetch_assoc();
+                $nid = $lg['id'];
+                $nd  = $lg['debit']  + $deb;
+                $nc  = $lg['credit'] + $cred;
+                $nb  = $nd - $nc;
 
                 $up = $conn->prepare("
                     UPDATE general_ledger 
-                       SET debit   = ?, 
-                           credit  = ?, 
-                           balance = ? 
+                       SET debit = ?, credit = ?, balance = ? 
                      WHERE id = ?
                 ");
                 $up->bind_param("dddi", $nd, $nc, $nb, $nid);
                 $up->execute();
                 $up->close();
             } else {
-                $aname = ""; 
+                $aname = "";
                 $bal   = $deb - $cred;
 
                 $ins2 = $conn->prepare("
@@ -160,8 +161,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $ins2->execute();
                 $ins2->close();
             }
+
             $chk->close();
         }
+
+        // Step 8: Audit Trail
+        $desc = "Disbursed ₱" . number_format($amount, 2) . 
+                " for Payable ID: $payable_id using $payment_method. Remarks: $remarks";
+        logAudit($conn, $user_id, 'Create', $desc, 'Disbursement');
 
         echo "Disbursement recorded and General Ledger updated successfully.";
     } else {

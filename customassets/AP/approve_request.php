@@ -1,5 +1,7 @@
 <?php
 include 'cnnpayable.php';
+session_start();
+require_once '../../functions.php'; // adjust if needed
 
 if (isset($_GET['id'])) {
     $request_id = intval($_GET['id']);
@@ -137,6 +139,13 @@ if (isset($_GET['id'])) {
     $update->bind_param("i", $request_id);
     $update->execute();
     $update->close();
+
+    // ✅ Audit Trail Logging
+    $user_id = $_SESSION['user_id'] ?? 0;
+    $action = "Approved Payable Request";
+    $desc = "Approved payable request ID #$request_id for ₱" . number_format($amount, 2);
+    $module = "Accounts Payable";
+    logAudit($conn, $user_id, $action, $desc, $module);
 
     // ✅ Done
     header("Location: ../../AccountPayable.php?approved=1");

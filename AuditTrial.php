@@ -1,9 +1,11 @@
   <?php 
+include 'config/db.php';
 session_start();
 if ($_SESSION['role'] !== 'admin') {
     header("Location: index.php");
     exit();
 }
+
   ?>
 
   <!DOCTYPE html>
@@ -40,7 +42,7 @@ if ($_SESSION['role'] !== 'admin') {
     <link rel="stylesheet" href="customassets/customcss/darkmode.css">
     <style>
       .glass-card {
-    background: rgba(255, 255, 255, 0.1); 
+    background: rgba(255, 255, 255, 0.1); /* transparent bg */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -175,11 +177,10 @@ if ($_SESSION['role'] !== 'admin') {
   </a>
 
   <hr class="sidebar-divider">
-   <a class="nav-bar" href="Employee.php">
+  <a class="nav-bar" href="Employee.php">
       <i class="bi bi-person-circle"></i>
-      <span>Employee Management</span>
+      <span>Employee List</span>
   </a>
-    </a>
     <a class="nav-bar" href="AuditTrial.php">
       <i class="bi bi-list"></i>
       <span>Audit Trail</span>
@@ -188,105 +189,67 @@ if ($_SESSION['role'] !== 'admin') {
       <i class="bi bi-robot"></i>
       <span>AI FORECASTING</span>
   </a>
+
   
   </ul>
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
   <section class="section dashboard">
+  <div class="container mt-5">
+  <h2 class="mb-4">Audit Trail Logs</h2>
 
-<!-- 📊 Quick Stats Cards (glass effect with black text and icons) -->
-<div class="row g-4 mb-4">
-  <div class="col-md-3">
-    <div class="card glass-card text-dark h-100 border-0">
-      <div class="card-body d-flex align-items-center">
-        <i class="bi bi-cash-stack fs-1 me-3 text-primary"></i>
-        <div>
-          <h6 class="card-title mb-1">Total Budget</h6>
-          <p class="fs-4 fw-bold mb-0" id="dashboardTotalBudget">₱0.00</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card glass-card text-dark h-100 border-0">
-      <div class="card-body d-flex align-items-center">
-        <i class="bi bi-graph-down fs-1 me-3 text-danger"></i>
-        <div>
-          <h6 class="card-title mb-1">Used Budget</h6>
-          <p class="fs-4 fw-bold mb-0" id="dashboardUsedBudget">₱0.00</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card glass-card text-dark h-100 border-0">
-      <div class="card-body d-flex align-items-center">
-        <i class="bi bi-file-earmark-excel fs-1 me-3 text-warning"></i>
-        <div>
-          <h6 class="card-title mb-1">Unpaid AP</h6>
-          <p class="fs-4 fw-bold mb-0" id="dashboardUnpaidAP">₱0.00</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card glass-card text-dark h-100 border-0">
-      <div class="card-body d-flex align-items-center">
-        <i class="bi bi-credit-card-2-front fs-1 me-3 text-success"></i>
-        <div>
-          <h6 class="card-title mb-1">Total Disbursements</h6>
-          <p class="fs-4 fw-bold mb-0" id="dashboardDisbursements">₱0.00</p>
-        </div>
-      </div>
-    </div>
+  <input type="text" class="form-control mb-3" id="searchInput" placeholder="Search logs...">
+
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered align-middle" id="auditTable">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>User</th>
+          <th>Action</th>
+          <th>Description</th>
+          <th>Module</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        $sql = "SELECT 
+                  at.id,
+                  u.username AS user_name,
+
+                  at.action,
+                  at.description,
+                  at.module,
+                  at.timestamp,
+                  at.ip_address
+                FROM audit_trail at
+                JOIN users u ON at.user_id = u.id
+                ORDER BY at.timestamp DESC";
+        $result = $conn->query($sql);
+        $count = 1;
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>{$count}</td>
+                        <td>{$row['user_name']}</td>
+                        <td>{$row['action']}</td>
+                        <td>{$row['description']}</td>
+                        <td>{$row['module']}</td>
+                        <td>{$row['timestamp']}</td>
+                      </tr>";
+                $count++;
+            }
+        } else {
+            echo "<tr><td colspan='7' class='text-center'>No records found.</td></tr>";
+        }
+        ?>
+      </tbody>
+    </table>
   </div>
 </div>
-
-
-<!-- Modern Glass-Style Charts -->
-<div class="row mb-4">
-  <div class="col-lg-6">
-    <div class="card glass-card text-dark h-100 border-0 shadow-sm">
-      <div class="card-header bg-transparent border-bottom-0 d-flex align-items-center">
-        <i class="bi bi-pie-chart-fill me-2 text-primary"></i>
-        <span class="fw-semibold">Budget Usage per Department</span>
-      </div>
-      <div class="card-body">
-        <canvas id="chartBudgetPerDept" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-6">
-    <div class="card glass-card text-dark h-100 border-0 shadow-sm">
-      <div class="card-header bg-transparent border-bottom-0 d-flex align-items-center">
-        <i class="bi bi-bar-chart-line-fill me-2 text-success"></i>
-        <span class="fw-semibold">Monthly Expenses Trend</span>
-      </div>
-      <div class="card-body">
-        <canvas id="chartMonthlyExpenses" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-    <!-- Quick Links -->
-    <div class="row">
-      <div class="col text-center">
-        <a href="AccountPayable.php" class="btn btn-outline-secondary me-2">
-          <i class="bi bi-secure-payment"></i> Account Payable
-        </a>
-        <a href="Disbursement.php" class="btn btn-outline-secondary me-2">
-          <i class="bi bi-cash-stack"></i> Disbursement
-        </a>
-        <a href="GeneralLedger.php" class="btn btn-outline-secondary me-2">
-          <i class="bi bi-book"></i> General Ledger
-        </a>
-        <a href="BudgetManagement.php" class="btn btn-outline-secondary">
-          <i class="bi bi-currency-dollar"></i> Budget Mgmt
-        </a>
-      </div>
-    </div>
 
   </section>
 </main>
@@ -317,97 +280,23 @@ if ($_SESSION['role'] !== 'admin') {
     <script src="assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Template Main JS File -->
     <script src=assets/js/main.js></script>
     <script src="customassets/customjs/signoutnotif.js"></script>
-
-    <script>
-    $(function() {
-      // 1) Quick Stats
-      $.getJSON('customassets/dashboard/totals.php', function(d) {
-        $('#dashboardTotalBudget').text('₱'+d.totalBudget.toLocaleString(undefined,{minimumFractionDigits:2}));
-        $('#dashboardUsedBudget').text('₱'+d.usedBudget.toLocaleString(undefined,{minimumFractionDigits:2}));
-        $('#dashboardUnpaidAP').text('₱'+d.unpaidAP.toLocaleString(undefined,{minimumFractionDigits:2}));
-        $('#dashboardDisbursements').text('₱'+d.totalDisbursements.toLocaleString(undefined,{minimumFractionDigits:2}));
-      });
-
-      // 2) Budget per Dept (Bar)
-      $.getJSON('customassets/dashboard/budget_per_dept.php', function(depts) {
-        const labels    = depts.map(r=>r.department);
-        const used      = depts.map(r=>r.used);
-        const allocated = depts.map(r=>r.allocated);
-        const ctxDept = document.getElementById('chartBudgetPerDept').getContext('2d');
-        new Chart(ctxDept, {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [
-              { label:'Used',      data: used },
-              { label:'Allocated', data: allocated }
-            ]
-          }
-        });
-      });
-
-      // 3) Monthly Expenses Trend (Line)
-      $.getJSON('customassets/dashboard/monthly_expenses.php', function(months) {
-        const labels = months.map(r=>r.month);
-        const data   = months.map(r=>r.expense);
-        const ctxExp = document.getElementById('chartMonthlyExpenses').getContext('2d');
-        new Chart(ctxExp, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [
-              { label:'Expenses', data: data }
-            ]
-          }
-        });
-      });
-
-      $(function() {
-  // 1) Fetch and display the forecasted disbursement
-  $.getJSON('customassets/dashboard/forecasting.php', function(data) {
-    $('#predictedDisbursement').text('₱' + data.predictedDisbursement.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+     <script>
+  // Search filter
+  document.getElementById('searchInput').addEventListener('keyup', function () {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#auditTable tbody tr');
+    rows.forEach(row => {
+      row.style.display = [...row.children].some(td => 
+        td.textContent.toLowerCase().includes(filter)
+      ) ? '' : 'none';
+    });
   });
-});
+</script> 
 
-$.getJSON('customassets/dashboard/forecast_sales.php', function(data) {
-    var labels = data.months;
-    var salesData = data.sales;
-    var forecast = data.forecast;
-
-    // Idagdag yung forecasted month (Next Month)
-    var nextMonth = "Next Month";
-    labels.push(nextMonth);
-    salesData.push(forecast);
-
-    new Chart($('#chartSalesForecast'), {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Sales',
-                data: salesData,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-});
-
-    });
-    </script>
   </body>
 
   </html>
