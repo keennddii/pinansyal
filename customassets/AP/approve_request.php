@@ -1,12 +1,12 @@
 <?php
 include 'cnnpayable.php';
 session_start();
-require_once '../../functions.php'; // adjust if needed
+require_once '../../functions.php'; 
 
 if (isset($_GET['id'])) {
     $request_id = intval($_GET['id']);
 
-    // 🔍 Fetch the request
+    //  Fetch the request
     $query = $conn->prepare("SELECT * FROM payable_requests WHERE id = ?");
     $query->bind_param("i", $request_id);
     $query->execute();
@@ -19,7 +19,7 @@ if (isset($_GET['id'])) {
         exit;
     }
 
-    // 🔐 Sanitize inputs
+    //  Sanitize inputs
     $payee         = trim($request['payee']);
     $amount        = floatval($request['amount']);
     $due_date      = $request['due_date'];
@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
     $date_today    = date('Y-m-d');
     $period        = $date_today;
 
-    // ✅ Budget Check
+    //  Budget Check
     $current_year = date('Y');
     $budgetQuery = $conn->prepare("
         SELECT (allocated_amount - used_amount) AS remaining_budget 
@@ -52,7 +52,7 @@ if (isset($_GET['id'])) {
     }
     $budgetQuery->close();
 
-    // ✅ Insert into accounts_payable
+    //  Insert into accounts_payable
     $stmt = $conn->prepare("
         INSERT INTO accounts_payable 
         (payee, amount, due_date, account_id, department_id, remarks) 
@@ -66,7 +66,7 @@ if (isset($_GET['id'])) {
     $payable_id = $conn->insert_id;
     $stmt->close();
 
-    // ✅ Journal Entries
+    //  Journal Entries
     $journal1 = $conn->prepare("
         INSERT INTO journal_entries 
         (transaction_date, account_id, debit, credit, module_type, reference_id, remarks) 
@@ -86,7 +86,7 @@ if (isset($_GET['id'])) {
     $journal2->execute();
     $journal2->close();
 
-    // ✅ General Ledger Entry
+    //  General Ledger Entry
     $checkLedger = $conn->prepare("
         SELECT id, debit, credit 
         FROM general_ledger 
@@ -134,20 +134,20 @@ if (isset($_GET['id'])) {
     }
     $checkLedger->close();
 
-    // ✅ Mark Request as Approved
+    //  Mark Request as Approved
     $update = $conn->prepare("UPDATE payable_requests SET status = 'Approved' WHERE id = ?");
     $update->bind_param("i", $request_id);
     $update->execute();
     $update->close();
 
-    // ✅ Audit Trail Logging
+    //  Audit Trail Logging
     $user_id = $_SESSION['user_id'] ?? 0;
     $action = "Approved Payable Request";
     $desc = "Approved payable request ID #$request_id for ₱" . number_format($amount, 2);
     $module = "Accounts Payable";
     logAudit($conn, $user_id, $action, $desc, $module);
 
-    // ✅ Done
+    //  Done
     header("Location: ../../AccountPayable.php?approved=1");
     exit;
 }
